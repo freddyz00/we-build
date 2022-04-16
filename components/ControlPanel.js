@@ -34,8 +34,6 @@ export default function ControlPanel() {
     }
   };
 
-  console.log("editingSection", editingSection);
-
   return (
     <aside className="bg-white w-72 p-3 overflow-y-auto">
       {renderEditingSection()}

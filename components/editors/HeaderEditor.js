@@ -1,12 +1,11 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 import { headerState } from "../../atoms/headerAtom";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
 export default function HeaderEditor() {
-  const [editingSection, setEditingSection] =
-    useRecoilState(editingSectionState);
+  const setEditingSection = useSetRecoilState(editingSectionState);
   const [header, setHeader] = useRecoilState(headerState);
 
   return (
@@ -26,8 +25,10 @@ export default function HeaderEditor() {
         <p>Logo</p>
         <input
           type="text"
-          value={header}
-          onChange={(event) => setHeader(event.target.value)}
+          value={header.logo}
+          onChange={(event) =>
+            setHeader({ ...header, logo: event.target.value })
+          }
           className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
         />
       </div>

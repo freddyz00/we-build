@@ -2,5 +2,8 @@ import { atom } from "recoil";
 
 export const headerState = atom({
   key: "headerState",
-  default: "MyLogo2",
+  default: {
+    logo: "MyLogo",
+    links: ["Home", "Shop", "Contact"],
+  },
 });
