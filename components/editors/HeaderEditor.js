@@ -45,23 +45,59 @@ export default function HeaderEditor() {
               className="select-none"
             >
               {header.links.map((link, index) => (
-                <Draggable draggableId={`link-${index}`} index={index}>
+                <Draggable
+                  draggableId={`link-${index}`}
+                  key={index}
+                  index={index}
+                >
                   {(provided) => (
                     <li
                       {...provided.draggableProps}
                       ref={provided.innerRef}
                       className="flex items-center justify-between bg-white border border-solid px-2 py-1.5"
                     >
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center w-full space-x-2">
                         <span
                           {...provided.dragHandleProps}
                           className="p-0.5 rounded cursor-grab"
                         >
                           <MdOutlineDragHandle />
                         </span>
-                        <span>{link}</span>
+                        <span
+                          contentEditable
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                              event.preventDefault();
+                              event.target.blur();
+                            }
+                          }}
+                          onBlur={(event) => {
+                            setHeader({
+                              ...header,
+                              links: [
+                                ...header.links.slice(0, index),
+                                event.target.textContent,
+                                ...header.links.slice(index + 1),
+                              ],
+                            });
+                          }}
+                          className="flex-1 outline-none"
+                        >
+                          {link}
+                        </span>
                       </div>
-                      <div className="cursor-pointer p-0.5 rounded">
+                      <div
+                        onClick={() => {
+                          setHeader({
+                            ...header,
+                            links: [
+                              ...header.links.slice(0, index),
+                              ...header.links.slice(index + 1),
+                            ],
+                          });
+                        }}
+                        className="cursor-pointer p-0.5 rounded"
+                      >
                         <BsX />
                       </div>
                     </li>
@@ -69,33 +105,22 @@ export default function HeaderEditor() {
                 </Draggable>
               ))}
               {provided.placeholder}
-              <li className="text-primary-blue border-b border-x border-solid px-3 py-1.5 cursor-pointer">
-                Add
-              </li>
+              {header.links.length < 5 && (
+                <li
+                  onClick={() => {
+                    setHeader({
+                      ...header,
+                      links: [...header.links, "New Link"],
+                    });
+                  }}
+                  className="text-primary-blue hover:bg-slate-200 border-b border-x border-solid px-5 py-1.5 cursor-pointer"
+                >
+                  Add Link
+                </li>
+              )}
             </ul>
           )}
         </Droppable>
-        {/* <ul className="select-none">
-            {header.links.map((link, index) => (
-              <li
-                key={index}
-                className="flex items-center justify-between border border-solid px-2 py-1.5"
-              >
-                <div className="flex items-center space-x-2">
-                  <span className="p-0.5 rounded cursor-grab">
-                    <MdOutlineDragHandle />
-                  </span>
-                  <span>{link}</span>
-                </div>
-                <div className="cursor-pointer p-0.5 rounded">
-                  <BsX />
-                </div>
-              </li>
-            ))}
-            <li className="text-primary-blue border-b border-x border-solid px-3 py-1.5 cursor-pointer">
-              Add
-            </li>
-          </ul> */}
       </div>
     </div>
   );

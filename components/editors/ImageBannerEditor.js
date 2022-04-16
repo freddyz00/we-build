@@ -42,6 +42,15 @@ export default function ImageBannerEditor() {
         />
       </div>
       {/* button */}
+      <div className="flex flex-col space-y-1 px-1 pt-3">
+        <p>Button Label</p>
+        <input
+          type="text"
+          value="Image"
+          onChange={() => {}}
+          className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
+        />
+      </div>
     </div>
   );
 }
