@@ -28,15 +28,39 @@ export default function SectionCardsList() {
       </ul>
       {/* main content */}
       <ul className="border-b border-solid border-slate-200 py-1">
-        <SectionCard title="Image Banner" Icon={RiImageLine} draggable />
-        <SectionCard title="About" Icon={RiFileTextLine} draggable />
-        <SectionCard title="Featured Products" Icon={MdOutlineSell} draggable />
-        <SectionCard title="Image With Text" Icon={RiImageEditLine} draggable />
+        <SectionCard
+          title="Image Banner"
+          Icon={RiImageLine}
+          draggable
+          onPress={() => setEditingSection("imageBannerEditor")}
+        />
+        <SectionCard
+          title="About"
+          Icon={RiFileTextLine}
+          draggable
+          onPress={() => setEditingSection("aboutEditor")}
+        />
+        <SectionCard
+          title="Featured Products"
+          Icon={MdOutlineSell}
+          draggable
+          onPress={() => setEditingSection("featuredProductsEditor")}
+        />
+        <SectionCard
+          title="Image With Text"
+          Icon={RiImageEditLine}
+          draggable
+          onPress={() => setEditingSection("imageWithTextEditor")}
+        />
         <AddSection />
       </ul>
       {/* footer */}
       <ul className="py-1">
-        <SectionCard title="Footer" Icon={RiLayoutBottom2Line} />
+        <SectionCard
+          title="Footer"
+          Icon={RiLayoutBottom2Line}
+          onPress={() => setEditingSection("footerEditor")}
+        />
       </ul>
     </div>
   );

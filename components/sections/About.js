@@ -8,6 +8,8 @@ export default function About() {
           product, make announcements, or welcome customers to your store.
         </p>
       </div>
+      {/* heading */}
+      {/* subheading */}
     </div>
   );
 }

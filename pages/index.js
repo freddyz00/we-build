@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ControlPanel from "../components/ControlPanel";
 
 export default function Home() {
@@ -5,6 +6,9 @@ export default function Home() {
     <div className="flex flex-col h-screen">
       {/* top header */}
       <div className="flex items-center h-12 border-b border-solid border-slate-200 shadow-sm z-10">
+        <Link href="/test">
+          <a>Preview</a>
+        </Link>
         <button className="text-white rounded-lg bg-primary-blue hover:bg-darker-blue px-5 py-2 ml-auto mr-5">
           Save
         </button>
