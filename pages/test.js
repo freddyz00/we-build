@@ -16,7 +16,7 @@ export default function Test() {
     if (event.origin !== "http://localhost:3000") return;
     switch (event.data.section) {
       case "header":
-        return setHeader({ ...header, logoText: event.data.logoText });
+        return setHeader(event.data.header);
     }
   };
 

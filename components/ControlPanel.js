@@ -1,5 +1,7 @@
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../atoms/editingSectionAtom";
+import { headerState } from "../atoms/headerAtom";
+import { DragDropContext } from "react-beautiful-dnd";
 
 import SectionCardsList from "./SectionCardsList";
 import HeaderEditor from "./editors/HeaderEditor";
@@ -12,6 +14,31 @@ import Footer from "./editors/FooterEditor";
 export default function ControlPanel() {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
+
+  const [header, setHeader] = useRecoilState(headerState);
+  const onDragEnd = async (result) => {
+    const { draggableId, source, destination, type } = result;
+
+    if (!destination) return;
+
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index == destination.index
+    )
+      return;
+
+    switch (type) {
+      case "navigation-links":
+        const newLinks = Array.from(header.links);
+        const draggedItem = newLinks[source.index];
+        newLinks.splice(source.index, 1);
+        newLinks.splice(destination.index, 0, draggedItem);
+        setHeader({ ...header, links: newLinks });
+        return;
+      default:
+        return;
+    }
+  };
 
   const renderEditingSection = () => {
     switch (editingSection) {
@@ -35,8 +62,10 @@ export default function ControlPanel() {
   };
 
   return (
-    <aside className="bg-white w-72 p-3 overflow-y-auto">
-      {renderEditingSection()}
-    </aside>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <aside className="bg-white w-72 p-3 overflow-y-auto">
+        {renderEditingSection()}
+      </aside>
+    </DragDropContext>
   );
 }

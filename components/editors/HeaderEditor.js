@@ -2,8 +2,9 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 import { headerState } from "../../atoms/headerAtom";
 
-import { MdOutlineArrowBackIos, MdOutlineDragHandle } from "react-icons/md";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import { BsX } from "react-icons/bs";
+import { MdOutlineArrowBackIos, MdOutlineDragHandle } from "react-icons/md";
 
 export default function HeaderEditor() {
   const setEditingSection = useSetRecoilState(editingSectionState);
@@ -36,27 +37,65 @@ export default function HeaderEditor() {
       {/* navigation links */}
       <div className="flex flex-col space-y-1 px-1 pt-5">
         <p>Navigation Links</p>
-        <ul className="select-none">
-          {header.links.map((link, index) => (
-            <li
-              key={index}
-              className="flex items-center justify-between border border-solid px-2 py-1.5"
+        <Droppable droppableId="navigation-links" type="navigation-links">
+          {(provided) => (
+            <ul
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="select-none"
             >
-              <div className="flex items-center space-x-2">
-                <span className="p-0.5 rounded cursor-grab">
-                  <MdOutlineDragHandle />
-                </span>
-                <span>{link}</span>
-              </div>
-              <div className="cursor-pointer p-0.5 rounded">
-                <BsX />
-              </div>
+              {header.links.map((link, index) => (
+                <Draggable draggableId={`link-${index}`} index={index}>
+                  {(provided) => (
+                    <li
+                      {...provided.draggableProps}
+                      ref={provided.innerRef}
+                      className="flex items-center justify-between bg-white border border-solid px-2 py-1.5"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span
+                          {...provided.dragHandleProps}
+                          className="p-0.5 rounded cursor-grab"
+                        >
+                          <MdOutlineDragHandle />
+                        </span>
+                        <span>{link}</span>
+                      </div>
+                      <div className="cursor-pointer p-0.5 rounded">
+                        <BsX />
+                      </div>
+                    </li>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+              <li className="text-primary-blue border-b border-x border-solid px-3 py-1.5 cursor-pointer">
+                Add
+              </li>
+            </ul>
+          )}
+        </Droppable>
+        {/* <ul className="select-none">
+            {header.links.map((link, index) => (
+              <li
+                key={index}
+                className="flex items-center justify-between border border-solid px-2 py-1.5"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="p-0.5 rounded cursor-grab">
+                    <MdOutlineDragHandle />
+                  </span>
+                  <span>{link}</span>
+                </div>
+                <div className="cursor-pointer p-0.5 rounded">
+                  <BsX />
+                </div>
+              </li>
+            ))}
+            <li className="text-primary-blue border-b border-x border-solid px-3 py-1.5 cursor-pointer">
+              Add
             </li>
-          ))}
-          <li className="text-primary-blue border-b border-x border-solid px-3 py-1.5 cursor-pointer">
-            Add
-          </li>
-        </ul>
+          </ul> */}
       </div>
     </div>
   );

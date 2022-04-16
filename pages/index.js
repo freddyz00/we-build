@@ -6,16 +6,16 @@ import ControlPanel from "../components/ControlPanel";
 
 export default function Home() {
   const iframeRef = useRef(null);
-  const { logoText } = useRecoilValue(headerState);
+  const header = useRecoilValue(headerState);
 
   // post message whenever logo changes
   useEffect(() => {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
-      { section: "header", logoText },
+      { section: "header", header },
       "http://localhost:3000"
     );
-  }, [logoText]);
+  }, [header]);
 
   return (
     <div className="flex flex-col h-screen">
