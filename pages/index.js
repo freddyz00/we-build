@@ -5,10 +5,7 @@ export default function Home() {
     <div className="flex flex-col h-screen">
       {/* top header */}
       <div className="flex items-center h-12 border-b border-solid border-slate-200 shadow-sm z-10">
-        <button
-          onClick={() => console.log("clicked")}
-          className="text-white rounded-md bg-primary-blue hover:opacity-80 px-4 py-1.5 ml-auto mr-5"
-        >
+        <button className="text-white rounded-lg bg-primary-blue hover:bg-darker-blue px-5 py-2 ml-auto mr-5">
           Save
         </button>
       </div>

@@ -5,10 +5,10 @@ export default function FeaturedProducts() {
       <div className="grid grid-cols-3 gap-x-5">
         {new Array(3).fill(1).map((_) => (
           <div>
-            <div className="bg-red-100 h-80 mb-3"></div>
-            <div className="flex justify-between">
-              <p>Product</p>
-              <p>$9.90</p>
+            <div className="bg-neutral-200 h-80 mb-3"></div>
+            <div className="flex flex-col">
+              <p className="text-lg">Product</p>
+              <p className="font-medium">$9.90</p>
             </div>
           </div>
         ))}
