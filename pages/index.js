@@ -1,7 +1,22 @@
 import Link from "next/link";
+import { useRef, useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { headerState } from "../atoms/headerAtom";
 import ControlPanel from "../components/ControlPanel";
 
 export default function Home() {
+  const iframeRef = useRef(null);
+  const { logoText } = useRecoilValue(headerState);
+
+  // post message whenever logo changes
+  useEffect(() => {
+    if (!iframeRef.current) return;
+    iframeRef.current.contentWindow.postMessage(
+      { section: "header", logoText },
+      "http://localhost:3000"
+    );
+  }, [logoText]);
+
   return (
     <div className="flex flex-col h-screen">
       {/* top header */}
@@ -19,6 +34,7 @@ export default function Home() {
         {/* web preview */}
         <section className="flex-1 grid place-items-center">
           <iframe
+            ref={iframeRef}
             src="/test"
             title="Test"
             height="95%"
