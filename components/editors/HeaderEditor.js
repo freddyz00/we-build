@@ -1,4 +1,4 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 import { headerState } from "../../atoms/headerAtom";
 
@@ -7,7 +7,8 @@ import { BsX } from "react-icons/bs";
 import { MdOutlineArrowBackIos, MdOutlineDragHandle } from "react-icons/md";
 
 export default function HeaderEditor() {
-  const setEditingSection = useSetRecoilState(editingSectionState);
+  const [editingSection, setEditingSection] =
+    useRecoilState(editingSectionState);
   const [header, setHeader] = useRecoilState(headerState);
 
   return (
@@ -15,7 +16,7 @@ export default function HeaderEditor() {
       {/* title */}
       <div className="flex items-center space-x-2 border-b border-solid pb-3">
         <div
-          onClick={() => setEditingSection("sectionCardsList")}
+          onClick={() => setEditingSection([...editingSection].slice(0, -1))}
           className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
         >
           <MdOutlineArrowBackIos />

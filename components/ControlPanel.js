@@ -11,6 +11,7 @@ import AboutEditor from "./editors/AboutEditor";
 import FeaturedProductsEditor from "./editors/FeaturedProductsEditor";
 import ImageWithTextEditor from "./editors/ImageWithTextEditor";
 import Footer from "./editors/FooterEditor";
+import ImageSelector from "./editors/ImageSelector";
 
 export default function ControlPanel() {
   const [editingSection, setEditingSection] =
@@ -49,7 +50,8 @@ export default function ControlPanel() {
   };
 
   const renderEditingSection = () => {
-    switch (editingSection) {
+    const currentEditingSection = editingSection[editingSection.length - 1];
+    switch (currentEditingSection) {
       case "sectionCardsList":
         return <SectionCardsList />;
       case "headerEditor":
@@ -64,6 +66,8 @@ export default function ControlPanel() {
         return <ImageWithTextEditor />;
       case "footerEditor":
         return <Footer />;
+      case "imageSelector":
+        return <ImageSelector />;
       default:
         return;
     }

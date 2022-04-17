@@ -23,7 +23,7 @@ export default function SectionCardsList() {
         <SectionCard
           title="Header"
           Icon={RiLayoutTop2Line}
-          onPress={() => setEditingSection("headerEditor")}
+          onPress={() => setEditingSection([...editingSection, "headerEditor"])}
         />
       </ul>
       {/* main content */}
@@ -32,25 +32,31 @@ export default function SectionCardsList() {
           title="Image Banner"
           Icon={RiImageLine}
           draggable
-          onPress={() => setEditingSection("imageBannerEditor")}
+          onPress={() =>
+            setEditingSection([...editingSection, "imageBannerEditor"])
+          }
         />
         <SectionCard
           title="About"
           Icon={RiFileTextLine}
           draggable
-          onPress={() => setEditingSection("aboutEditor")}
+          onPress={() => setEditingSection([...editingSection, "aboutEditor"])}
         />
         <SectionCard
           title="Featured Products"
           Icon={MdOutlineSell}
           draggable
-          onPress={() => setEditingSection("featuredProductsEditor")}
+          onPress={() =>
+            setEditingSection([...editingSection, "featuredProductsEditor"])
+          }
         />
         <SectionCard
           title="Image With Text"
           Icon={RiImageEditLine}
           draggable
-          onPress={() => setEditingSection("imageWithTextEditor")}
+          onPress={() =>
+            setEditingSection([...editingSection, "imageWithTextEditor"])
+          }
         />
         <AddSection />
       </ul>
@@ -59,7 +65,7 @@ export default function SectionCardsList() {
         <SectionCard
           title="Footer"
           Icon={RiLayoutBottom2Line}
-          onPress={() => setEditingSection("footerEditor")}
+          onPress={() => setEditingSection([...editingSection, "footerEditor"])}
         />
       </ul>
     </div>

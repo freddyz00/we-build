@@ -14,7 +14,7 @@ export default function ImageBannerEditor() {
       {/* title */}
       <div className="flex items-center space-x-2 border-b border-solid pb-3">
         <div
-          onClick={() => setEditingSection("sectionCardsList")}
+          onClick={() => setEditingSection([...editingSection].slice(0, -1))}
           className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
         >
           <MdOutlineArrowBackIos />
@@ -25,7 +25,12 @@ export default function ImageBannerEditor() {
       {/* Image */}
       <div className="flex flex-col space-y-1 px-1 pt-3">
         <p>Image</p>
-        <div className="grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition ">
+        <div
+          onClick={() => {
+            setEditingSection([...editingSection, "imageSelector"]);
+          }}
+          className="grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition "
+        >
           <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid">
             Select Image
           </button>
