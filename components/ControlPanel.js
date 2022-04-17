@@ -1,6 +1,7 @@
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../atoms/editingSectionAtom";
 import { headerState } from "../atoms/headerAtom";
+import { footerState } from "../atoms/footerAtom";
 import { DragDropContext } from "react-beautiful-dnd";
 
 import SectionCardsList from "./SectionCardsList";
@@ -14,8 +15,9 @@ import Footer from "./editors/FooterEditor";
 export default function ControlPanel() {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
-
   const [header, setHeader] = useRecoilState(headerState);
+  const [footer, setFooter] = useRecoilState(footerState);
+
   const onDragEnd = async (result) => {
     const { draggableId, source, destination, type } = result;
 
@@ -35,6 +37,12 @@ export default function ControlPanel() {
         newLinks.splice(destination.index, 0, draggedItem);
         setHeader({ ...header, links: newLinks });
         return;
+      case "footer-links":
+        const newFooterLinks = Array.from(footer.links);
+        const draggedFooterItem = newFooterLinks[source.index];
+        newFooterLinks.splice(source.index, 1);
+        newFooterLinks.splice(destination.index, 0, draggedFooterItem);
+        setFooter({ links: newFooterLinks });
       default:
         return;
     }

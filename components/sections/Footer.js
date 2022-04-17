@@ -1,4 +1,8 @@
+import { useRecoilValue } from "recoil";
+import { footerState } from "../../atoms/footerAtom";
+
 export default function Footer() {
+  const footer = useRecoilValue(footerState);
   return (
     <div className="border-t border-solid border-slate-200 py-10">
       <div className="container mx-auto lg:max-w-6xl">
@@ -6,20 +10,14 @@ export default function Footer() {
           <div>
             <p className="text-lg mb-3 font-medium">Links</p>
             <ul className="flex flex-col space-y-1">
-              <li className="cursor-pointer hover:text-primary-blue">
-                About Us
-              </li>
-
-              <li className="cursor-pointer hover:text-primary-blue">
-                Contact
-              </li>
-
-              <li className="cursor-pointer hover:text-primary-blue">
-                Shipping Policy
-              </li>
-              <li className="cursor-pointer hover:text-primary-blue">
-                Privacy Policy
-              </li>
+              {footer.links.map((link, index) => (
+                <li
+                  key={index}
+                  className="cursor-pointer hover:text-primary-blue"
+                >
+                  {link}
+                </li>
+              ))}
             </ul>
           </div>
           <div></div>

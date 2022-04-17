@@ -1,21 +1,67 @@
 import Link from "next/link";
 import { useRef, useEffect } from "react";
+
 import { useRecoilValue } from "recoil";
+import { aboutState } from "../atoms/aboutAtom";
+import { footerState } from "../atoms/footerAtom";
 import { headerState } from "../atoms/headerAtom";
+import { imageBannerState } from "../atoms/imageBannerAtom";
+import { imageWithTextState } from "../atoms/imageWithTextAtom";
+
 import ControlPanel from "../components/ControlPanel";
 
 export default function Home() {
   const iframeRef = useRef(null);
   const header = useRecoilValue(headerState);
+  const imageBanner = useRecoilValue(imageBannerState);
+  const about = useRecoilValue(aboutState);
+  const imageWithText = useRecoilValue(imageWithTextState);
+  const footer = useRecoilValue(footerState);
 
-  // post message whenever logo changes
+  // post message whenever header changes
   useEffect(() => {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
-      { section: "header", header },
+      { section: "header", payload: header },
       "http://localhost:3000"
     );
   }, [header]);
+
+  // post message whenever image banner changes
+  useEffect(() => {
+    if (!iframeRef.current) return;
+    iframeRef.current.contentWindow.postMessage(
+      { section: "imageBanner", payload: imageBanner },
+      "http://localhost:3000"
+    );
+  }, [imageBanner]);
+
+  // post message whenever about changes
+  useEffect(() => {
+    if (!iframeRef.current) return;
+    iframeRef.current.contentWindow.postMessage(
+      { section: "about", payload: about },
+      "http://localhost:3000"
+    );
+  }, [about]);
+
+  // post message whenever image with text changes
+  useEffect(() => {
+    if (!iframeRef.current) return;
+    iframeRef.current.contentWindow.postMessage(
+      { section: "imageWithText", payload: imageWithText },
+      "http://localhost:3000"
+    );
+  }, [imageWithText]);
+
+  // post message whenever footer changes
+  useEffect(() => {
+    if (!iframeRef.current) return;
+    iframeRef.current.contentWindow.postMessage(
+      { section: "footer", payload: footer },
+      "http://localhost:3000"
+    );
+  }, [footer]);
 
   return (
     <div className="flex flex-col h-screen">
