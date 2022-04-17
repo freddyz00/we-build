@@ -8,7 +8,7 @@ export default function FeaturedProductsEditor() {
     useRecoilState(editingSectionState);
 
   return (
-    <div className="border-b border-solid pb-3">
+    <div className="border-b border-solid p-3">
       {/* title */}
       <div className="flex items-center space-x-2">
         <div

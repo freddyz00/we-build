@@ -19,7 +19,7 @@ export default function SectionCardsList() {
   return (
     <div>
       {/* header */}
-      <ul className="border-b border-solid border-slate-200 py-1">
+      <ul className="border-b border-solid border-slate-200 px-3 py-1">
         <SectionCard
           title="Header"
           Icon={RiLayoutTop2Line}
@@ -27,7 +27,7 @@ export default function SectionCardsList() {
         />
       </ul>
       {/* main content */}
-      <ul className="border-b border-solid border-slate-200 py-1">
+      <ul className="border-b border-solid border-slate-200 px-3 py-1">
         <SectionCard
           title="Image Banner"
           Icon={RiImageLine}
@@ -61,7 +61,7 @@ export default function SectionCardsList() {
         <AddSection />
       </ul>
       {/* footer */}
-      <ul className="py-1">
+      <ul className="px-3 py-1">
         <SectionCard
           title="Footer"
           Icon={RiLayoutBottom2Line}

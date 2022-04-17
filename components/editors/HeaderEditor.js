@@ -14,7 +14,7 @@ export default function HeaderEditor() {
   return (
     <div>
       {/* title */}
-      <div className="flex items-center space-x-2 border-b border-solid pb-3">
+      <div className="flex items-center space-x-2 border-b border-solid p-3">
         <div
           onClick={() => setEditingSection([...editingSection].slice(0, -1))}
           className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
@@ -24,7 +24,7 @@ export default function HeaderEditor() {
         <p className="font-medium">Header</p>
       </div>
       {/* logo */}
-      <div className="flex flex-col space-y-1 px-1 pt-3">
+      <div className="flex flex-col space-y-1 px-4 pt-3">
         <p>Logo</p>
         <input
           type="text"
@@ -36,7 +36,7 @@ export default function HeaderEditor() {
         />
       </div>
       {/* navigation links */}
-      <div className="flex flex-col space-y-1 px-1 pt-5">
+      <div className="flex flex-col space-y-1 px-4 pt-5">
         <p>Navigation Links</p>
         <Droppable droppableId="navigation-links" type="navigation-links">
           {(provided) => (

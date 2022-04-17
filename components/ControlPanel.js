@@ -75,7 +75,7 @@ export default function ControlPanel() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <aside className="bg-white w-72 p-3 overflow-y-auto">
+      <aside className="bg-white w-72 max-h-full overflow-y-auto relative">
         {renderEditingSection()}
       </aside>
     </DragDropContext>
