@@ -4,9 +4,9 @@ import { imageBannerState } from "../../atoms/imageBannerAtom";
 export default function ImageBanner() {
   const imageBanner = useRecoilValue(imageBannerState);
   return (
-    <div className="h-screen flex flex-col space-y-5 justify-center items-center bg-cover bg-neutral-200">
-      {/* image  */}
-
+    <div
+      className={`h-screen flex flex-col space-y-5 justify-center items-center bg-cover bg-neutral-200`}
+    >
       <h2 className="text-5xl max-w-3xl break-all text-center">
         {imageBanner.heading}
       </h2>

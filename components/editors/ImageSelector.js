@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
+import { imageBannerState } from "../../atoms/imageBannerAtom";
 
 import { MdOutlineArrowBackIos, MdOutlineFileUpload } from "react-icons/md";
 
@@ -9,8 +9,12 @@ import { faker } from "@faker-js/faker";
 export default function ImageSelector() {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
-
+  const [imageBanner, setImageBanner] = useRecoilState(imageBannerState);
   const imageSrc = faker.image.image();
+
+  const handleClick = () => {
+    setImageBanner({ ...imageBanner, imageSrc });
+  };
 
   return (
     <div className="flex flex-col absolute top-0 left-0 right-0 bottom-0 overflow-hidden">
@@ -31,8 +35,11 @@ export default function ImageSelector() {
           <MdOutlineFileUpload className="text-2xl" />
           <p className="select-none">Upload</p>
         </button>
-        <button className="bg-neutral-200 aspect-square hover:opacity-80 focus:border-4 border-primary-blue border-solid cursor-pointer">
-          <img src={imageSrc} alt="" className="w-full h-full object-cover" />
+        <button
+          onClick={handleClick}
+          className="bg-neutral-200 aspect-square hover:opacity-80 focus:border-4 border-primary-blue border-solid cursor-pointer"
+        >
+          <img src={imageSrc} alt="" className="w-full h-full object-covers" />
         </button>
       </div>
     </div>
