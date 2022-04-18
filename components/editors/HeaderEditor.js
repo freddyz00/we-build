@@ -25,12 +25,12 @@ export default function HeaderEditor() {
       </div>
       {/* logo */}
       <div className="flex flex-col space-y-1 px-4 pt-3">
-        <p>Logo</p>
+        <p>Brand Name</p>
         <input
           type="text"
-          value={header.logoText}
+          value={header.brandName}
           onChange={(event) =>
-            setHeader({ ...header, logoText: event.target.value })
+            setHeader({ ...header, brandName: event.target.value })
           }
           className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
         />

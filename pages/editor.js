@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useRef, useEffect } from "react";
+import { getSession } from "next-auth/react";
 
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { aboutState } from "../atoms/aboutAtom";
 import { footerState } from "../atoms/footerAtom";
 import { headerState } from "../atoms/headerAtom";
@@ -10,13 +11,47 @@ import { imageWithTextState } from "../atoms/imageWithTextAtom";
 
 import ControlPanel from "../components/ControlPanel";
 
-export default function Editor() {
+import { sanityClient, urlFor } from "../lib/sanity";
+
+const sections = ["header", "imageBanner", "about", "imageWithText", "footer"];
+
+export default function Editor({ user }) {
   const iframeRef = useRef(null);
-  const header = useRecoilValue(headerState);
+  const [header, setHeader] = useRecoilState(headerState);
   const imageBanner = useRecoilValue(imageBannerState);
   const about = useRecoilValue(aboutState);
   const imageWithText = useRecoilValue(imageWithTextState);
   const footer = useRecoilValue(footerState);
+
+  useEffect(() => {
+    (async () => {
+      const query = `*[_type in ["header", "imageBanner", "about", "imageWithText", "footer"]]{
+        _type,
+        _id,
+        brandName,
+        heading,
+        subheading,
+        buttonLabel,
+        links,
+        user,
+        image,
+      }`;
+      const data = await sanityClient.fetch(query);
+
+      for (let section of data) {
+        // if (section._type === "header") {
+        //   setHeader({ brandName: section.brandName, links: section.links });
+        // }
+        switch (section._type) {
+          case "header":
+            return setHeader({
+              brandName: section.brandName,
+              links: section.links,
+            });
+        }
+      }
+    })();
+  }, []);
 
   // post message whenever header changes
   useEffect(() => {
@@ -91,4 +126,23 @@ export default function Editor() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      user: session.user,
+    },
+  };
 }
