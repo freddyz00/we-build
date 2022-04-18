@@ -18,10 +18,10 @@ const sections = ["header", "imageBanner", "about", "imageWithText", "footer"];
 export default function Editor({ user }) {
   const iframeRef = useRef(null);
   const [header, setHeader] = useRecoilState(headerState);
-  const imageBanner = useRecoilValue(imageBannerState);
-  const about = useRecoilValue(aboutState);
-  const imageWithText = useRecoilValue(imageWithTextState);
-  const footer = useRecoilValue(footerState);
+  const [imageBanner, setImageBanner] = useRecoilState(imageBannerState);
+  const [about, setAbout] = useRecoilState(aboutState);
+  const [imageWithText, setImageWithText] = useRecoilState(imageWithTextState);
+  const [footer, setFooter] = useRecoilState(footerState);
 
   useEffect(() => {
     (async () => {
@@ -39,15 +39,29 @@ export default function Editor({ user }) {
       const data = await sanityClient.fetch(query);
 
       for (let section of data) {
-        // if (section._type === "header") {
-        //   setHeader({ brandName: section.brandName, links: section.links });
-        // }
-        switch (section._type) {
-          case "header":
-            return setHeader({
-              brandName: section.brandName,
-              links: section.links,
-            });
+        if (section._type === "header") {
+          setHeader({ brandName: section.brandName, links: section.links });
+        } else if (section._type === "footer") {
+          setFooter({ links: section.links });
+        } else if (section._type === "about") {
+          setAbout({
+            heading: section.heading,
+            subheading: section.subheading,
+          });
+        } else if (section._type === "imageBanner") {
+          setImageBanner({
+            image: urlFor(section.image).url(),
+            heading: section.heading,
+            subheading: section.subheading,
+            buttonLabel: section.buttonLabel,
+          });
+        } else if (section._type === "imageWithText") {
+          setImageWithText({
+            image: urlFor(section.image).url(),
+            heading: section.heading,
+            subheading: section.subheading,
+            buttonLabel: section.buttonLabel,
+          });
         }
       }
     })();
