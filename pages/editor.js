@@ -25,45 +25,36 @@ export default function Editor({ user }) {
 
   useEffect(() => {
     (async () => {
-      const query = `*[_type in ["header", "imageBanner", "about", "imageWithText", "footer"]]{
-        _type,
-        _id,
-        brandName,
-        heading,
-        subheading,
-        buttonLabel,
-        links,
-        user,
-        image,
-      }`;
+      const query = `*[_type == "page" && user=="Me"]`;
       const data = await sanityClient.fetch(query);
+      console.log(data);
 
-      for (let section of data) {
-        if (section._type === "header") {
-          setHeader({ brandName: section.brandName, links: section.links });
-        } else if (section._type === "footer") {
-          setFooter({ links: section.links });
-        } else if (section._type === "about") {
-          setAbout({
-            heading: section.heading,
-            subheading: section.subheading,
-          });
-        } else if (section._type === "imageBanner") {
-          setImageBanner({
-            image: urlFor(section.image).url(),
-            heading: section.heading,
-            subheading: section.subheading,
-            buttonLabel: section.buttonLabel,
-          });
-        } else if (section._type === "imageWithText") {
-          setImageWithText({
-            image: urlFor(section.image).url(),
-            heading: section.heading,
-            subheading: section.subheading,
-            buttonLabel: section.buttonLabel,
-          });
-        }
-      }
+      // for (let section of data) {
+      //   if (section._type === "header") {
+      //     setHeader({ brandName: section.brandName, links: section.links });
+      //   } else if (section._type === "footer") {
+      //     setFooter({ links: section.links });
+      //   } else if (section._type === "about") {
+      //     setAbout({
+      //       heading: section.heading,
+      //       subheading: section.subheading,
+      //     });
+      //   } else if (section._type === "imageBanner") {
+      //     setImageBanner({
+      //       image: urlFor(section.image).url(),
+      //       heading: section.heading,
+      //       subheading: section.subheading,
+      //       buttonLabel: section.buttonLabel,
+      //     });
+      //   } else if (section._type === "imageWithText") {
+      //     setImageWithText({
+      //       image: urlFor(section.image).url(),
+      //       heading: section.heading,
+      //       subheading: section.subheading,
+      //       buttonLabel: section.buttonLabel,
+      //     });
+      //   }
+      // }
     })();
   }, []);
 

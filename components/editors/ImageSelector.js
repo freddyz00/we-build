@@ -1,9 +1,11 @@
+import { useRef } from "react";
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 import { imageBannerState } from "../../atoms/imageBannerAtom";
 
 import { MdOutlineArrowBackIos, MdOutlineFileUpload } from "react-icons/md";
 
+import { sanityClient } from "../../lib/sanity";
 import { faker } from "@faker-js/faker";
 
 export default function ImageSelector() {
@@ -12,8 +14,25 @@ export default function ImageSelector() {
   const [imageBanner, setImageBanner] = useRecoilState(imageBannerState);
   const imageSrc = faker.image.image();
 
-  const handleClick = () => {
-    setImageBanner({ ...imageBanner, imageSrc });
+  const imageUploadRef = useRef(null);
+
+  const showImageUploader = () => {
+    if (imageUploadRef.current) {
+      imageUploadRef.current.click();
+    }
+  };
+
+  const handleImageUpload = async (event) => {
+    const formData = new FormData();
+    const imageFile = event.target.files[0];
+    sanityClient
+      .create({
+        _type: "about",
+        heading: "h1",
+        subheading: "123f",
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -31,16 +50,27 @@ export default function ImageSelector() {
 
       {/* images */}
       <div className="grid grid-cols-2 p-3 gap-2 overflow-y-auto">
-        <button className="flex flex-col items-center justify-center bg-neutral-100 border-2 border-dashed border-neutral-300 hover:border-primary-blue aspect-square cursor-pointer">
+        <button
+          onClick={showImageUploader}
+          className="flex flex-col items-center justify-center bg-neutral-100 border-2 border-dashed border-neutral-300 hover:border-primary-blue aspect-square cursor-pointer"
+        >
           <MdOutlineFileUpload className="text-2xl" />
           <p className="select-none">Upload</p>
         </button>
-        <button
-          onClick={handleClick}
+        <input
+          ref={imageUploadRef}
+          onInput={handleImageUpload}
+          id="uploaded-image"
+          type="file"
+          accept="image/*"
+          className="hidden"
+        />
+        {/* <button
+          onClick={() => {}}
           className="bg-neutral-200 aspect-square hover:opacity-80 focus:border-4 border-primary-blue border-solid cursor-pointer"
         >
           <img src={imageSrc} alt="" className="w-full h-full object-covers" />
-        </button>
+        </button> */}
       </div>
     </div>
   );

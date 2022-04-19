@@ -1,6 +1,5 @@
 import { useRecoilValue } from "recoil";
 import { imageBannerState } from "../../atoms/imageBannerAtom";
-import classNames from "classnames";
 
 export default function ImageBanner() {
   const imageBanner = useRecoilValue(imageBannerState);
@@ -20,11 +19,11 @@ export default function ImageBanner() {
       <button className="bg-primary-blue hover:bg-darker-blue px-5 py-3 rounded-lg text-white">
         {imageBanner.buttonLabel}
       </button>
-      <style jsx>{`
+      {/* <style jsx>{`
         .image-banner {
           background-image: url(${imageBanner.image});
         }
-      `}</style>
+      `}</style> */}
     </div>
   );
 }
