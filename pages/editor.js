@@ -2,32 +2,19 @@ import Link from "next/link";
 import { useRef, useEffect } from "react";
 import { getSession } from "next-auth/react";
 
-import { useRecoilValue, useRecoilState } from "recoil";
-import { aboutState } from "../atoms/aboutAtom";
-import { footerState } from "../atoms/footerAtom";
-import { headerState } from "../atoms/headerAtom";
-import { imageBannerState } from "../atoms/imageBannerAtom";
-import { imageWithTextState } from "../atoms/imageWithTextAtom";
-
 import ControlPanel from "../components/ControlPanel";
+import * as sections from "../components/sections";
 
 import { sanityClient, urlFor } from "../lib/sanity";
 
-const sections = ["header", "imageBanner", "about", "imageWithText", "footer"];
-
 export default function Editor({ user }) {
   const iframeRef = useRef(null);
-  const [header, setHeader] = useRecoilState(headerState);
-  const [imageBanner, setImageBanner] = useRecoilState(imageBannerState);
-  const [about, setAbout] = useRecoilState(aboutState);
-  const [imageWithText, setImageWithText] = useRecoilState(imageWithTextState);
-  const [footer, setFooter] = useRecoilState(footerState);
 
   useEffect(() => {
     (async () => {
-      const query = `*[_type == "page" && user=="Me"]`;
-      const data = await sanityClient.fetch(query);
-      console.log(data);
+      const query = `*[_type == "page" && user == "Me"][0]`;
+      const { sections } = await sanityClient.fetch(query);
+      console.log(sections);
 
       // for (let section of data) {
       //   if (section._type === "header") {
@@ -58,51 +45,6 @@ export default function Editor({ user }) {
     })();
   }, []);
 
-  // post message whenever header changes
-  useEffect(() => {
-    if (!iframeRef.current) return;
-    iframeRef.current.contentWindow.postMessage(
-      { section: "header", payload: header },
-      "http://localhost:3000"
-    );
-  }, [header]);
-
-  // post message whenever image banner changes
-  useEffect(() => {
-    if (!iframeRef.current) return;
-    iframeRef.current.contentWindow.postMessage(
-      { section: "imageBanner", payload: imageBanner },
-      "http://localhost:3000"
-    );
-  }, [imageBanner]);
-
-  // post message whenever about changes
-  useEffect(() => {
-    if (!iframeRef.current) return;
-    iframeRef.current.contentWindow.postMessage(
-      { section: "about", payload: about },
-      "http://localhost:3000"
-    );
-  }, [about]);
-
-  // post message whenever image with text changes
-  useEffect(() => {
-    if (!iframeRef.current) return;
-    iframeRef.current.contentWindow.postMessage(
-      { section: "imageWithText", payload: imageWithText },
-      "http://localhost:3000"
-    );
-  }, [imageWithText]);
-
-  // post message whenever footer changes
-  useEffect(() => {
-    if (!iframeRef.current) return;
-    iframeRef.current.contentWindow.postMessage(
-      { section: "footer", payload: footer },
-      "http://localhost:3000"
-    );
-  }, [footer]);
-
   return (
     <div className="flex flex-col h-screen">
       {/* top header */}
@@ -116,7 +58,7 @@ export default function Editor({ user }) {
       </div>
       <div className="flex-1 flex bg-stone-100">
         {/* side control panel */}
-        <ControlPanel />
+        <ControlPanel iframeRef={iframeRef} />
         {/* web preview */}
         <section className="flex-1 grid place-items-center">
           <iframe

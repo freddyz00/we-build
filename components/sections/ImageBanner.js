@@ -1,8 +1,28 @@
-import { useRecoilValue } from "recoil";
-import { imageBannerState } from "../../atoms/imageBannerAtom";
+import { useState, useEffect } from "react";
 
 export default function ImageBanner() {
-  const imageBanner = useRecoilValue(imageBannerState);
+  const [imageBanner, setImageBanner] = useState({
+    imageSrc: null,
+    heading: "Image Banner",
+    subheading:
+      "Give customers details about the banner image(s) or content on the template.",
+    buttonLabel: "Shop All",
+  });
+
+  const handleUpdateImageBanner = (event) => {
+    if (event.origin !== "http://localhost:3000") return;
+    if (event.data.section === "imageBanner") {
+      return setImageBanner(event.data.payload);
+    }
+  };
+
+  // listen to events from parent for updates to state
+  useEffect(() => {
+    window.addEventListener("message", handleUpdateImageBanner);
+    return () => {
+      window.removeEventListener("message", handleUpdateImageBanner);
+    };
+  }, []);
 
   return (
     <div

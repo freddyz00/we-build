@@ -1,8 +1,25 @@
-import { useRecoilValue } from "recoil";
-import { footerState } from "../../atoms/footerAtom";
+import { useState, useEffect } from "react";
 
 export default function Footer() {
-  const footer = useRecoilValue(footerState);
+  const [footer, setFooter] = useState({
+    links: ["About Us", "Contact", "Shipping Policy", "Privacy Policy"],
+  });
+
+  const handleUpdateFooter = (event) => {
+    if (event.origin !== "http://localhost:3000") return;
+    if (event.data.section === "footer") {
+      return setFooter(event.data.payload);
+    }
+  };
+
+  // listen to events from parent for updates to state
+  useEffect(() => {
+    window.addEventListener("message", handleUpdateFooter);
+    return () => {
+      window.removeEventListener("message", handleUpdateFooter);
+    };
+  }, []);
+
   return (
     <div className="border-t border-solid border-slate-200 py-10">
       <div className="container mx-auto lg:max-w-6xl">

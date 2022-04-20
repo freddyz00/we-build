@@ -1,8 +1,27 @@
-import { useRecoilValue } from "recoil";
-import { aboutState } from "../../atoms/aboutAtom";
+import { useState, useEffect } from "react";
 
 export default function About() {
-  const about = useRecoilValue(aboutState);
+  const [about, setAbout] = useState({
+    heading: "Talk about your brand",
+    subheading:
+      "Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.",
+  });
+
+  const handleUpdateAbout = (event) => {
+    if (event.origin !== "http://localhost:3000") return;
+    if (event.data.section === "about") {
+      return setAbout(event.data.payload);
+    }
+  };
+
+  // listen to events from parent for updates to state
+  useEffect(() => {
+    window.addEventListener("message", handleUpdateAbout);
+    return () => {
+      window.removeEventListener("message", handleUpdateAbout);
+    };
+  }, []);
+
   return (
     <div>
       <div className="container mx-auto flex flex-col items-center space-y-10 lg:max-w-6xl text-center">

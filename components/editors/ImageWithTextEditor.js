@@ -1,13 +1,30 @@
+import { useState, useEffect } from "react";
+
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
-import { imageWithTextState } from "../../atoms/imageWithTextAtom";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
-export default function ImageWithTextEditor() {
+export default function ImageWithTextEditor({ iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
-  const [imageWithText, setImageWithText] = useRecoilState(imageWithTextState);
+
+  const [imageWithText, setImageWithText] = useState({
+    image: null,
+    heading: "Image With Text",
+    subheading:
+      "Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.",
+    buttonLabel: "Button Label",
+  });
+
+  // post message whenever image with text changes
+  useEffect(() => {
+    if (!iframeRef.current) return;
+    iframeRef.current.contentWindow.postMessage(
+      { section: "imageWithText", payload: imageWithText },
+      "http://localhost:3000"
+    );
+  }, [imageWithText]);
 
   return (
     <div className="">

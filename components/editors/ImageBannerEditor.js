@@ -1,13 +1,30 @@
+import { useState, useEffect } from "react";
+
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
-import { imageBannerState } from "../../atoms/imageBannerAtom";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
-export default function ImageBannerEditor() {
+export default function ImageBannerEditor({ iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
-  const [imageBanner, setImageBanner] = useRecoilState(imageBannerState);
+
+  const [imageBanner, setImageBanner] = useState({
+    imageSrc: null,
+    heading: "Image Banner",
+    subheading:
+      "Give customers details about the banner image(s) or content on the template.",
+    buttonLabel: "Shop All",
+  });
+
+  // post message whenever image banner changes
+  useEffect(() => {
+    if (!iframeRef.current) return;
+    iframeRef.current.contentWindow.postMessage(
+      { section: "imageBanner", payload: imageBanner },
+      "http://localhost:3000"
+    );
+  }, [imageBanner]);
 
   return (
     <div>

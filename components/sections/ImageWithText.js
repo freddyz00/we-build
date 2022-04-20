@@ -1,8 +1,29 @@
-import { useRecoilValue } from "recoil";
-import { imageWithTextState } from "../../atoms/imageWithTextAtom";
+import { useState, useEffect } from "react";
 
 export default function ImageWithText() {
-  const imageWithText = useRecoilValue(imageWithTextState);
+  const [imageWithText, setImageWithText] = useState({
+    image: null,
+    heading: "Image With Text",
+    subheading:
+      "Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.",
+    buttonLabel: "Button Label",
+  });
+
+  const handleUpdateImageWithText = (event) => {
+    if (event.origin !== "http://localhost:3000") return;
+    if (event.data.section === "imageWithText") {
+      return setImageWithText(event.data.payload);
+    }
+  };
+
+  // listen to events from parent for updates to state
+  useEffect(() => {
+    window.addEventListener("message", handleUpdateImageWithText);
+    return () => {
+      window.removeEventListener("message", handleUpdateImageWithText);
+    };
+  }, []);
+
   return (
     <div className="container mx-auto lg:max-w-6xl grid grid-cols-2 gap-x-20">
       <div className="h-[500px] bg-neutral-200">

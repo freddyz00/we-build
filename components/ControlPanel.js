@@ -1,8 +1,5 @@
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../atoms/editingSectionAtom";
-import { headerState } from "../atoms/headerAtom";
-import { footerState } from "../atoms/footerAtom";
-import { DragDropContext } from "react-beautiful-dnd";
 
 import SectionCardsList from "./SectionCardsList";
 import HeaderEditor from "./editors/HeaderEditor";
@@ -10,44 +7,12 @@ import ImageBannerEditor from "./editors/ImageBannerEditor";
 import AboutEditor from "./editors/AboutEditor";
 import FeaturedProductsEditor from "./editors/FeaturedProductsEditor";
 import ImageWithTextEditor from "./editors/ImageWithTextEditor";
-import Footer from "./editors/FooterEditor";
+import FooterEditor from "./editors/FooterEditor";
 import ImageSelector from "./editors/ImageSelector";
 
-export default function ControlPanel() {
+export default function ControlPanel({ iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
-  const [header, setHeader] = useRecoilState(headerState);
-  const [footer, setFooter] = useRecoilState(footerState);
-
-  const onDragEnd = async (result) => {
-    const { draggableId, source, destination, type } = result;
-
-    if (!destination) return;
-
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index == destination.index
-    )
-      return;
-
-    switch (type) {
-      case "navigation-links":
-        const newLinks = Array.from(header.links);
-        const draggedItem = newLinks[source.index];
-        newLinks.splice(source.index, 1);
-        newLinks.splice(destination.index, 0, draggedItem);
-        setHeader({ ...header, links: newLinks });
-        return;
-      case "footer-links":
-        const newFooterLinks = Array.from(footer.links);
-        const draggedFooterItem = newFooterLinks[source.index];
-        newFooterLinks.splice(source.index, 1);
-        newFooterLinks.splice(destination.index, 0, draggedFooterItem);
-        setFooter({ links: newFooterLinks });
-      default:
-        return;
-    }
-  };
 
   const renderEditingSection = () => {
     const currentEditingSection = editingSection[editingSection.length - 1];
@@ -55,17 +20,17 @@ export default function ControlPanel() {
       case "sectionCardsList":
         return <SectionCardsList />;
       case "headerEditor":
-        return <HeaderEditor />;
+        return <HeaderEditor iframeRef={iframeRef} />;
       case "imageBannerEditor":
-        return <ImageBannerEditor />;
+        return <ImageBannerEditor iframeRef={iframeRef} />;
       case "aboutEditor":
-        return <AboutEditor />;
+        return <AboutEditor iframeRef={iframeRef} />;
       case "featuredProductsEditor":
         return <FeaturedProductsEditor />;
       case "imageWithTextEditor":
-        return <ImageWithTextEditor />;
+        return <ImageWithTextEditor iframeRef={iframeRef} />;
       case "footerEditor":
-        return <Footer />;
+        return <FooterEditor iframeRef={iframeRef} />;
       case "imageSelector":
         return <ImageSelector />;
       default:
@@ -74,10 +39,8 @@ export default function ControlPanel() {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <aside className="bg-white w-72 max-h-full overflow-y-auto relative">
-        {renderEditingSection()}
-      </aside>
-    </DragDropContext>
+    <aside className="bg-white w-72 max-h-full overflow-y-auto relative">
+      {renderEditingSection()}
+    </aside>
   );
 }

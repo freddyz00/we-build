@@ -1,13 +1,28 @@
+import { useState, useEffect } from "react";
+
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
-import { aboutState } from "../../atoms/aboutAtom";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
-export default function AboutEditor() {
+export default function AboutEditor({ iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
-  const [about, setAbout] = useRecoilState(aboutState);
+
+  const [about, setAbout] = useState({
+    heading: "Talk about your brand",
+    subheading:
+      "Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.",
+  });
+
+  // post message whenever about changes
+  useEffect(() => {
+    if (!iframeRef.current) return;
+    iframeRef.current.contentWindow.postMessage(
+      { section: "about", payload: about },
+      "http://localhost:3000"
+    );
+  }, [about]);
 
   return (
     <div>
