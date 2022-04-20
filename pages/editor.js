@@ -3,47 +3,32 @@ import { useRef, useEffect } from "react";
 import { getSession } from "next-auth/react";
 
 import ControlPanel from "../components/ControlPanel";
-import * as sections from "../components/sections";
+
+import { useRecoilState } from "recoil";
+import { sectionsState } from "../atoms/sectionsAtom";
 
 import { sanityClient, urlFor } from "../lib/sanity";
 
 export default function Editor({ user }) {
   const iframeRef = useRef(null);
+  const [sections, setSections] = useRecoilState(sectionsState);
 
   useEffect(() => {
     (async () => {
       const query = `*[_type == "page" && user == "Me"][0]`;
-      const { sections } = await sanityClient.fetch(query);
-      console.log(sections);
-
-      // for (let section of data) {
-      //   if (section._type === "header") {
-      //     setHeader({ brandName: section.brandName, links: section.links });
-      //   } else if (section._type === "footer") {
-      //     setFooter({ links: section.links });
-      //   } else if (section._type === "about") {
-      //     setAbout({
-      //       heading: section.heading,
-      //       subheading: section.subheading,
-      //     });
-      //   } else if (section._type === "imageBanner") {
-      //     setImageBanner({
-      //       image: urlFor(section.image).url(),
-      //       heading: section.heading,
-      //       subheading: section.subheading,
-      //       buttonLabel: section.buttonLabel,
-      //     });
-      //   } else if (section._type === "imageWithText") {
-      //     setImageWithText({
-      //       image: urlFor(section.image).url(),
-      //       heading: section.heading,
-      //       subheading: section.subheading,
-      //       buttonLabel: section.buttonLabel,
-      //     });
-      //   }
-      // }
+      const data = await sanityClient.fetch(query);
+      setSections(data.sections);
     })();
   }, []);
+
+  // post message whenever header changes
+  useEffect(() => {
+    if (!iframeRef.current) return;
+    iframeRef.current.contentWindow.postMessage(
+      { section: "sections", payload: sections },
+      "http://localhost:3000"
+    );
+  }, [sections]);
 
   return (
     <div className="flex flex-col h-screen">
@@ -56,9 +41,11 @@ export default function Editor({ user }) {
           Save
         </button>
       </div>
+
       <div className="flex-1 flex bg-stone-100">
         {/* side control panel */}
         <ControlPanel iframeRef={iframeRef} />
+
         {/* web preview */}
         <section className="flex-1 grid place-items-center">
           <iframe

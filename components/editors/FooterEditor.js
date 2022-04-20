@@ -56,7 +56,7 @@ export default function Footer({ iframeRef }) {
           <p className="font-medium">Footer</p>
         </div>
         {/* navigation links */}
-        <div className="flex flex-col space-y-1 px-4 pt-5">
+        <div className="flex flex-col space-y-1 px-4 pt-3">
           <p>Links</p>
           <Droppable droppableId="footer-links" type="footer-links">
             {(provided) => (

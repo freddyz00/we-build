@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
-// import { headerState } from "../../atoms/headerAtom";
 
 import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
 import { BsX } from "react-icons/bs";
@@ -10,7 +9,7 @@ import { MdOutlineArrowBackIos, MdOutlineDragHandle } from "react-icons/md";
 export default function HeaderEditor({ iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
-  // const [header, setHeader] = useRecoilState(headerState);
+
   const [header, setHeader] = useState({
     brandName: "Brand",
     links: ["Home", "Shop", "Contact"],
