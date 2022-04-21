@@ -5,6 +5,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { sectionsState } from "../atoms/sectionsAtom";
 import { pageIdState } from "../atoms/pageIdAtom";
 
+import { sanityClient } from "../lib/sanity";
+
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
@@ -33,8 +35,17 @@ export default function AddSection() {
     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/section`, {
       method: "POST",
       body: JSON.stringify({ type, pageId }),
-    });
-    closePopup();
+    })
+      .then(async (res) => {
+        if (res.status !== 200) return;
+        const query = `*[_type == "page" && user == "Me"][0]`;
+        const data = await sanityClient.fetch(query);
+        setSections(data.sections);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        closePopup();
+      });
   };
 
   return (

@@ -47,7 +47,7 @@ export default function Footer({ id, data }) {
             />
           </form>
         </div>
-        <p className="text-center text-sm">© 2022, Built with WEBuild</p>
+        <p className="text-center text-sm">© 2022, Built with WeBuild</p>
       </div>
     </div>
   );

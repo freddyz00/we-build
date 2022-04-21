@@ -19,7 +19,6 @@ export default function Editor({ user }) {
     (async () => {
       const query = `*[_type == "page" && user == "Me"][0]`;
       const data = await sanityClient.fetch(query);
-      console.log(data);
       setSections(data.sections);
       setPageId(data._id);
     })();
