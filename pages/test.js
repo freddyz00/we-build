@@ -37,14 +37,13 @@ export default function Test() {
       <Footer /> */}
       {sections.map((section, index) => {
         const SectionComponent = SectionComponents[section._type];
-
         return (
-          <>
-            <SectionComponent key={index} />
+          <div key={index}>
+            <SectionComponent />
             {section._type !== "header" && section._type !== "footer" && (
               <SectionSpacing />
             )}
-          </>
+          </div>
         );
       })}
     </div>

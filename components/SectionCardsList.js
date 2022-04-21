@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { editingSectionState } from "../atoms/editingSectionAtom";
 import { sectionsState } from "../atoms/sectionsAtom";
 
 import AddSection from "../components/AddSection";
 import SectionCard from "../components/SectionCard";
+
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import {
   RiLayoutTop2Line,
@@ -28,87 +29,83 @@ export default function SectionCardsList() {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
 
-  const sections = useRecoilValue(sectionsState);
+  const [sections, setSections] = useRecoilState(sectionsState);
+
+  const onDragEnd = async (result) => {
+    const { draggableId, source, destination, type } = result;
+    if (!destination) return;
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index == destination.index
+    )
+      return;
+
+    if (type !== "sections") return;
+
+    const newSections = Array.from(sections);
+    const [removed] = newSections.splice(source.index + 1, 1);
+    newSections.splice(destination.index + 1, 0, removed);
+    setSections(newSections);
+  };
 
   return (
-    <div>
-      {sections.length > 0 && (
-        <>
-          {/* header */}
-
-          <ul className="border-b border-solid border-slate-200 px-3 py-1">
-            <SectionCard
-              title="Header"
-              Icon={icons.header}
-              onPress={() =>
-                setEditingSection([...editingSection, "headerEditor"])
-              }
-            />
-          </ul>
-          {/* main content */}
-          <ul className="border-b border-solid border-slate-200 px-3 py-1">
-            {sections.map((section, index) => {
-              if (section._type === "header" || section._type === "footer")
-                return null;
-              return (
-                <SectionCard
-                  key={index}
-                  title={section.title}
-                  Icon={icons[section._type]}
-                  draggable
-                  onPress={() =>
-                    setEditingSection([
-                      ...editingSection,
-                      `${section._type}Editor`,
-                    ])
-                  }
-                />
-              );
-            })}
-            {/* <SectionCard
-            title="Image Banner"
-            Icon={RiImageLine}
-            draggable
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div>
+        {/* header */}
+        <ul className="border-b border-solid border-slate-200 px-3 py-1">
+          <SectionCard
+            title="Header"
+            Icon={icons.header}
             onPress={() =>
-              setEditingSection([...editingSection, "imageBannerEditor"])
+              setEditingSection([...editingSection, "headerEditor"])
             }
           />
+        </ul>
+        {/* main content */}
+        <Droppable droppableId="sections" type="sections">
+          {(provided) => (
+            <ul
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="border-b border-solid border-slate-200 px-3 py-1"
+            >
+              {sections
+                .filter(
+                  (section) =>
+                    section._type !== "header" && section._type !== "footer"
+                )
+                .map((section, index) => (
+                  <SectionCard
+                    key={section._key}
+                    _key={section._key}
+                    index={index}
+                    title={section.title}
+                    Icon={icons[section._type]}
+                    draggable
+                    onPress={() =>
+                      setEditingSection([
+                        ...editingSection,
+                        `${section._type}Editor`,
+                      ])
+                    }
+                  />
+                ))}
+              {provided.placeholder}
+              <AddSection />
+            </ul>
+          )}
+        </Droppable>
+        {/* footer */}
+        <ul className="px-3 py-1">
           <SectionCard
-            title="About"
-            Icon={RiFileTextLine}
-            draggable
-            onPress={() => setEditingSection([...editingSection, "aboutEditor"])}
-          />
-          <SectionCard
-            title="Featured Products"
-            Icon={MdOutlineSell}
-            draggable
+            title="Footer"
+            Icon={icons.footer}
             onPress={() =>
-              setEditingSection([...editingSection, "featuredProductsEditor"])
+              setEditingSection([...editingSection, "footerEditor"])
             }
           />
-          <SectionCard
-            title="Image With Text"
-            Icon={RiImageEditLine}
-            draggable
-            onPress={() =>
-              setEditingSection([...editingSection, "imageWithTextEditor"])
-            }
-          /> */}
-            <AddSection />
-          </ul>
-          {/* footer */}
-          <ul className="px-3 py-1">
-            <SectionCard
-              title="Footer"
-              Icon={icons.footer}
-              onPress={() =>
-                setEditingSection([...editingSection, "footerEditor"])
-              }
-            />
-          </ul>
-        </>
-      )}
-    </div>
+        </ul>
+      </div>
+    </DragDropContext>
   );
 }
