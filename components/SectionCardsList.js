@@ -59,7 +59,13 @@ export default function SectionCardsList() {
                 title="Header"
                 Icon={icons.header}
                 onPress={() =>
-                  setEditingSection([...editingSection, "headerEditor"])
+                  setEditingSection([
+                    ...editingSection,
+                    {
+                      id: sections[0]._key,
+                      type: "headerEditor",
+                    },
+                  ])
                 }
               />
             </ul>
@@ -87,7 +93,10 @@ export default function SectionCardsList() {
                         onPress={() =>
                           setEditingSection([
                             ...editingSection,
-                            `${section._type}Editor`,
+                            {
+                              id: section._key,
+                              type: `${section._type}Editor`,
+                            },
                           ])
                         }
                       />
@@ -103,7 +112,14 @@ export default function SectionCardsList() {
                 title="Footer"
                 Icon={icons.footer}
                 onPress={() =>
-                  setEditingSection([...editingSection, "footerEditor"])
+                  setEditingSection([
+                    ...editingSection,
+                    {
+                      id: sections[sections.length - 1]._key,
+
+                      type: "footerEditor",
+                    },
+                  ])
                 }
               />
             </ul>

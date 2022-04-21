@@ -5,7 +5,7 @@ import { editingSectionState } from "../../atoms/editingSectionAtom";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
-export default function ImageBannerEditor({ iframeRef }) {
+export default function ImageBannerEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
 
@@ -21,7 +21,7 @@ export default function ImageBannerEditor({ iframeRef }) {
   useEffect(() => {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
-      { section: "imageBanner", payload: imageBanner },
+      { id, section: "imageBanner", payload: imageBanner },
       "http://localhost:3000"
     );
   }, [imageBanner]);

@@ -16,21 +16,37 @@ export default function ControlPanel({ iframeRef }) {
 
   const renderEditingSection = () => {
     const currentEditingSection = editingSection[editingSection.length - 1];
-    switch (currentEditingSection) {
+    switch (currentEditingSection.type) {
       case "sectionCardsList":
         return <SectionCardsList />;
       case "headerEditor":
-        return <HeaderEditor iframeRef={iframeRef} />;
+        return (
+          <HeaderEditor id={currentEditingSection.id} iframeRef={iframeRef} />
+        );
       case "imageBannerEditor":
-        return <ImageBannerEditor iframeRef={iframeRef} />;
+        return (
+          <ImageBannerEditor
+            id={currentEditingSection.id}
+            iframeRef={iframeRef}
+          />
+        );
       case "aboutEditor":
-        return <AboutEditor iframeRef={iframeRef} />;
+        return (
+          <AboutEditor id={currentEditingSection.id} iframeRef={iframeRef} />
+        );
       case "featuredProductsEditor":
         return <FeaturedProductsEditor />;
       case "imageWithTextEditor":
-        return <ImageWithTextEditor iframeRef={iframeRef} />;
+        return (
+          <ImageWithTextEditor
+            id={currentEditingSection.id}
+            iframeRef={iframeRef}
+          />
+        );
       case "footerEditor":
-        return <FooterEditor iframeRef={iframeRef} />;
+        return (
+          <FooterEditor id={currentEditingSection.id} iframeRef={iframeRef} />
+        );
       case "imageSelector":
         return <ImageSelector />;
       default:

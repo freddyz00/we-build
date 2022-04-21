@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { RiShoppingBag3Line } from "react-icons/ri";
 
-export default function Header() {
+export default function Header({ id }) {
   const [header, setHeader] = useState({
     brandName: "Brand",
     links: ["Home", "Shop", "Contact"],
@@ -10,7 +10,7 @@ export default function Header() {
 
   const handleUpdateHeader = (event) => {
     if (event.origin !== "http://localhost:3000") return;
-    if (event.data.section === "header") {
+    if (event.data.section === "header" && event.data.id === id) {
       return setHeader(event.data.payload);
     }
   };

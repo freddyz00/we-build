@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
-export default function Footer() {
+export default function Footer({ id }) {
   const [footer, setFooter] = useState({
     links: ["About Us", "Contact", "Shipping Policy", "Privacy Policy"],
   });
 
   const handleUpdateFooter = (event) => {
     if (event.origin !== "http://localhost:3000") return;
-    if (event.data.section === "footer") {
+    if (event.data.section === "footer" && event.data.id === id) {
       return setFooter(event.data.payload);
     }
   };

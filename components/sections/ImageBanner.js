@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function ImageBanner() {
+export default function ImageBanner({ id }) {
   const [imageBanner, setImageBanner] = useState({
     imageSrc: null,
     heading: "Image Banner",
@@ -11,7 +11,7 @@ export default function ImageBanner() {
 
   const handleUpdateImageBanner = (event) => {
     if (event.origin !== "http://localhost:3000") return;
-    if (event.data.section === "imageBanner") {
+    if (event.data.section === "imageBanner" && event.data.id === id) {
       return setImageBanner(event.data.payload);
     }
   };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function About() {
+export default function About({ id }) {
   const [about, setAbout] = useState({
     heading: "Talk about your brand",
     subheading:
@@ -9,7 +9,7 @@ export default function About() {
 
   const handleUpdateAbout = (event) => {
     if (event.origin !== "http://localhost:3000") return;
-    if (event.data.section === "about") {
+    if (event.data.section === "about" && event.data.id === id) {
       return setAbout(event.data.payload);
     }
   };

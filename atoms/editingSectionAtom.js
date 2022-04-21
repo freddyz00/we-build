@@ -2,5 +2,5 @@ import { atom } from "recoil";
 
 export const editingSectionState = atom({
   key: "editingSectionState",
-  default: ["sectionCardsList"],
+  default: [{ type: "sectionCardsList", id: null }],
 });

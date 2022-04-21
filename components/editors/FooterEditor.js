@@ -6,7 +6,7 @@ import { Droppable, Draggable, DragDropContext } from "react-beautiful-dnd";
 import { BsX } from "react-icons/bs";
 import { MdOutlineArrowBackIos, MdOutlineDragHandle } from "react-icons/md";
 
-export default function Footer({ iframeRef }) {
+export default function Footer({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
   const [footer, setFooter] = useState({
@@ -37,7 +37,7 @@ export default function Footer({ iframeRef }) {
   useEffect(() => {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
-      { section: "footer", payload: footer },
+      { id, section: "footer", payload: footer },
       "http://localhost:3000"
     );
   }, [footer]);

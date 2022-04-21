@@ -6,7 +6,7 @@ import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
 import { BsX } from "react-icons/bs";
 import { MdOutlineArrowBackIos, MdOutlineDragHandle } from "react-icons/md";
 
-export default function HeaderEditor({ iframeRef }) {
+export default function HeaderEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
 
@@ -40,7 +40,7 @@ export default function HeaderEditor({ iframeRef }) {
   useEffect(() => {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
-      { section: "header", payload: header },
+      { id, section: "header", payload: header },
       "http://localhost:3000"
     );
   }, [header]);

@@ -5,7 +5,7 @@ import { editingSectionState } from "../../atoms/editingSectionAtom";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
-export default function AboutEditor({ iframeRef }) {
+export default function AboutEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
 
@@ -19,7 +19,7 @@ export default function AboutEditor({ iframeRef }) {
   useEffect(() => {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
-      { section: "about", payload: about },
+      { id, section: "about", payload: about },
       "http://localhost:3000"
     );
   }, [about]);

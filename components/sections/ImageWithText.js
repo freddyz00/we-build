@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function ImageWithText() {
+export default function ImageWithText({ id }) {
   const [imageWithText, setImageWithText] = useState({
     image: null,
     heading: "Image With Text",
@@ -11,7 +11,7 @@ export default function ImageWithText() {
 
   const handleUpdateImageWithText = (event) => {
     if (event.origin !== "http://localhost:3000") return;
-    if (event.data.section === "imageWithText") {
+    if (event.data.section === "imageWithText" && event.data.id === id) {
       return setImageWithText(event.data.payload);
     }
   };

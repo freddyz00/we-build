@@ -25,21 +25,11 @@ export default function Test() {
 
   return (
     <div className="bg-white min-h-screen">
-      {/* <Header />
-      <ImageBanner />
-      <SectionSpacing />
-      <About />
-      <SectionSpacing />
-      <FeaturedProducts />
-      <SectionSpacing />
-      <ImageWithText />
-      <SectionSpacing />
-      <Footer /> */}
       {sections.map((section, index) => {
         const SectionComponent = SectionComponents[section._type];
         return (
           <div key={index}>
-            <SectionComponent />
+            <SectionComponent id={section._key} />
             {section._type !== "header" && section._type !== "footer" && (
               <SectionSpacing />
             )}
