@@ -29,7 +29,7 @@ export default function Test() {
         const SectionComponent = SectionComponents[section._type];
         return (
           <div key={index}>
-            <SectionComponent id={section._key} />
+            <SectionComponent id={section._key} data={section} />
             {section._type !== "header" && section._type !== "footer" && (
               <SectionSpacing />
             )}

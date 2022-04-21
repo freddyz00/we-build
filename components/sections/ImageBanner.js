@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 
-export default function ImageBanner({ id }) {
+export default function ImageBanner({ id, data }) {
   const [imageBanner, setImageBanner] = useState({
-    imageSrc: null,
-    heading: "Image Banner",
-    subheading:
-      "Give customers details about the banner image(s) or content on the template.",
-    buttonLabel: "Shop All",
+    imageURL: data.imageURL,
+    heading: data.heading,
+    subheading: data.subheading,
+    buttonLabel: data.buttonLabel,
   });
 
   const handleUpdateImageBanner = (event) => {

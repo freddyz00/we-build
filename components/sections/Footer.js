@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-export default function Footer({ id }) {
+export default function Footer({ id, data }) {
   const [footer, setFooter] = useState({
-    links: ["About Us", "Contact", "Shipping Policy", "Privacy Policy"],
+    links: data.links,
   });
 
   const handleUpdateFooter = (event) => {

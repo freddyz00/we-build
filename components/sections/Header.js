@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { sectionsState } from "../../atoms/sectionsAtom";
 
 import { RiShoppingBag3Line } from "react-icons/ri";
 
-export default function Header({ id }) {
+export default function Header({ id, data }) {
   const [header, setHeader] = useState({
-    brandName: "Brand",
-    links: ["Home", "Shop", "Contact"],
+    brandName: data.brandName,
+    links: data.links,
   });
 
   const handleUpdateHeader = (event) => {

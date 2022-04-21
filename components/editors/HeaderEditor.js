@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { sectionsState } from "../../atoms/sectionsAtom";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 
 import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
@@ -10,9 +11,12 @@ export default function HeaderEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
 
+  const sections = useRecoilValue(sectionsState);
+  const sectionData = sections.filter((section) => section._key === id)[0];
+
   const [header, setHeader] = useState({
-    brandName: "Brand",
-    links: ["Home", "Shop", "Contact"],
+    brandName: sectionData.brandName,
+    links: sectionData.links,
   });
 
   const onDragEnd = async (result) => {

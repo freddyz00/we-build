@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 
-export default function About({ id }) {
+export default function About({ id, data }) {
   const [about, setAbout] = useState({
-    heading: "Talk about your brand",
-    subheading:
-      "Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.",
+    heading: data.heading,
+    subheading: data.subheading,
   });
 
   const handleUpdateAbout = (event) => {
