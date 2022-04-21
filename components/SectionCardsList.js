@@ -51,60 +51,64 @@ export default function SectionCardsList() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div>
-        {/* header */}
-        <ul className="border-b border-solid border-slate-200 px-3 py-1">
-          <SectionCard
-            title="Header"
-            Icon={icons.header}
-            onPress={() =>
-              setEditingSection([...editingSection, "headerEditor"])
-            }
-          />
-        </ul>
-        {/* main content */}
-        <Droppable droppableId="sections" type="sections">
-          {(provided) => (
-            <ul
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className="border-b border-solid border-slate-200 px-3 py-1"
-            >
-              {sections
-                .filter(
-                  (section) =>
-                    section._type !== "header" && section._type !== "footer"
-                )
-                .map((section, index) => (
-                  <SectionCard
-                    key={section._key}
-                    _key={section._key}
-                    index={index}
-                    title={section.title}
-                    Icon={icons[section._type]}
-                    draggable
-                    onPress={() =>
-                      setEditingSection([
-                        ...editingSection,
-                        `${section._type}Editor`,
-                      ])
-                    }
-                  />
-                ))}
-              {provided.placeholder}
-              <AddSection />
+        {sections.length > 0 && (
+          <>
+            {/* header */}
+            <ul className="border-b border-solid border-slate-200 px-3 py-1">
+              <SectionCard
+                title="Header"
+                Icon={icons.header}
+                onPress={() =>
+                  setEditingSection([...editingSection, "headerEditor"])
+                }
+              />
             </ul>
-          )}
-        </Droppable>
-        {/* footer */}
-        <ul className="px-3 py-1">
-          <SectionCard
-            title="Footer"
-            Icon={icons.footer}
-            onPress={() =>
-              setEditingSection([...editingSection, "footerEditor"])
-            }
-          />
-        </ul>
+            {/* main content */}
+            <Droppable droppableId="sections" type="sections">
+              {(provided) => (
+                <ul
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="border-b border-solid border-slate-200 px-3 py-1"
+                >
+                  {sections
+                    .filter(
+                      (section) =>
+                        section._type !== "header" && section._type !== "footer"
+                    )
+                    .map((section, index) => (
+                      <SectionCard
+                        key={section._key}
+                        _key={section._key}
+                        index={index}
+                        title={section.title}
+                        Icon={icons[section._type]}
+                        draggable
+                        onPress={() =>
+                          setEditingSection([
+                            ...editingSection,
+                            `${section._type}Editor`,
+                          ])
+                        }
+                      />
+                    ))}
+                  {provided.placeholder}
+                  <AddSection />
+                </ul>
+              )}
+            </Droppable>
+            {/* footer */}
+            <ul className="px-3 py-1">
+              <SectionCard
+                title="Footer"
+                Icon={icons.footer}
+                onPress={() =>
+                  setEditingSection([...editingSection, "footerEditor"])
+                }
+              />
+            </ul>
+          </>
+        )}
       </div>
     </DragDropContext>
   );

@@ -4,20 +4,24 @@ import { getSession } from "next-auth/react";
 
 import ControlPanel from "../components/ControlPanel";
 
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { sectionsState } from "../atoms/sectionsAtom";
+import { pageIdState } from "../atoms/pageIdAtom";
 
 import { sanityClient, urlFor } from "../lib/sanity";
 
 export default function Editor({ user }) {
   const iframeRef = useRef(null);
   const [sections, setSections] = useRecoilState(sectionsState);
+  const setPageId = useSetRecoilState(pageIdState);
 
   useEffect(() => {
     (async () => {
       const query = `*[_type == "page" && user == "Me"][0]`;
       const data = await sanityClient.fetch(query);
+      console.log(data);
       setSections(data.sections);
+      setPageId(data._id);
     })();
   }, []);
 

@@ -1,8 +1,9 @@
 import { MdOutlineAddCircleOutline } from "react-icons/md";
 import SectionCard from "./SectionCard";
 
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { sectionsState } from "../atoms/sectionsAtom";
+import { pageIdState } from "../atoms/pageIdAtom";
 
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -27,7 +28,14 @@ const icons = {
 
 export default function AddSection() {
   const [sections, setSections] = useRecoilState(sectionsState);
-  const addNewSection = (type) => {};
+  const pageId = useRecoilValue(pageIdState);
+  const addNewSection = (closePopup, type) => {
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/section`, {
+      method: "POST",
+      body: JSON.stringify({ type, pageId }),
+    });
+    closePopup();
+  };
 
   return (
     <Popup
@@ -46,19 +54,25 @@ export default function AddSection() {
       arrow={false}
       contentStyle={{ width: "280px" }}
     >
-      <ul className="flex flex-col select-none">
-        <SectionCard
-          title={"Image Banner"}
-          Icon={icons["imageBanner"]}
-          onPress={() => {}}
-        />
-        <SectionCard
-          title={"Image With Text"}
-          Icon={icons["imageWithText"]}
-          onPress={() => {}}
-        />
-        <SectionCard title={"About"} Icon={icons["about"]} onPress={() => {}} />
-      </ul>
+      {(close) => (
+        <ul className="flex flex-col select-none">
+          <SectionCard
+            title={"Image Banner"}
+            Icon={icons["imageBanner"]}
+            onPress={() => addNewSection(close, "imageBanner")}
+          />
+          <SectionCard
+            title={"Image With Text"}
+            Icon={icons["imageWithText"]}
+            onPress={() => addNewSection(close, "imageWithText")}
+          />
+          <SectionCard
+            title={"About"}
+            Icon={icons["about"]}
+            onPress={() => addNewSection(close, "about")}
+          />
+        </ul>
+      )}
     </Popup>
   );
 }
