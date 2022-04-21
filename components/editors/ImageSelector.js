@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
-import { imageBannerState } from "../../atoms/imageBannerAtom";
 
 import { MdOutlineArrowBackIos, MdOutlineFileUpload } from "react-icons/md";
 
@@ -11,7 +10,6 @@ import { faker } from "@faker-js/faker";
 export default function ImageSelector() {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
-  const [imageBanner, setImageBanner] = useRecoilState(imageBannerState);
   const imageSrc = faker.image.image();
 
   const imageUploadRef = useRef(null);

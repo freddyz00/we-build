@@ -21,7 +21,7 @@ export default function Editor({ user }) {
     })();
   }, []);
 
-  // post message whenever header changes
+  // post message whenever sections changes
   useEffect(() => {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
