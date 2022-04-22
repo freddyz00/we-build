@@ -17,7 +17,7 @@ export default function Editor({ user }) {
 
   useEffect(() => {
     (async () => {
-      const query = `*[_type == "page" && user == "Me"][0]`;
+      const query = `*[_type == "page"][0]`;
       const data = await sanityClient.fetch(query);
       setSections(data.sections);
       setPageId(data._id);

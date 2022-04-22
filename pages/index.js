@@ -26,14 +26,14 @@ export default function Home() {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
-  if (session) {
-    return {
-      redirect: {
-        destination: "/editor",
-        permanent: false,
-      },
-    };
-  }
+  // if (session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/editor",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   return {
     props: {},

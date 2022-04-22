@@ -5,6 +5,8 @@ import { editingSectionState } from "../../atoms/editingSectionAtom";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
+import { urlFor } from "../../lib/sanity";
+
 export default function ImageBannerEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
@@ -13,7 +15,7 @@ export default function ImageBannerEditor({ id, iframeRef }) {
   const sectionData = sections.filter((section) => section._key === id)[0];
 
   const [imageBanner, setImageBanner] = useState({
-    imageURL: sectionData.imageURL,
+    imageURL: urlFor(sectionData.image).url(),
     heading: sectionData.heading,
     subheading: sectionData.subheading,
     buttonLabel: sectionData.buttonLabel,

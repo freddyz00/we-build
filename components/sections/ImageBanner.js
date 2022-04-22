@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { urlFor } from "../../lib/sanity";
 
 export default function ImageBanner({ id, data }) {
   const [imageBanner, setImageBanner] = useState({
-    imageURL: data.imageURL,
+    imageURL: urlFor(data.image).url(),
     heading: data.heading,
     subheading: data.subheading,
     buttonLabel: data.buttonLabel,
@@ -38,11 +39,11 @@ export default function ImageBanner({ id, data }) {
       <button className="bg-primary-blue hover:bg-darker-blue px-5 py-3 rounded-lg text-white">
         {imageBanner.buttonLabel}
       </button>
-      {/* <style jsx>{`
+      <style jsx>{`
         .image-banner {
-          background-image: url(${imageBanner.image});
+          background-image: url(${imageBanner.imageURL});
         }
-      `}</style> */}
+      `}</style>
     </div>
   );
 }

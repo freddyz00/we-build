@@ -1,18 +1,27 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 
 import { MdOutlineArrowBackIos, MdOutlineFileUpload } from "react-icons/md";
 
-import { sanityClient } from "../../lib/sanity";
-import { faker } from "@faker-js/faker";
+import { urlFor } from "../../lib/sanity";
 
 export default function ImageSelector() {
+  const [images, setImages] = useState([]);
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
-  const imageSrc = faker.image.image();
 
   const imageUploadRef = useRef(null);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-user`
+      );
+      const data = await res.json();
+      setImages(data.pageImages);
+    })();
+  }, []);
 
   const showImageUploader = () => {
     if (imageUploadRef.current) {
@@ -49,7 +58,7 @@ export default function ImageSelector() {
       <div className="grid grid-cols-2 p-3 gap-2 overflow-y-auto">
         <button
           onClick={showImageUploader}
-          className="flex flex-col items-center justify-center bg-neutral-100 border-2 border-dashed border-neutral-300 hover:border-primary-blue aspect-square cursor-pointer"
+          className="flex flex-col items-center justify-center bg-neutral-100 aspect-square border-2 border-dashed border-neutral-300 hover:border-primary-blue cursor-pointer"
         >
           <MdOutlineFileUpload className="text-2xl" />
           <p className="select-none">Upload</p>
@@ -62,12 +71,18 @@ export default function ImageSelector() {
           accept="image/*"
           className="hidden"
         />
-        {/* <button
-          onClick={() => {}}
-          className="bg-neutral-200 aspect-square hover:opacity-80 focus:border-4 border-primary-blue border-solid cursor-pointer"
-        >
-          <img src={imageSrc} alt="" className="w-full h-full object-covers" />
-        </button> */}
+        {images.map((image) => (
+          <button
+            onClick={() => {}}
+            className="bg-neutral-200 aspect-square hover:opacity-80 focus:border-4 border-primary-blue border-solid cursor-pointer"
+          >
+            <img
+              src={urlFor(image).url()}
+              alt=""
+              className="w-full h-full object-cover"
+            />
+          </button>
+        ))}
       </div>
     </div>
   );
