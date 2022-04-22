@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { sectionsState } from "../../atoms/sectionsAtom";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
+import { urlFor } from "../../lib/sanity";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import ImageSelector from "./ImageSelector";
@@ -11,11 +12,11 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
     useRecoilState(editingSectionState);
   const [showImageSelector, setShowImageSelector] = useState(false);
 
-  const sections = useRecoilValue(sectionsState);
+  const [sections, setSections] = useRecoilState(sectionsState);
   const sectionData = sections.filter((section) => section._key === id)[0];
 
   const [imageWithText, setImageWithText] = useState({
-    imageURL: sectionData.imageURL,
+    image: sectionData.image,
     heading: sectionData.heading,
     subheading: sectionData.subheading,
     buttonLabel: sectionData.buttonLabel,
@@ -27,6 +28,24 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
     iframeRef.current.contentWindow.postMessage(
       { id, section: "imageWithText", payload: imageWithText },
       "http://localhost:3000"
+    );
+  }, [imageWithText]);
+
+  // update sections when image with text changes
+  useEffect(() => {
+    setSections((sections) =>
+      sections.map((section) => {
+        if (section._key === id) {
+          return {
+            ...section,
+            image: imageWithText.image,
+            heading: imageWithText.heading,
+            subheading: imageWithText.subheading,
+            buttonLabel: imageWithText.buttonLabel,
+          };
+        }
+        return section;
+      })
     );
   }, [imageWithText]);
 
@@ -50,7 +69,7 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
           onClick={() => {
             setShowImageSelector(true);
           }}
-          className="grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition "
+          className="image-preview grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition "
         >
           <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid">
             Select Image
@@ -106,6 +125,13 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
           close={() => setShowImageSelector(false)}
         />
       )}
+      <style jsx>{`
+        .image-preview {
+          background-image: url(${imageWithText.image
+            ? urlFor(imageWithText.image).width(300).url()
+            : null});
+        }
+      `}</style>
     </div>
   );
 }

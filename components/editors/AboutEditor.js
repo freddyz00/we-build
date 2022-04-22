@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { sectionsState } from "../../atoms/sectionsAtom";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 
@@ -9,7 +9,7 @@ export default function AboutEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
 
-  const sections = useRecoilValue(sectionsState);
+  const [sections, setSections] = useRecoilState(sectionsState);
   const sectionData = sections.filter((section) => section._key === id)[0];
 
   const [about, setAbout] = useState({
@@ -23,6 +23,22 @@ export default function AboutEditor({ id, iframeRef }) {
     iframeRef.current.contentWindow.postMessage(
       { id, section: "about", payload: about },
       "http://localhost:3000"
+    );
+  }, [about]);
+
+  // update sections when about changes
+  useEffect(() => {
+    setSections((sections) =>
+      sections.map((section) => {
+        if (section._key === id) {
+          return {
+            ...section,
+            heading: about.heading,
+            subheading: about.subheading,
+          };
+        }
+        return section;
+      })
     );
   }, [about]);
 

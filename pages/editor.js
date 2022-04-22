@@ -24,6 +24,10 @@ export default function Editor({ user }) {
     })();
   }, []);
 
+  useEffect(() => {
+    console.log(sections);
+  }, [sections]);
+
   // post message whenever sections changes
   useEffect(() => {
     if (!iframeRef.current) return;

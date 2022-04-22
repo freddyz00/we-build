@@ -3,7 +3,7 @@ import { urlFor } from "../../lib/sanity";
 
 export default function ImageBanner({ id, data }) {
   const [imageBanner, setImageBanner] = useState({
-    imageURL: urlFor(data.image).url(),
+    image: data.image,
     heading: data.heading,
     subheading: data.subheading,
     buttonLabel: data.buttonLabel,
@@ -41,7 +41,9 @@ export default function ImageBanner({ id, data }) {
       </button>
       <style jsx>{`
         .image-banner {
-          background-image: url(${imageBanner.imageURL});
+          background-image: url(${imageBanner.image
+            ? urlFor(imageBanner.image).url()
+            : null});
         }
       `}</style>
     </div>

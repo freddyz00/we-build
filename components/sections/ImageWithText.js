@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { urlFor } from "../../lib/sanity";
 
 export default function ImageWithText({ id, data }) {
   const [imageWithText, setImageWithText] = useState({
-    imageURL: data.imageURL,
+    image: data.image,
     heading: data.heading,
     subheading: data.subheading,
     buttonLabel: data.buttonLabel,
@@ -27,7 +28,7 @@ export default function ImageWithText({ id, data }) {
     <div className="container mx-auto lg:max-w-6xl grid grid-cols-2 gap-x-20">
       <div className="h-[500px] bg-neutral-200">
         <img
-          src={imageWithText.imageURL}
+          src={imageWithText.image ? urlFor(imageWithText.image).url() : null}
           alt=""
           className="w-full h-full object-cover"
         />

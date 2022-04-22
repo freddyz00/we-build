@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { sectionsState } from "../../atoms/sectionsAtom";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 
@@ -11,13 +11,17 @@ export default function HeaderEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
 
-  const sections = useRecoilValue(sectionsState);
+  const [sections, setSections] = useRecoilState(sectionsState);
   const sectionData = sections.filter((section) => section._key === id)[0];
 
   const [header, setHeader] = useState({
     brandName: sectionData.brandName,
     links: sectionData.links,
   });
+
+  useEffect(() => {
+    console.log(header);
+  }, [header]);
 
   const onDragEnd = async (result) => {
     const { draggableId, source, destination, type } = result;
@@ -49,6 +53,22 @@ export default function HeaderEditor({ id, iframeRef }) {
     );
   }, [header]);
 
+  // update sections when header changes
+  useEffect(() => {
+    setSections((sections) =>
+      sections.map((section) => {
+        if (section._key === id) {
+          return {
+            ...section,
+            brandName: header.brandName,
+            links: header.links,
+          };
+        }
+        return section;
+      })
+    );
+  }, [header]);
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div>
@@ -69,7 +89,10 @@ export default function HeaderEditor({ id, iframeRef }) {
             type="text"
             value={header.brandName}
             onChange={(event) =>
-              setHeader({ ...header, brandName: event.target.value })
+              setHeader({
+                ...header,
+                brandName: event.target.value,
+              })
             }
             className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
           />

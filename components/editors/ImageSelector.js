@@ -38,7 +38,7 @@ export default function ImageSelector({ data, setData, close }) {
   };
 
   const handleImageSelect = (image) => {
-    setData({ ...data, imageURL: urlFor(image).url() });
+    setData({ ...data, image });
   };
 
   return (
@@ -77,7 +77,7 @@ export default function ImageSelector({ data, setData, close }) {
             className="bg-neutral-200 aspect-square hover:opacity-80 focus:border-4 border-primary-blue border-solid cursor-pointer"
           >
             <img
-              src={urlFor(image).url()}
+              src={urlFor(image).width(300).url()}
               alt=""
               className="w-full h-full object-cover"
             />
