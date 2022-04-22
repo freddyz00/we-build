@@ -27,7 +27,7 @@ export default function ImageWithText({ id, data }) {
     <div className="container mx-auto lg:max-w-6xl grid grid-cols-2 gap-x-20">
       <div className="h-[500px] bg-neutral-200">
         <img
-          src={imageWithText.image}
+          src={imageWithText.imageURL}
           alt=""
           className="w-full h-full object-cover"
         />

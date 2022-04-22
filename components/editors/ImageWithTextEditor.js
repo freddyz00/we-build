@@ -4,10 +4,12 @@ import { sectionsState } from "../../atoms/sectionsAtom";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
+import ImageSelector from "./ImageSelector";
 
 export default function ImageWithTextEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
+  const [showImageSelector, setShowImageSelector] = useState(false);
 
   const sections = useRecoilValue(sectionsState);
   const sectionData = sections.filter((section) => section._key === id)[0];
@@ -46,7 +48,7 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
         <p>Image</p>
         <div
           onClick={() => {
-            setEditingSection([...editingSection, { type: "imageSelector" }]);
+            setShowImageSelector(true);
           }}
           className="grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition "
         >
@@ -97,6 +99,13 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
           className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
         />
       </div>
+      {showImageSelector && (
+        <ImageSelector
+          data={imageWithText}
+          setData={setImageWithText}
+          close={() => setShowImageSelector(false)}
+        />
+      )}
     </div>
   );
 }

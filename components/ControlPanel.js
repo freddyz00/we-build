@@ -8,7 +8,6 @@ import AboutEditor from "./editors/AboutEditor";
 import FeaturedProductsEditor from "./editors/FeaturedProductsEditor";
 import ImageWithTextEditor from "./editors/ImageWithTextEditor";
 import FooterEditor from "./editors/FooterEditor";
-import ImageSelector from "./editors/ImageSelector";
 
 export default function ControlPanel({ iframeRef }) {
   const [editingSection, setEditingSection] =
@@ -47,8 +46,6 @@ export default function ControlPanel({ iframeRef }) {
         return (
           <FooterEditor id={currentEditingSection.id} iframeRef={iframeRef} />
         );
-      case "imageSelector":
-        return <ImageSelector />;
       default:
         return;
     }

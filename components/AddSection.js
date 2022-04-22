@@ -38,7 +38,7 @@ export default function AddSection() {
     })
       .then(async (res) => {
         if (res.status !== 200) return;
-        const query = `*[_type == "page" && user == "Me"][0]`;
+        const query = `*[_type == "page"][0]`;
         const data = await sanityClient.fetch(query);
         setSections(data.sections);
       })

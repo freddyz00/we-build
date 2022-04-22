@@ -1,15 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
-import { editingSectionState } from "../../atoms/editingSectionAtom";
 
 import { MdOutlineArrowBackIos, MdOutlineFileUpload } from "react-icons/md";
 
 import { urlFor } from "../../lib/sanity";
 
-export default function ImageSelector() {
+export default function ImageSelector({ data, setData, close }) {
   const [images, setImages] = useState([]);
-  const [editingSection, setEditingSection] =
-    useRecoilState(editingSectionState);
 
   const imageUploadRef = useRef(null);
 
@@ -41,12 +37,16 @@ export default function ImageSelector() {
     });
   };
 
+  const handleImageSelect = (image) => {
+    setData({ ...data, imageURL: urlFor(image).url() });
+  };
+
   return (
-    <div className="flex flex-col absolute top-0 left-0 right-0 bottom-0 overflow-hidden">
+    <div className="flex flex-col absolute top-0 left-0 right-0 bottom-0 z-10 bg-white overflow-hidden">
       {/* title */}
       <div className="flex items-center space-x-2 border-b border-solid p-3">
         <div
-          onClick={() => setEditingSection([...editingSection].slice(0, -1))}
+          onClick={close}
           className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
         >
           <MdOutlineArrowBackIos />
@@ -73,7 +73,7 @@ export default function ImageSelector() {
         />
         {images.map((image) => (
           <button
-            onClick={() => {}}
+            onClick={() => handleImageSelect(image)}
             className="bg-neutral-200 aspect-square hover:opacity-80 focus:border-4 border-primary-blue border-solid cursor-pointer"
           >
             <img

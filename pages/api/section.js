@@ -15,6 +15,7 @@ export default async function handler(req, res) {
       })
       .then(() => {
         res.status(200).json({});
-      });
+      })
+      .catch((error) => console.log(error));
   }
 }
