@@ -23,14 +23,13 @@ export default function ImageSelector() {
   const handleImageUpload = async (event) => {
     const formData = new FormData();
     const imageFile = event.target.files[0];
-    sanityClient
-      .create({
-        _type: "about",
-        heading: "h1",
-        subheading: "123f",
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+
+    formData.append("file", imageFile);
+
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload-image`, {
+      method: "POST",
+      body: formData,
+    });
   };
 
   return (

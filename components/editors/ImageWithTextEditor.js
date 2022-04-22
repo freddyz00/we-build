@@ -46,7 +46,7 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
         <p>Image</p>
         <div
           onClick={() => {
-            setEditingSection([...editingSection, "imageSelector"]);
+            setEditingSection([...editingSection, { type: "imageSelector" }]);
           }}
           className="grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition "
         >
