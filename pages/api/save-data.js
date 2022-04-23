@@ -9,11 +9,9 @@ export default async function handler(req, res) {
       .patch(pageId)
       .set({ sections })
       .commit()
-      .then(() => console.log("updated"))
       .catch((error) => console.log(error));
-
-    // await sanityClient.patch(pageId, [{ set: { sections: newSections } }]);
-    // res.status(200).json({});
+    res.status(200).json({});
+  } else {
+    res.status(403).json({});
   }
-  res.status(200).json({});
 }

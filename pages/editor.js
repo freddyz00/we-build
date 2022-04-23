@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { useRef, useEffect } from "react";
+import classNames from "classnames";
+import { useRef, useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 
+import PulseLoader from "react-spinners/PulseLoader";
 import ControlPanel from "../components/ControlPanel";
 
 import { useRecoilState } from "recoil";
@@ -14,8 +16,10 @@ export default function Editor({ user }) {
   const iframeRef = useRef(null);
   const [sections, setSections] = useRecoilState(sectionsState);
   const [pageId, setPageId] = useRecoilState(pageIdState);
+  const [loading, setLoading] = useState(false);
 
   const handleSaveData = async () => {
+    setLoading(true);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/save-data`,
       {
@@ -23,14 +27,19 @@ export default function Editor({ user }) {
         body: JSON.stringify({ pageId, sections }),
       }
     );
+
+    setLoading(false);
   };
 
   useEffect(() => {
     (async () => {
-      const query = `*[_type == "page"][0]`;
-      const data = await sanityClient.fetch(query);
-      setSections(data.sections);
-      setPageId(data._id);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-page`
+      );
+      if (!res.ok) return;
+      const { page } = await res.json();
+      setSections(page.sections);
+      setPageId(page._id);
     })();
   }, []);
 
@@ -52,9 +61,17 @@ export default function Editor({ user }) {
         </Link>
         <button
           onClick={handleSaveData}
-          className="text-white rounded-lg bg-primary-blue hover:bg-darker-blue px-5 py-2 ml-auto mr-5"
+          disabled={loading}
+          className={classNames(
+            "text-white rounded-lg px-5 py-2 ml-auto mr-5",
+            {
+              "bg-gray-300 ": loading,
+              "bg-primary-blue hover:bg-darker-blue": !loading,
+            }
+          )}
         >
-          Save
+          {!loading && "Save"}
+          <PulseLoader loading={loading} color="white" size={6} />
         </button>
       </div>
 
