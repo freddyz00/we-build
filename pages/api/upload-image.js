@@ -47,7 +47,7 @@ apiRoute.post(async (req, res) => {
         });
     })
     .then(() => {
-      res.status(200).json({ name: "John Doe" });
+      res.status(200).json({});
     })
     .catch((error) => console.log(error));
 });

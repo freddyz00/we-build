@@ -4,16 +4,26 @@ import { getSession } from "next-auth/react";
 
 import ControlPanel from "../components/ControlPanel";
 
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { sectionsState } from "../atoms/sectionsAtom";
 import { pageIdState } from "../atoms/pageIdAtom";
 
-import { sanityClient, urlFor } from "../lib/sanity";
+import { sanityClient } from "../lib/sanity";
 
 export default function Editor({ user }) {
   const iframeRef = useRef(null);
   const [sections, setSections] = useRecoilState(sectionsState);
-  const setPageId = useSetRecoilState(pageIdState);
+  const [pageId, setPageId] = useRecoilState(pageIdState);
+
+  const handleSaveData = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/save-data`,
+      {
+        method: "POST",
+        body: JSON.stringify({ pageId, sections }),
+      }
+    );
+  };
 
   useEffect(() => {
     (async () => {
@@ -40,7 +50,10 @@ export default function Editor({ user }) {
         <Link href="/test">
           <a>Preview</a>
         </Link>
-        <button className="text-white rounded-lg bg-primary-blue hover:bg-darker-blue px-5 py-2 ml-auto mr-5">
+        <button
+          onClick={handleSaveData}
+          className="text-white rounded-lg bg-primary-blue hover:bg-darker-blue px-5 py-2 ml-auto mr-5"
+        >
           Save
         </button>
       </div>

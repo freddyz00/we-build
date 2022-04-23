@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react";
 
 import { MdOutlineArrowBackIos, MdOutlineFileUpload } from "react-icons/md";
 
+import classNames from "classnames";
 import { urlFor } from "../../lib/sanity";
+import imageBanner from "../../webuild/schemas/imageBanner";
 
 export default function ImageSelector({ data, setData, close }) {
   const [images, setImages] = useState([]);
@@ -31,14 +33,21 @@ export default function ImageSelector({ data, setData, close }) {
 
     formData.append("file", imageFile);
 
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload-image`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload-image`, {
       method: "POST",
       body: formData,
     });
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-user`);
+    const data = await res.json();
+    setImages(data.pageImages);
   };
 
   const handleImageSelect = (image) => {
-    setData({ ...data, image });
+    if (data.image?.asset._ref === image.asset._ref) {
+      return setData({ ...data, image: null });
+    }
+    return setData({ ...data, image });
   };
 
   return (
@@ -72,16 +81,22 @@ export default function ImageSelector({ data, setData, close }) {
           className="hidden"
         />
         {images.map((image) => (
-          <button
+          <div
             onClick={() => handleImageSelect(image)}
-            className="bg-neutral-200 aspect-square hover:opacity-80 focus:border-4 border-primary-blue border-solid cursor-pointer"
+            className={classNames(
+              "bg-neutral-200 aspect-square hover:opacity-70 cursor-pointer",
+              {
+                "border-4 border-solid border-primary-blue":
+                  data.image?.asset._ref === image.asset._ref,
+              }
+            )}
           >
             <img
               src={urlFor(image).width(300).url()}
               alt=""
               className="w-full h-full object-cover"
             />
-          </button>
+          </div>
         ))}
       </div>
     </div>
