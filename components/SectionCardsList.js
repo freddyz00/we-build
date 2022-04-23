@@ -50,7 +50,7 @@ export default function SectionCardsList() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div>
+      <div className="absolute w-full flex flex-col justify-between">
         {sections.length > 0 && (
           <>
             {/* header */}

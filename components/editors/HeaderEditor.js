@@ -6,6 +6,7 @@ import { editingSectionState } from "../../atoms/editingSectionAtom";
 import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
 import { BsX } from "react-icons/bs";
 import { MdOutlineArrowBackIos, MdOutlineDragHandle } from "react-icons/md";
+import RemoveSection from "../RemoveSection";
 
 export default function HeaderEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
@@ -18,10 +19,6 @@ export default function HeaderEditor({ id, iframeRef }) {
     brandName: sectionData.brandName,
     links: sectionData.links,
   });
-
-  useEffect(() => {
-    console.log(header);
-  }, [header]);
 
   const onDragEnd = async (result) => {
     const { draggableId, source, destination, type } = result;
@@ -71,120 +68,124 @@ export default function HeaderEditor({ id, iframeRef }) {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div>
-        {/* title */}
-        <div className="flex items-center space-x-2 border-b border-solid p-3">
-          <div
-            onClick={() => setEditingSection([...editingSection].slice(0, -1))}
-            className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
-          >
-            <MdOutlineArrowBackIos />
+      <div className="flex flex-col h-full">
+        <div>
+          {/* title */}
+          <div className="flex items-center space-x-2 border-b border-solid p-3">
+            <div
+              onClick={() =>
+                setEditingSection([...editingSection].slice(0, -1))
+              }
+              className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
+            >
+              <MdOutlineArrowBackIos />
+            </div>
+            <p className="font-medium">Header</p>
           </div>
-          <p className="font-medium">Header</p>
-        </div>
-        {/* logo */}
-        <div className="flex flex-col space-y-1 px-4 pt-3">
-          <p>Brand Name</p>
-          <input
-            type="text"
-            value={header.brandName}
-            onChange={(event) =>
-              setHeader({
-                ...header,
-                brandName: event.target.value,
-              })
-            }
-            className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
-          />
-        </div>
-        {/* navigation links */}
-        <div className="flex flex-col space-y-1 px-4 pt-5">
-          <p>Navigation Links</p>
-          <Droppable droppableId="navigation-links" type="navigation-links">
-            {(provided) => (
-              <ul
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="select-none"
-              >
-                {header.links.map((link, index) => (
-                  <Draggable
-                    draggableId={`link-${index}`}
-                    key={index}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <li
-                        {...provided.draggableProps}
-                        ref={provided.innerRef}
-                        className="flex items-center justify-between bg-white border border-solid px-2 py-1.5"
-                      >
-                        <div className="flex items-center w-full space-x-2">
-                          <span
-                            {...provided.dragHandleProps}
-                            className="p-0.5 rounded cursor-grab"
-                          >
-                            <MdOutlineDragHandle />
-                          </span>
-                          <span
-                            contentEditable
-                            suppressContentEditableWarning
-                            onKeyDown={(event) => {
-                              if (event.key === "Enter") {
-                                event.preventDefault();
-                                event.target.blur();
-                              }
-                            }}
-                            onBlur={(event) => {
+          {/* logo */}
+          <div className="flex flex-col space-y-1 px-4 pt-3">
+            <p>Brand Name</p>
+            <input
+              type="text"
+              value={header.brandName}
+              onChange={(event) =>
+                setHeader({
+                  ...header,
+                  brandName: event.target.value,
+                })
+              }
+              className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
+            />
+          </div>
+          {/* navigation links */}
+          <div className="flex flex-col space-y-1 px-4 pt-5">
+            <p>Navigation Links</p>
+            <Droppable droppableId="navigation-links" type="navigation-links">
+              {(provided) => (
+                <ul
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="select-none"
+                >
+                  {header.links.map((link, index) => (
+                    <Draggable
+                      draggableId={`link-${index}`}
+                      key={index}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <li
+                          {...provided.draggableProps}
+                          ref={provided.innerRef}
+                          className="flex items-center justify-between bg-white border border-solid px-2 py-1.5"
+                        >
+                          <div className="flex items-center w-full space-x-2">
+                            <span
+                              {...provided.dragHandleProps}
+                              className="p-0.5 rounded cursor-grab"
+                            >
+                              <MdOutlineDragHandle />
+                            </span>
+                            <span
+                              contentEditable
+                              suppressContentEditableWarning
+                              onKeyDown={(event) => {
+                                if (event.key === "Enter") {
+                                  event.preventDefault();
+                                  event.target.blur();
+                                }
+                              }}
+                              onBlur={(event) => {
+                                setHeader({
+                                  ...header,
+                                  links: [
+                                    ...header.links.slice(0, index),
+                                    event.target.textContent,
+                                    ...header.links.slice(index + 1),
+                                  ],
+                                });
+                              }}
+                              className="flex-1 outline-none"
+                            >
+                              {link}
+                            </span>
+                          </div>
+                          <div
+                            onClick={() => {
                               setHeader({
                                 ...header,
                                 links: [
                                   ...header.links.slice(0, index),
-                                  event.target.textContent,
                                   ...header.links.slice(index + 1),
                                 ],
                               });
                             }}
-                            className="flex-1 outline-none"
+                            className="cursor-pointer p-0.5 rounded"
                           >
-                            {link}
-                          </span>
-                        </div>
-                        <div
-                          onClick={() => {
-                            setHeader({
-                              ...header,
-                              links: [
-                                ...header.links.slice(0, index),
-                                ...header.links.slice(index + 1),
-                              ],
-                            });
-                          }}
-                          className="cursor-pointer p-0.5 rounded"
-                        >
-                          <BsX />
-                        </div>
-                      </li>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-                {header.links.length < 5 && (
-                  <li
-                    onClick={() => {
-                      setHeader({
-                        ...header,
-                        links: [...header.links, "New Link"],
-                      });
-                    }}
-                    className="text-primary-blue hover:bg-slate-200 border-b border-x border-solid px-5 py-1.5 cursor-pointer"
-                  >
-                    Add Link
-                  </li>
-                )}
-              </ul>
-            )}
-          </Droppable>
+                            <BsX />
+                          </div>
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                  {header.links.length < 5 && (
+                    <li
+                      onClick={() => {
+                        setHeader({
+                          ...header,
+                          links: [...header.links, "New Link"],
+                        });
+                      }}
+                      className="text-primary-blue hover:bg-slate-200 border-b border-x border-solid px-5 py-1.5 cursor-pointer"
+                    >
+                      Add Link
+                    </li>
+                  )}
+                </ul>
+              )}
+            </Droppable>
+          </div>
         </div>
       </div>
     </DragDropContext>

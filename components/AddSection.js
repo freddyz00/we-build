@@ -1,5 +1,7 @@
 import { MdOutlineAddCircleOutline } from "react-icons/md";
 import SectionCard from "./SectionCard";
+import { defaultData } from "../lib/defaultData";
+import { nanoid } from "nanoid";
 
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sectionsState } from "../atoms/sectionsAtom";
@@ -32,20 +34,28 @@ export default function AddSection() {
   const [sections, setSections] = useRecoilState(sectionsState);
   const pageId = useRecoilValue(pageIdState);
   const addNewSection = (closePopup, type) => {
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/section`, {
-      method: "POST",
-      body: JSON.stringify({ type, pageId }),
-    })
-      .then(async (res) => {
-        if (res.status !== 200) return;
-        const query = `*[_type == "page"][0]`;
-        const data = await sanityClient.fetch(query);
-        setSections(data.sections);
-      })
-      .catch((error) => console.log(error))
-      .finally(() => {
-        closePopup();
-      });
+    setSections((sections) => [
+      ...sections.slice(0, sections.length - 1),
+      { _key: nanoid(), ...defaultData[type] },
+      sections[sections.length - 1],
+    ]);
+
+    closePopup();
+
+    // fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/section`, {
+    //   method: "POST",
+    //   body: JSON.stringify({ type, pageId }),
+    // })
+    //   .then(async (res) => {
+    //     if (res.status !== 200) return;
+    //     const query = `*[_type == "page"][0]`;
+    //     const data = await sanityClient.fetch(query);
+    //     setSections(data.sections);
+    //   })
+    //   .catch((error) => console.log(error))
+    //   .finally(() => {
+    //     closePopup();
+    //   });
   };
 
   return (

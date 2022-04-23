@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import { sectionsState } from "../../atoms/sectionsAtom";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 
+import RemoveSection from "../RemoveSection";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
 export default function AboutEditor({ id, iframeRef }) {
@@ -43,42 +44,49 @@ export default function AboutEditor({ id, iframeRef }) {
   }, [about]);
 
   return (
-    <div>
-      {/* title */}
-      <div className="flex items-center space-x-2 border-b border-solid p-3">
-        <div
-          onClick={() => setEditingSection([...editingSection].slice(0, -1))}
-          className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
-        >
-          <MdOutlineArrowBackIos />
+    <div className="absolute w-full flex flex-col justify-between h-full">
+      <div className="overflow-y-auto pb-2">
+        {/* title */}
+        <div className="flex items-center space-x-2 border-b border-solid p-3">
+          <div
+            onClick={() => setEditingSection([...editingSection].slice(0, -1))}
+            className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
+          >
+            <MdOutlineArrowBackIos />
+          </div>
+          <p className="font-medium">About</p>
         </div>
-        <p className="font-medium">About</p>
+
+        {/* heading */}
+        <div className="flex flex-col space-y-1 px-4 pt-3">
+          <p>Heading</p>
+          <input
+            type="text"
+            value={about.heading}
+            onChange={(event) => {
+              setAbout({ ...about, heading: event.target.value });
+            }}
+            className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
+          />
+        </div>
+
+        {/* subheading */}
+        <div className="flex flex-col space-y-1 px-4 pt-3">
+          <p>Subheading</p>
+          <input
+            type="text"
+            value={about.subheading}
+            onChange={(event) => {
+              setAbout({ ...about, subheading: event.target.value });
+            }}
+            className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
+          />
+        </div>
       </div>
 
-      {/* heading */}
-      <div className="flex flex-col space-y-1 px-4 pt-3">
-        <p>Heading</p>
-        <input
-          type="text"
-          value={about.heading}
-          onChange={(event) => {
-            setAbout({ ...about, heading: event.target.value });
-          }}
-          className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
-        />
-      </div>
-
-      {/* subheading */}
-      <div className="flex flex-col space-y-1 px-4 pt-3">
-        <p>Subheading</p>
-        <input
-          type="text"
-          value={about.subheading}
-          onChange={(event) => {
-            setAbout({ ...about, subheading: event.target.value });
-          }}
-          className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
-        />
+      {/* remove section */}
+      <div className="px-4 py-1 border-t border-solid">
+        <RemoveSection id={id} />
       </div>
     </div>
   );
