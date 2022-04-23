@@ -4,6 +4,7 @@ import { urlFor } from "../../lib/sanity";
 export default function ImageBanner({ id, data }) {
   const [imageBanner, setImageBanner] = useState({
     image: data.image,
+    textColor: data.textColor,
     heading: data.heading,
     subheading: data.subheading,
     buttonLabel: data.buttonLabel,
@@ -28,11 +29,11 @@ export default function ImageBanner({ id, data }) {
     <div
       className={`image-banner h-screen flex flex-col space-y-5 justify-center items-center bg-cover bg-neutral-200`}
     >
-      <h2 className="text-5xl max-w-3xl break-all text-center">
+      <h2 className="text-color text-5xl max-w-3xl break-all text-center">
         {imageBanner.heading}
       </h2>
 
-      <p className="max-w-5xl break-all text-center">
+      <p className="text-color max-w-5xl break-all text-center">
         {imageBanner.subheading}
       </p>
 
@@ -44,6 +45,9 @@ export default function ImageBanner({ id, data }) {
           background-image: url(${imageBanner.image
             ? urlFor(imageBanner.image).url()
             : null});
+        }
+        .text-color {
+          color: ${imageBanner.textColor === "dark" ? "#000" : "#fff"};
         }
       `}</style>
     </div>

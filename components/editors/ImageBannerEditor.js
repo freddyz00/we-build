@@ -8,17 +8,23 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 
 import { urlFor } from "../../lib/sanity";
 import ImageSelector from "./ImageSelector";
+import Select from "react-select";
+
+const options = [
+  { value: "dark", label: "Dark" },
+  { value: "light", label: "Light" },
+];
 
 export default function ImageBannerEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
     useRecoilState(editingSectionState);
   const [showImageSelector, setShowImageSelector] = useState(false);
-
   const [sections, setSections] = useRecoilState(sectionsState);
   const sectionData = sections.filter((section) => section._key === id)[0];
 
   const [imageBanner, setImageBanner] = useState({
     image: sectionData.image,
+    textColor: sectionData.textColor,
     heading: sectionData.heading,
     subheading: sectionData.subheading,
     buttonLabel: sectionData.buttonLabel,
@@ -79,6 +85,21 @@ export default function ImageBannerEditor({ id, iframeRef }) {
             </button>
           </div>
         </div>
+
+        {/* color picker for image text */}
+        <div className="px-4 pt-3">
+          <p>Text Color</p>
+          <Select
+            options={options}
+            defaultValue={
+              imageBanner.textColor === "dark" ? options[0] : options[1]
+            }
+            onChange={(event) => {
+              setImageBanner({ ...imageBanner, textColor: event.value });
+            }}
+          />
+        </div>
+
         {/* heading */}
         <div className="flex flex-col space-y-1 px-4 pt-3">
           <p>Heading</p>
