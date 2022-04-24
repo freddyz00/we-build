@@ -17,21 +17,25 @@ export default async function handler(req, res) {
     const { storeName } = JSON.parse(req.body);
 
     // check if user already has a store
-    const userQuery = `*[_type == "user" && email == "${session.user.email}"]`;
+    const userQuery = `*[_type == "user" && email == "${session.user.email}"]{
+      store ->
+    }`;
     const userData = await sanityClient.fetch(userQuery);
 
     if (userData[0].store) {
-      return res.status(409).json({ message: `You already have a store` });
+      return res.status(409).json({ message: `You already have a store.` });
     }
 
     // check if storeName exists
-    const storeNameQuery = `*[_type == "store" && name == "${storeName}"]`;
+    const storeNameQuery = `*[_type == "store" && slug == "${storeName
+      .toLowerCase()
+      .replace(/\s/g, "-")}"]`;
     const storeNameData = await sanityClient.fetch(storeNameQuery);
 
     if (storeNameData.length > 0) {
-      return res
-        .status(409)
-        .json({ message: `Store with the name "${storeName}" already exists` });
+      return res.status(409).json({
+        message: `Store with the name "${storeName}" already exists.`,
+      });
     }
 
     // create default page

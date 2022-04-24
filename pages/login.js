@@ -3,7 +3,7 @@ import { signIn, signOut, getSession } from "next-auth/react";
 
 export default function Home() {
   const signInWithGoogle = () => {
-    signIn("google", { callbackUrl: "/editor" });
+    signIn("google", { callbackUrl: "/store" });
   };
   return (
     <div className="grid place-items-center h-screen">
@@ -29,7 +29,7 @@ export async function getServerSideProps(context) {
   if (session) {
     return {
       redirect: {
-        destination: "/editor",
+        destination: "/store",
         permanent: false,
       },
     };

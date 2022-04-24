@@ -1,26 +1,27 @@
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { sectionsState } from "../atoms/sectionsAtom";
-
-import { getSession } from "next-auth/react";
-
-import * as SectionComponents from "../components/sections";
-import SectionSpacing from "../components/sections/SectionSpacing";
+import { sectionsState } from "../../../atoms/sectionsAtom";
+import * as SectionComponents from "../../../components/sections";
 
 export default function Preview() {
+  const router = useRouter();
+  const { storeSlug } = router.query;
   const [sections, setSections] = useRecoilState(sectionsState);
 
+  // fetch page data
   useEffect(() => {
+    if (!router.isReady) return;
     if (sections.length > 0) return;
     (async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-page-old`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-page?slug=${storeSlug}`
       );
       if (!res.ok) return;
       const { page } = await res.json();
       setSections(page.sections);
     })();
-  }, []);
+  }, [router.isReady]);
 
   const handleUpdateSections = (event) => {
     if (event.origin !== "http://localhost:3000") return;
@@ -45,30 +46,11 @@ export default function Preview() {
           <div key={index}>
             <SectionComponent id={section._key} data={section} />
             {/* {section._type !== "header" && section._type !== "footer" && (
-              <SectionSpacing />
-            )} */}
+          <SectionSpacing />
+        )} */}
           </div>
         );
       })}
     </div>
   );
-}
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      user: session.user,
-    },
-  };
 }

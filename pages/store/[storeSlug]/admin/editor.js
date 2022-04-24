@@ -1,16 +1,21 @@
 import Link from "next/link";
 import classNames from "classnames";
 import { useRef, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 
 import PulseLoader from "react-spinners/PulseLoader";
-import ControlPanel from "../components/ControlPanel";
+import ControlPanel from "../../../../components/ControlPanel";
 
 import { useRecoilState } from "recoil";
-import { sectionsState } from "../atoms/sectionsAtom";
-import { pageIdState } from "../atoms/pageIdAtom";
+import { sectionsState } from "../../../../atoms/sectionsAtom";
+import { pageIdState } from "../../../../atoms/pageIdAtom";
 
-export default function Editor({ user }) {
+import { sanityClient } from "../../../../lib/sanity";
+
+export default function Editor() {
+  const router = useRouter();
+  const { storeSlug } = router.query;
   const iframeRef = useRef(null);
   const [sections, setSections] = useRecoilState(sectionsState);
   const [pageId, setPageId] = useRecoilState(pageIdState);
@@ -30,16 +35,17 @@ export default function Editor({ user }) {
   };
 
   useEffect(() => {
+    if (!router.isReady) return;
     (async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-page-old`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-page?slug=${storeSlug}`
       );
       if (!res.ok) return;
       const { page } = await res.json();
       setSections(page.sections);
       setPageId(page._id);
     })();
-  }, []);
+  }, [router.isReady]);
 
   // post message whenever sections changes
   useEffect(() => {
@@ -58,7 +64,7 @@ export default function Editor({ user }) {
           <p className="text-lg font-medium">WeBuild</p>
         </div>
         <div className="flex justify-end items-center space-x-5 ">
-          <Link href="/preview">
+          <Link href={`/store/${storeSlug}`}>
             <a className="hover:text-primary-blue">Preview</a>
           </Link>
           <button
@@ -83,7 +89,7 @@ export default function Editor({ user }) {
         <section className="flex-1 grid place-items-center">
           <iframe
             ref={iframeRef}
-            src="/preview"
+            src={`/store/${storeSlug}`}
             title="Preview"
             height="95%"
             width="95%"
@@ -97,6 +103,7 @@ export default function Editor({ user }) {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+  const { storeSlug } = context.query;
 
   if (!session) {
     return {
@@ -107,9 +114,23 @@ export async function getServerSideProps(context) {
     };
   }
 
+  // check to see if logged in user is the owner of the store
+  const query = `*[_type == "store" && slug=="${storeSlug}"][0]{
+    "ownerEmail": owner -> email
+  }`;
+  const data = await sanityClient.fetch(query);
+
+  // redirect if user is not the owner of the store
+  if (data.ownerEmail !== session.user.email) {
+    return {
+      redirect: {
+        destination: `/store/${storeSlug}`,
+        permanent: false,
+      },
+    };
+  }
+
   return {
-    props: {
-      user: session.user,
-    },
+    props: {},
   };
 }

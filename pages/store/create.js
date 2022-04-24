@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { getSession } from "next-auth/react";
 
 import classNames from "classnames";
 import PulseLoader from "react-spinners/PulseLoader";
@@ -28,15 +29,20 @@ export default function CreateStore() {
 
     if (result.status === 201) {
       const data = await result.json();
-      router.push(`/store/${data.slug}/editor`);
+      router.push(`/store/${data.slug}/admin/editor`);
     }
   };
 
   return (
     <div className="h-screen grid place-items-center">
       <div className="flex flex-col space-y-10 w-1/2 max-w-xl p-10 border border-solid border-gray-300 rounded-md shadow">
-        <h1 className="text-3xl font-medium">Create a store</h1>
-
+        <div>
+          <h1 className="text-3xl font-medium mb-3">Create a store</h1>
+          <h2>
+            Enter a name for your store. You can only create 1 store and you
+            cannot change the name once it is set.
+          </h2>
+        </div>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-10">
           <div>
             <label htmlFor="store-name">Store Name</label>
@@ -64,4 +70,21 @@ export default function CreateStore() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }
