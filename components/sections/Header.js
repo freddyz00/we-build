@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { sectionsState } from "../../atoms/sectionsAtom";
 
 import { RiShoppingBag3Line } from "react-icons/ri";
 
