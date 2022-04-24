@@ -22,7 +22,7 @@ export default function About({ id, data }) {
   }, []);
 
   return (
-    <div>
+    <div className="my-36">
       <div className="container mx-auto flex flex-col items-center space-y-10 lg:max-w-6xl text-center">
         {/* heading */}
         <h1 className="max-w-2xl text-4xl">{about.heading}</h1>

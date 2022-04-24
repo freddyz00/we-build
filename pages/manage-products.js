@@ -56,22 +56,38 @@ export default function Home({ user }) {
         </div>
       </header>
 
-      <main className="flex flex-col flex-1 space-y-5 justify-center items-center ">
-        <Link href="/preview">
-          <a className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue">
-            View Store
-          </a>
-        </Link>
-        <Link href="/editor">
-          <a className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue">
-            Edit Store
-          </a>
-        </Link>
-        <Link href="/manage-products">
-          <a className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue">
-            Manage Products
-          </a>
-        </Link>
+      <main className="container mx-auto flex flex-col space-y-5 p-5">
+        <div className="flex flex-col space-y-5">
+          <h2 className="text-2xl font-medium">My Online Store</h2>
+          <div className="flex space-x-5">
+            <Link href="/preview">
+              <a className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue">
+                View Store
+              </a>
+            </Link>
+            <Link href="/editor">
+              <a className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue">
+                Edit Store
+              </a>
+            </Link>
+          </div>
+        </div>
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="text-2xl font-medium">Products</h2>
+          <button className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue">
+            Add Product
+          </button>
+        </div>
+        <div className="">
+          <table className="table-auto">
+            <thead>
+              <th>Product</th>
+              <th>Description</th>
+              <th>Price</th>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </main>
     </div>
   );

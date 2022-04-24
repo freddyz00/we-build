@@ -10,8 +10,6 @@ import { useRecoilState } from "recoil";
 import { sectionsState } from "../atoms/sectionsAtom";
 import { pageIdState } from "../atoms/pageIdAtom";
 
-import { sanityClient } from "../lib/sanity";
-
 export default function Editor({ user }) {
   const iframeRef = useRef(null);
   const [sections, setSections] = useRecoilState(sectionsState);
@@ -55,24 +53,26 @@ export default function Editor({ user }) {
   return (
     <div className="flex flex-col h-screen">
       {/* top header */}
-      <div className="flex items-center h-12 border-b border-solid border-slate-200 shadow-sm z-10">
-        <Link href="/test">
-          <a>Preview</a>
-        </Link>
-        <button
-          onClick={handleSaveData}
-          disabled={loading}
-          className={classNames(
-            "text-white rounded-lg px-5 py-2 ml-auto mr-5",
-            {
+      <div className="flex justify-between items-center px-5 h-12 border-b border-solid border-slate-200 shadow-sm z-10">
+        <div>
+          <p className="text-lg font-medium">WeBuild</p>
+        </div>
+        <div className="flex justify-end items-center space-x-5 ">
+          <Link href="/preview">
+            <a className="hover:text-primary-blue">Preview</a>
+          </Link>
+          <button
+            onClick={handleSaveData}
+            disabled={loading}
+            className={classNames("text-white rounded-lg px-5 py-2", {
               "bg-gray-300 ": loading,
               "bg-primary-blue hover:bg-darker-blue": !loading,
-            }
-          )}
-        >
-          {!loading && "Save"}
-          <PulseLoader loading={loading} color="white" size={6} />
-        </button>
+            })}
+          >
+            {!loading && "Save"}
+            <PulseLoader loading={loading} color="white" size={6} />
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 flex bg-stone-100">
@@ -83,8 +83,8 @@ export default function Editor({ user }) {
         <section className="flex-1 grid place-items-center">
           <iframe
             ref={iframeRef}
-            src="/test"
-            title="Test"
+            src="/preview"
+            title="Preview"
             height="95%"
             width="95%"
             className="border border-solid shadow rounded"
@@ -101,7 +101,7 @@ export async function getServerSideProps(context) {
   if (!session) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/login",
         permanent: false,
       },
     };

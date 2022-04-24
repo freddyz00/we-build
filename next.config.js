@@ -7,6 +7,6 @@ module.exports = nextConfig;
 
 module.exports = {
   images: {
-    domains: ["loremflickr.com"],
+    domains: ["lh3.googleusercontent.com"],
   },
 };

@@ -25,7 +25,7 @@ export default function ImageWithText({ id, data }) {
   }, []);
 
   return (
-    <div className="container mx-auto lg:max-w-6xl grid grid-cols-2 gap-x-20">
+    <div className="container mx-auto my-36 lg:max-w-6xl grid grid-cols-2 gap-x-20">
       <div className="h-[500px] bg-neutral-200">
         <img
           src={imageWithText.image ? urlFor(imageWithText.image).url() : null}
