@@ -2,6 +2,7 @@ import { sanityClient } from "../../lib/sanity";
 import { getSession } from "next-auth/react";
 import { defaultData } from "../../lib/defaultData";
 import { nanoid } from "nanoid";
+import { slugify } from "../../lib/utils";
 
 const defaultSections = [
   "header",
@@ -27,9 +28,9 @@ export default async function handler(req, res) {
     }
 
     // check if storeName exists
-    const storeNameQuery = `*[_type == "store" && slug == "${storeName
-      .toLowerCase()
-      .replace(/\s/g, "-")}"]`;
+    const storeNameQuery = `*[_type == "store" && slug == "${slugify(
+      storeName
+    )}"]`;
     const storeNameData = await sanityClient.fetch(storeNameQuery);
 
     if (storeNameData.length > 0) {
@@ -60,7 +61,7 @@ export default async function handler(req, res) {
     const store = {
       _type: "store",
       name: storeName,
-      slug: storeName.toLowerCase().replace(/\s/g, "-"),
+      slug: slugify(storeName),
       owner: {
         _type: "reference",
         _ref: userData[0]._id,

@@ -1,7 +1,7 @@
 import nextConnect from "next-connect";
 import multer from "multer";
 import { getSession } from "next-auth/react";
-import { createReadStream } from "fs";
+import { createReadStream, unlink } from "fs";
 import { sanityClient } from "../../lib/sanity";
 
 const upload = multer({
@@ -33,6 +33,7 @@ apiRoute.post(async (req, res) => {
       filename: file.originalname,
     })
     .then((imageAsset) => {
+      unlink(file.path, (error) => console.log(error));
       return sanityClient
         .patch(userId)
         .setIfMissing({ pageImages: [] })

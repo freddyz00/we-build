@@ -9,6 +9,7 @@ import { urlFor } from "../../../../lib/sanity";
 
 import Popup from "reactjs-popup";
 import { BiLogOut } from "react-icons/bi";
+import { MdClose } from "react-icons/md";
 import classNames from "classnames";
 
 export default function Admin({ user }) {
@@ -17,6 +18,27 @@ export default function Admin({ user }) {
 
   const [products, setProducts] = useState([]);
 
+  const [open, setOpen] = useState(false);
+  const [newProductTitle, setNewProductTitle] = useState("");
+  const [newProductDescription, setNewProductDescription] = useState("");
+  const [newProductPrice, setNewProductPrice] = useState();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setOpen(false);
+    const res = await fetch(`/api/add-product`, {
+      method: "POST",
+      body: JSON.stringify({
+        title: newProductTitle,
+        description: newProductDescription,
+        price: newProductPrice,
+        storeSlug: storeSlug,
+      }),
+    });
+    const data = await res.json();
+    setProducts([...products, data.result]);
+  };
+
   // get all products
   useEffect(() => {
     if (!router.isReady) return;
@@ -24,6 +46,7 @@ export default function Admin({ user }) {
       const res = await fetch(`/api/get-all-products?storeSlug=${storeSlug}`);
       if (!res.ok) return;
       const data = await res.json();
+      console.log(data);
       setProducts(data);
     })();
   }, [router.isReady]);
@@ -95,22 +118,99 @@ export default function Admin({ user }) {
         </div>
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-2xl font-medium">Products</h2>
-          <button className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue">
+          <button
+            onClick={() => setOpen(true)}
+            className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue"
+          >
             Add Product
           </button>
+          <Popup
+            open={open}
+            onClose={() => setOpen(false)}
+            modal
+            contentStyle={{
+              backgroundColor: "white",
+              width: "50%",
+              borderRadius: "10px",
+            }}
+            overlayStyle={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          >
+            {(close) => (
+              <div className="p-5">
+                <div className="flex justify-between items-center mb-5">
+                  <h2 className="text-xl">Add Product</h2>
+                  <button onClick={close}>
+                    <MdClose className="text-xl" />
+                  </button>
+                </div>
+                <form
+                  className="flex flex-col space-y-3"
+                  onSubmit={handleSubmit}
+                >
+                  <div className="flex flex-col">
+                    <label>Title</label>
+                    <input
+                      required
+                      value={newProductTitle}
+                      onChange={(event) =>
+                        setNewProductTitle(event.target.value)
+                      }
+                      type="text"
+                      className="border border-solid border-slate-300 px-3 py-1.5 rounded"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Description</label>
+                    <textarea
+                      required
+                      value={newProductDescription}
+                      onChange={(event) =>
+                        setNewProductDescription(event.target.value)
+                      }
+                      rows={3}
+                      className="border border-solid border-slate-300 px-3 py-1.5 rounded"
+                    ></textarea>
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Image</label>
+                    <input type="file" accept="image/*" />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Price</label>
+                    <input
+                      required
+                      value={newProductPrice}
+                      onChange={(event) =>
+                        setNewProductPrice(event.target.value)
+                      }
+                      placeholder="0.00"
+                      type="number"
+                      className="border border-solid border-slate-300 px-3 py-1.5 rounded"
+                    />
+                  </div>
+                  <button className="bg-primary-blue hover:bg-darker-blue px-5 py-2 rounded-lg text-white self-end ">
+                    Add
+                  </button>
+                </form>
+              </div>
+            )}
+          </Popup>
         </div>
         <div className="bg-white rounded-lg shadow">
           {products.length > 0 && (
             <table className="w-full table-fixed">
               <thead className="border-b border-solid border-gray-300 text-left">
-                <th className="w-20"></th>
-                <th className="w-1/4 font-medium py-2">Product</th>
-                <th className=" font-medium py-2">Description</th>
-                <th className="w-20 font-medium py-2">Price</th>
+                <tr>
+                  <th className="w-20"></th>
+                  <th className="w-1/4 font-medium py-2">Product</th>
+                  <th className=" font-medium py-2">Description</th>
+                  <th className="w-20 font-medium py-2">Price</th>
+                </tr>
               </thead>
               <tbody>
                 {products.map((product, index) => (
                   <tr
+                    key={index}
                     className={classNames(
                       "border-solid border-gray-300 cursor-pointer",
                       {
@@ -123,18 +223,18 @@ export default function Admin({ user }) {
                         <img
                           src={
                             product.image
-                              ? urlFor(product.image).width(100).url()
+                              ? urlFor(product?.image).width(100).url()
                               : null
                           }
                           className="w-full h-full object-contain"
                         />
                       </div>
                     </td>
-                    <td className="py-2">{product.title}</td>
+                    <td className="py-2">{product?.title}</td>
                     <td className="py-2">
-                      {product.description.slice(0, 50)}...
+                      {product?.description?.slice(0, 50)}...
                     </td>
-                    <td className="py-2">${product.price.toFixed(2)}</td>
+                    <td className="py-2">${product?.price?.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
