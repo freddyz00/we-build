@@ -1,4 +1,7 @@
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { storeSlugState } from "../../atoms/storeSlugAtom";
 import { urlFor } from "../../lib/sanity";
 
 export default function ImageWithText({ id, data }) {
@@ -8,6 +11,9 @@ export default function ImageWithText({ id, data }) {
     subheading: data.subheading,
     buttonLabel: data.buttonLabel,
   });
+
+  const storeSlug = useRecoilValue(storeSlugState);
+  const router = useRouter();
 
   const handleUpdateImageWithText = (event) => {
     if (event.origin !== "http://localhost:3000") return;
@@ -37,7 +43,10 @@ export default function ImageWithText({ id, data }) {
       <div className="flex flex-col space-y-5 justify-center">
         <h1 className="text-3xl break-all">{imageWithText.heading}</h1>
         <p className="leading-8 break-all">{imageWithText.subheading}</p>
-        <button className="bg-primary-blue hover:bg-darker-blue px-5 py-3 rounded-lg text-white self-start">
+        <button
+          onClick={() => router.push(`/store/${storeSlug}/products`)}
+          className="bg-primary-blue hover:bg-darker-blue px-5 py-3 rounded-lg text-white self-start"
+        >
           {imageWithText.buttonLabel}
         </button>
       </div>

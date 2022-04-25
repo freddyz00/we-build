@@ -7,9 +7,10 @@ import { getSession } from "next-auth/react";
 import PulseLoader from "react-spinners/PulseLoader";
 import ControlPanel from "../../../../components/ControlPanel";
 
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { sectionsState } from "../../../../atoms/sectionsAtom";
 import { pageIdState } from "../../../../atoms/pageIdAtom";
+import { storeSlugState } from "../../../../atoms/storeSlugAtom";
 
 import { sanityClient } from "../../../../lib/sanity";
 
@@ -19,6 +20,7 @@ export default function Editor() {
   const iframeRef = useRef(null);
   const [sections, setSections] = useRecoilState(sectionsState);
   const [pageId, setPageId] = useRecoilState(pageIdState);
+  const setStoreSlug = useSetRecoilState(storeSlugState);
   const [loading, setLoading] = useState(false);
 
   const handleSaveData = async () => {
@@ -44,6 +46,7 @@ export default function Editor() {
       const { page } = await res.json();
       setSections(page.sections);
       setPageId(page._id);
+      setStoreSlug(storeSlug);
     })();
   }, [router.isReady]);
 

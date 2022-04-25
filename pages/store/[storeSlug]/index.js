@@ -1,13 +1,15 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { sectionsState } from "../../../atoms/sectionsAtom";
+import { storeSlugState } from "../../../atoms/storeSlugAtom";
 import * as SectionComponents from "../../../components/sections";
 
 export default function Preview() {
   const router = useRouter();
   const { storeSlug } = router.query;
   const [sections, setSections] = useRecoilState(sectionsState);
+  const setStoreSlug = useSetRecoilState(storeSlugState);
 
   // fetch page data
   useEffect(() => {
@@ -20,6 +22,7 @@ export default function Preview() {
       if (!res.ok) return;
       const { page } = await res.json();
       setSections(page.sections);
+      setStoreSlug(storeSlug);
     })();
   }, [router.isReady]);
 

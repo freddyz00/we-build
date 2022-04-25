@@ -1,4 +1,7 @@
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { storeSlugState } from "../../atoms/storeSlugAtom";
 import { urlFor } from "../../lib/sanity";
 
 export default function ImageBanner({ id, data }) {
@@ -9,6 +12,10 @@ export default function ImageBanner({ id, data }) {
     subheading: data.subheading,
     buttonLabel: data.buttonLabel,
   });
+
+  const storeSlug = useRecoilValue(storeSlugState);
+
+  const router = useRouter();
 
   const handleUpdateImageBanner = (event) => {
     if (event.origin !== "http://localhost:3000") return;
@@ -37,7 +44,10 @@ export default function ImageBanner({ id, data }) {
         {imageBanner.subheading}
       </p>
 
-      <button className="bg-primary-blue hover:bg-darker-blue px-5 py-3 rounded-lg text-white">
+      <button
+        onClick={() => router.push(`/store/${storeSlug}/products`)}
+        className="bg-primary-blue hover:bg-darker-blue px-5 py-3 rounded-lg text-white"
+      >
         {imageBanner.buttonLabel}
       </button>
       <style jsx>{`

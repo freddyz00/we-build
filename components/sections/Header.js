@@ -2,10 +2,13 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 import { RiShoppingBag3Line } from "react-icons/ri";
+import { useRecoilValue } from "recoil";
+import { storeSlugState } from "../../atoms/storeSlugAtom";
 import { urlFor } from "../../lib/sanity";
 
 export default function Header({ id, data }) {
   const [header, setHeader] = useState({});
+  const storeSlug = useRecoilValue(storeSlugState);
 
   useEffect(() => {
     setHeader({
@@ -47,7 +50,7 @@ export default function Header({ id, data }) {
         </div>
         <ul className="flex items-center space-x-7">
           {header.links?.map((link, index) => (
-            <Link href="/">
+            <Link href={link === "Shop" ? `/store/${storeSlug}/products` : "#"}>
               <li
                 className="cursor-pointer hover:text-primary-blue"
                 key={index}
