@@ -1,13 +1,16 @@
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 import { RiShoppingBag3Line } from "react-icons/ri";
+import { urlFor } from "../../lib/sanity";
 
 export default function Header({ id, data }) {
   const [header, setHeader] = useState({});
 
   useEffect(() => {
     setHeader({
-      brandName: data.brandName,
+      storeName: data.storeName,
+      image: data.image,
       links: data.links,
     });
   }, [data]);
@@ -31,13 +34,27 @@ export default function Header({ id, data }) {
     <nav className="h-14 border-b border-slate-200">
       <div className="container mx-auto select-none flex justify-between items-center h-full lg:max-w-6xl">
         <div>
-          <p className="text-lg font-medium">{header.brandName}</p>
+          {!header.image && (
+            <p className="text-xl font-medium">{header.storeName}</p>
+          )}
+          {header.image && (
+            <img
+              src={urlFor(header.image).width(100).url()}
+              alt=""
+              className="h-12 object-contain"
+            />
+          )}
         </div>
         <ul className="flex items-center space-x-7">
           {header.links?.map((link, index) => (
-            <li className="cursor-pointer hover:text-primary-blue" key={index}>
-              {link}
-            </li>
+            <Link href="/">
+              <li
+                className="cursor-pointer hover:text-primary-blue"
+                key={index}
+              >
+                {link}
+              </li>
+            </Link>
           ))}
           <li className="cursor-pointer hover:text-primary-blue">
             <RiShoppingBag3Line className="text-2xl font-light" />

@@ -3,10 +3,11 @@ import { useRecoilState } from "recoil";
 import { sectionsState } from "../../atoms/sectionsAtom";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 
+import { urlFor } from "../../lib/sanity";
+import ImageSelector from "./ImageSelector";
 import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
 import { BsX } from "react-icons/bs";
 import { MdOutlineArrowBackIos, MdOutlineDragHandle } from "react-icons/md";
-import RemoveSection from "../RemoveSection";
 
 export default function HeaderEditor({ id, iframeRef }) {
   const [editingSection, setEditingSection] =
@@ -16,9 +17,12 @@ export default function HeaderEditor({ id, iframeRef }) {
   const sectionData = sections.filter((section) => section._key === id)[0];
 
   const [header, setHeader] = useState({
-    brandName: sectionData.brandName,
+    storeName: sectionData.storeName,
+    image: sectionData.image,
     links: sectionData.links,
   });
+
+  const [showImageSelector, setShowImageSelector] = useState(false);
 
   const onDragEnd = async (result) => {
     const { draggableId, source, destination, type } = result;
@@ -57,7 +61,7 @@ export default function HeaderEditor({ id, iframeRef }) {
         if (section._key === id) {
           return {
             ...section,
-            brandName: header.brandName,
+            image: header.image,
             links: header.links,
           };
         }
@@ -82,21 +86,22 @@ export default function HeaderEditor({ id, iframeRef }) {
             </div>
             <p className="font-medium">Header</p>
           </div>
+
           {/* logo */}
           <div className="flex flex-col space-y-1 px-4 pt-3">
-            <p>Brand Name</p>
-            <input
-              type="text"
-              value={header.brandName}
-              onChange={(event) =>
-                setHeader({
-                  ...header,
-                  brandName: event.target.value,
-                })
-              }
-              className="border border-solid border-slate-300 w-full px-3 py-1.5 rounded"
-            />
+            <p>Logo</p>
+            <div
+              onClick={() => {
+                setShowImageSelector(true);
+              }}
+              className="image-preview grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition object-cover"
+            >
+              <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid">
+                Select Image
+              </button>
+            </div>
           </div>
+
           {/* navigation links */}
           <div className="flex flex-col space-y-1 px-4 pt-5">
             <p>Navigation Links</p>
@@ -187,6 +192,20 @@ export default function HeaderEditor({ id, iframeRef }) {
             </Droppable>
           </div>
         </div>
+        {showImageSelector && (
+          <ImageSelector
+            data={header}
+            setData={setHeader}
+            close={() => setShowImageSelector(false)}
+          />
+        )}
+        <style jsx>{`
+          .image-preview {
+            background-image: url(${header.image
+              ? urlFor(header.image).width(300).url()
+              : null});
+          }
+        `}</style>
       </div>
     </DragDropContext>
   );

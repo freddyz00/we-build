@@ -69,7 +69,7 @@ export default function Products() {
 
                   {/* product details */}
                   <div>
-                    <p>{product.title}</p>
+                    <p className="text-lg">{product.title}</p>
                     <p className="text-xl text-gray-500 font-medium">{`$${product.price}`}</p>
                   </div>
                 </div>

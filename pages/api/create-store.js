@@ -47,7 +47,7 @@ export default async function handler(req, res) {
           return {
             _key: nanoid(),
             ...defaultData.header,
-            brandName: storeName,
+            storeName: storeName,
           };
         }
         return { _key: nanoid(), ...defaultData[section] };
