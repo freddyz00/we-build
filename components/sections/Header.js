@@ -3,10 +3,14 @@ import { useState, useEffect } from "react";
 import { RiShoppingBag3Line } from "react-icons/ri";
 
 export default function Header({ id, data }) {
-  const [header, setHeader] = useState({
-    brandName: data.brandName,
-    links: data.links,
-  });
+  const [header, setHeader] = useState({});
+
+  useEffect(() => {
+    setHeader({
+      brandName: data.brandName,
+      links: data.links,
+    });
+  }, [data]);
 
   const handleUpdateHeader = (event) => {
     if (event.origin !== "http://localhost:3000") return;
@@ -30,7 +34,7 @@ export default function Header({ id, data }) {
           <p className="text-lg font-medium">{header.brandName}</p>
         </div>
         <ul className="flex items-center space-x-7">
-          {header.links.map((link, index) => (
+          {header.links?.map((link, index) => (
             <li className="cursor-pointer hover:text-primary-blue" key={index}>
               {link}
             </li>

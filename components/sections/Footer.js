@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 
 export default function Footer({ id, data }) {
-  const [footer, setFooter] = useState({
-    links: data.links,
-  });
+  const [footer, setFooter] = useState({});
+
+  useEffect(() => {
+    setFooter({
+      links: data.links,
+    });
+  }, [data]);
 
   const handleUpdateFooter = (event) => {
     if (event.origin !== "http://localhost:3000") return;
@@ -27,7 +31,7 @@ export default function Footer({ id, data }) {
           <div>
             <p className="text-lg mb-3 font-medium">Links</p>
             <ul className="flex flex-col space-y-1">
-              {footer.links.map((link, index) => (
+              {footer.links?.map((link, index) => (
                 <li
                   key={index}
                   className="cursor-pointer hover:text-primary-blue"
