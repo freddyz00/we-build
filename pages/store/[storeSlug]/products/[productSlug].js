@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
@@ -14,7 +13,7 @@ export default function Product() {
   const router = useRouter();
   const { storeSlug, productSlug } = router.query;
 
-  const [productDetails, setProductDetails] = useState({});
+  const [productDetails, setProductDetails] = useState([]);
 
   const [productCount, setProductCount] = useState(1);
 
