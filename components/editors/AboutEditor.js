@@ -50,7 +50,7 @@ export default function AboutEditor({ id, iframeRef }) {
         <div className="flex items-center space-x-2 border-b border-solid p-3">
           <div
             onClick={() => setEditingSection([...editingSection].slice(0, -1))}
-            className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
+            className="hover:bg-slate-200 p-1.5 rounded cursor-pointer transition"
           >
             <MdOutlineArrowBackIos />
           </div>

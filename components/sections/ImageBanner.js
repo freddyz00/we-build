@@ -46,7 +46,7 @@ export default function ImageBanner({ id, data }) {
 
       <button
         onClick={() => router.push(`/store/${storeSlug}/products`)}
-        className="bg-primary-blue hover:bg-darker-blue px-5 py-3 rounded-lg text-white"
+        className="bg-primary-blue hover:bg-darker-blue px-5 py-3 rounded-lg text-white transition"
       >
         {imageBanner.buttonLabel}
       </button>

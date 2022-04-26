@@ -34,7 +34,7 @@ export default function Footer({ id, data }) {
               {footer.links?.map((link, index) => (
                 <li
                   key={index}
-                  className="cursor-pointer hover:text-primary-blue"
+                  className="cursor-pointer hover:text-primary-blue transition"
                 >
                   {link}
                 </li>

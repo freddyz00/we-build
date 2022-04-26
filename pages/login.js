@@ -7,18 +7,15 @@ export default function Home() {
   };
   return (
     <div className="grid place-items-center h-screen">
-      <button
-        onClick={signInWithGoogle}
-        className="px-5 py-3 text-white bg-primary-blue hover:bg-darker-blue transition rounded-lg"
-      >
-        Sign In With Google
-      </button>
-      <button
-        onClick={signOut}
-        className="px-5 py-3 text-white bg-primary-blue hover:bg-darker-blue transition rounded-lg"
-      >
-        Sign Out
-      </button>
+      <div className="flex flex-col mb-20">
+        <img src="/we-build-logo.png" alt="" className="h-[300px]" />
+        <button
+          onClick={signInWithGoogle}
+          className="text-white text-2xl self-center bg-primary-blue hover:bg-darker-blue rounded-xl px-10 py-4 transition"
+        >
+          Sign In With Google
+        </button>
+      </div>
     </div>
   );
 }

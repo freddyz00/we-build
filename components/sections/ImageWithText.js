@@ -45,7 +45,7 @@ export default function ImageWithText({ id, data }) {
         <p className="leading-8 break-all">{imageWithText.subheading}</p>
         <button
           onClick={() => router.push(`/store/${storeSlug}/products`)}
-          className="bg-primary-blue hover:bg-darker-blue px-5 py-3 rounded-lg text-white self-start"
+          className="bg-primary-blue hover:bg-darker-blue px-5 py-3 rounded-lg text-white self-start transition"
         >
           {imageWithText.buttonLabel}
         </button>

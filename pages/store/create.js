@@ -60,7 +60,7 @@ export default function CreateStore() {
           <button
             className={classNames("text-white rounded-lg px-5 py-2", {
               "bg-gray-300 ": loading,
-              "bg-primary-blue hover:bg-darker-blue": !loading,
+              "bg-primary-blue hover:bg-darker-blue transition": !loading,
             })}
           >
             {!loading && "Create Store"}

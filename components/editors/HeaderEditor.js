@@ -80,7 +80,7 @@ export default function HeaderEditor({ id, iframeRef }) {
               onClick={() =>
                 setEditingSection([...editingSection].slice(0, -1))
               }
-              className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
+              className="hover:bg-slate-200 p-1.5 rounded cursor-pointer transition"
             >
               <MdOutlineArrowBackIos />
             </div>
@@ -96,7 +96,7 @@ export default function HeaderEditor({ id, iframeRef }) {
               }}
               className="image-preview grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition object-cover"
             >
-              <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid">
+              <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid transition">
                 Select Image
               </button>
             </div>
@@ -182,7 +182,7 @@ export default function HeaderEditor({ id, iframeRef }) {
                           links: [...header.links, "New Link"],
                         });
                       }}
-                      className="text-primary-blue hover:bg-slate-200 border-b border-x border-solid px-5 py-1.5 cursor-pointer"
+                      className="text-primary-blue hover:bg-slate-200 border-b border-x border-solid px-5 py-1.5 cursor-pointer transition"
                     >
                       Add Link
                     </li>

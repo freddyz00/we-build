@@ -55,7 +55,7 @@ export default function ImageSelector({ data, setData, close }) {
       <div className="flex items-center space-x-2 border-b border-solid p-3">
         <div
           onClick={close}
-          className="hover:bg-slate-200 p-1.5 rounded cursor-pointer"
+          className="hover:bg-slate-200 p-1.5 rounded cursor-pointer transition"
         >
           <MdOutlineArrowBackIos />
         </div>
@@ -66,7 +66,7 @@ export default function ImageSelector({ data, setData, close }) {
       <div className="grid grid-cols-2 p-3 gap-2 overflow-y-auto">
         <button
           onClick={showImageUploader}
-          className="flex flex-col items-center justify-center bg-neutral-100 aspect-square border-2 border-dashed border-neutral-300 hover:border-primary-blue cursor-pointer"
+          className="flex flex-col items-center justify-center bg-neutral-100 aspect-square border-2 border-dashed border-neutral-300 hover:border-primary-blue cursor-pointer transition"
         >
           <MdOutlineFileUpload className="text-2xl" />
           <p className="select-none">Upload</p>
@@ -83,7 +83,7 @@ export default function ImageSelector({ data, setData, close }) {
           <div
             onClick={() => handleImageSelect(image)}
             className={classNames(
-              "bg-neutral-200 aspect-square hover:opacity-70 cursor-pointer",
+              "bg-neutral-200 aspect-square hover:opacity-70 cursor-pointer transition",
               {
                 "border-4 border-solid border-primary-blue":
                   data.image?.asset._ref === image.asset._ref,

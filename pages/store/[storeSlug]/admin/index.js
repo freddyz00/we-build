@@ -72,9 +72,9 @@ export default function Admin({ user }) {
 
   return (
     <div className="flex flex-col h-screen bg-neutral-100">
-      <header className="flex justify-between items-center bg-white px-5 h-12 border-b border-solid border-slate-200 shadow-sm z-10">
+      <header className="flex justify-between items-center bg-white px-5 h-16 border-b border-solid border-slate-200 shadow-sm z-10">
         <div>
-          <p className="text-lg font-medium">WeBuild</p>
+          <img src="/we-build-logo.png" className="h-16" />
         </div>
         <div className="flex items-center">
           <Popup
@@ -82,8 +82,8 @@ export default function Admin({ user }) {
               <div className="flex justify-self-end">
                 <Image
                   src={user.image}
-                  width="30"
-                  height="30"
+                  width="35"
+                  height="35"
                   className="rounded-full cursor-pointer"
                 />
               </div>
@@ -108,8 +108,8 @@ export default function Admin({ user }) {
 
               {/* logout */}
               <div
-                className="flex items-center hover:bg-slate-200 cursor-pointer mt-2 rounded px-3 py-2"
-                onClick={() => signOut({ callbackUrl: "/login" })}
+                className="flex items-center hover:bg-slate-200 cursor-pointer mt-2 rounded px-3 py-2 transition"
+                onClick={() => signOut({ callbackUrl: "/" })}
               >
                 <BiLogOut className="text-2xl mr-2" />
                 <p>Logout</p>
@@ -124,12 +124,12 @@ export default function Admin({ user }) {
           <h2 className="text-2xl font-medium">My Online Store</h2>
           <div className="flex space-x-5">
             <Link href={`/store/${storeSlug}`}>
-              <a className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue">
+              <a className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue transition">
                 View Store
               </a>
             </Link>
             <Link href={`/store/${storeSlug}/admin/editor`}>
-              <a className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue">
+              <a className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue transition">
                 Edit Store
               </a>
             </Link>
@@ -139,7 +139,7 @@ export default function Admin({ user }) {
           <h2 className="text-2xl font-medium">Products</h2>
           <button
             onClick={() => setOpen(true)}
-            className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue"
+            className="text-white rounded-lg px-5 py-2 bg-primary-blue hover:bg-darker-blue transition"
           >
             Add Product
           </button>
@@ -233,7 +233,7 @@ export default function Admin({ user }) {
                       className="border border-solid border-slate-300 px-3 py-1.5 rounded"
                     />
                   </div>
-                  <button className="bg-primary-blue hover:bg-darker-blue px-5 py-2 rounded-lg text-white self-end ">
+                  <button className="bg-primary-blue hover:bg-darker-blue px-5 py-2 rounded-lg text-white self-end transition">
                     Add
                   </button>
                 </form>
@@ -285,7 +285,7 @@ export default function Admin({ user }) {
                           position="bottom center"
                           nested
                           trigger={
-                            <div className="p-1 rounded cursor-pointer hover:bg-neutral-100">
+                            <div className="p-1 rounded cursor-pointer hover:bg-neutral-100 transition">
                               <BsThreeDots />
                             </div>
                           }
@@ -296,8 +296,8 @@ export default function Admin({ user }) {
                                 modal
                                 onClose={closePopup}
                                 trigger={
-                                  <div className="group p-3 cursor-pointer hover:bg-red-500 rounded-md">
-                                    <p className="text-red-500 group-hover:text-white">
+                                  <div className="group p-3 cursor-pointer hover:bg-red-500 rounded-md transition">
+                                    <p className="text-red-500 group-hover:text-white transition">
                                       Remove Product
                                     </p>
                                   </div>
@@ -328,13 +328,13 @@ export default function Admin({ user }) {
                                             closePopup
                                           )
                                         }
-                                        className="px-5 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg border-none"
+                                        className="px-5 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg border-none transition"
                                       >
                                         Delete
                                       </button>
                                       <button
                                         onClick={closeModal}
-                                        className="px-5 py-2 bg-neutral-300 hover:bg-neutral-400 rounded-lg "
+                                        className="px-5 py-2 bg-neutral-300 hover:bg-neutral-400 rounded-lg transition"
                                       >
                                         Cancel
                                       </button>

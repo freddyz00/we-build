@@ -63,33 +63,35 @@ export default function Editor() {
   return (
     <div className="flex flex-col h-screen">
       {/* top header */}
-      <div className="flex justify-between items-center px-5 h-12 border-b border-solid border-slate-200 shadow-sm z-10">
+      <header className="flex justify-between items-center px-5 h-16 border-b border-solid border-slate-200 shadow-sm z-10">
         <div className="flex items-center">
           <div
             onClick={() => router.back()}
-            className="p-1 rounded cursor-pointer hover:bg-neutral-200 mr-3"
+            className="p-1 rounded cursor-pointer hover:bg-neutral-200 mr-3 transition"
           >
             <MdExitToApp className="text-2xl -scale-100" />
           </div>
-          <p className="text-lg font-medium">WeBuild</p>
+          <p className="text-lg font-medium">
+            <img src="/we-build-logo.png" className="h-16" alt="Logo" />
+          </p>
         </div>
         <div className="flex justify-end items-center space-x-5 ">
           <Link href={`/store/${storeSlug}`}>
-            <a className="hover:text-primary-blue">Preview</a>
+            <a className="hover:text-primary-blue transition">Preview</a>
           </Link>
           <button
             onClick={handleSaveData}
             disabled={loading}
             className={classNames("text-white rounded-lg px-5 py-2", {
               "bg-gray-300 ": loading,
-              "bg-primary-blue hover:bg-darker-blue": !loading,
+              "bg-primary-blue hover:bg-darker-blue transition": !loading,
             })}
           >
             {!loading && "Save"}
             <PulseLoader loading={loading} color="white" size={6} />
           </button>
         </div>
-      </div>
+      </header>
 
       <div className="flex-1 flex bg-stone-100">
         {/* side control panel */}

@@ -50,7 +50,10 @@ export default function Header({ id, data }) {
         </div>
         <ul className="flex items-center space-x-7">
           {header.links?.map((link, index) => (
-            <li className="cursor-pointer hover:text-primary-blue" key={index}>
+            <li
+              className="cursor-pointer hover:text-primary-blue transition"
+              key={index}
+            >
               <Link
                 href={
                   link === "Shop" && storeSlug
@@ -62,7 +65,7 @@ export default function Header({ id, data }) {
               </Link>
             </li>
           ))}
-          <li className="cursor-pointer hover:text-primary-blue">
+          <li className="cursor-pointer hover:text-primary-blue transition">
             <RiShoppingBag3Line className="text-2xl font-light" />
           </li>
         </ul>

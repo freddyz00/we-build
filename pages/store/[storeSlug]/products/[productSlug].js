@@ -98,7 +98,7 @@ export default function Product() {
               </div>
 
               {/* add to cart */}
-              <button className="text-white  py-3 bg-primary-blue hover:bg-darker-blue">
+              <button className="text-white  py-3 bg-primary-blue hover:bg-darker-blue transition">
                 Add To Cart
               </button>
 
