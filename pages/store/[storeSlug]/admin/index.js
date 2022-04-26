@@ -9,6 +9,7 @@ import { urlFor } from "../../../../lib/sanity";
 
 import Popup from "reactjs-popup";
 import { BiLogOut } from "react-icons/bi";
+import { BsThreeDots } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
 import classNames from "classnames";
 
@@ -22,21 +23,40 @@ export default function Admin({ user }) {
   const [newProductTitle, setNewProductTitle] = useState("");
   const [newProductDescription, setNewProductDescription] = useState("");
   const [newProductPrice, setNewProductPrice] = useState();
+  const [newImageFile, setNewImageFile] = useState();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setOpen(false);
+
+    const formData = new FormData();
+    formData.append("title", newProductTitle);
+    formData.append("description", newProductDescription);
+    formData.append("price", newProductPrice);
+    formData.append("storeSlug", storeSlug);
+
+    if (newImageFile) {
+      formData.append("image", newImageFile);
+    }
+
     const res = await fetch(`/api/add-product`, {
       method: "POST",
-      body: JSON.stringify({
-        title: newProductTitle,
-        description: newProductDescription,
-        price: newProductPrice,
-        storeSlug: storeSlug,
-      }),
+      body: formData,
     });
+    console.log(res);
     const data = await res.json();
     setProducts([...products, data.result]);
+  };
+
+  const handleDelete = async (productId, closeModal) => {
+    closeModal();
+
+    const res = await fetch(`/api/delete-product`, {
+      method: "DELETE",
+      body: JSON.stringify({ productId }),
+    });
+
+    setProducts(products.filter((product) => product._id !== productId));
   };
 
   // get all products
@@ -46,7 +66,6 @@ export default function Admin({ user }) {
       const res = await fetch(`/api/get-all-products?storeSlug=${storeSlug}`);
       if (!res.ok) return;
       const data = await res.json();
-      console.log(data);
       setProducts(data);
     })();
   }, [router.isReady]);
@@ -126,7 +145,13 @@ export default function Admin({ user }) {
           </button>
           <Popup
             open={open}
-            onClose={() => setOpen(false)}
+            onClose={() => {
+              setOpen(false);
+              setNewProductTitle("");
+              setNewProductDescription("");
+              setNewImageFile("");
+              setNewProductPrice("");
+            }}
             modal
             contentStyle={{
               backgroundColor: "white",
@@ -147,6 +172,7 @@ export default function Admin({ user }) {
                   className="flex flex-col space-y-3"
                   onSubmit={handleSubmit}
                 >
+                  {/* title */}
                   <div className="flex flex-col">
                     <label>Title</label>
                     <input
@@ -159,6 +185,7 @@ export default function Admin({ user }) {
                       className="border border-solid border-slate-300 px-3 py-1.5 rounded"
                     />
                   </div>
+                  {/* description */}
                   <div className="flex flex-col">
                     <label>Description</label>
                     <textarea
@@ -171,10 +198,28 @@ export default function Admin({ user }) {
                       className="border border-solid border-slate-300 px-3 py-1.5 rounded"
                     ></textarea>
                   </div>
-                  <div className="flex flex-col">
-                    <label>Image</label>
-                    <input type="file" accept="image/*" />
+                  {/* image */}
+                  <div className="flex justify-between">
+                    <div className="flex flex-col">
+                      <label>Image</label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onInput={(event) => {
+                          setNewImageFile(event.target.files[0]);
+                        }}
+                      />
+                    </div>
+                    {newImageFile && (
+                      <div className="w-20 h-20">
+                        <img
+                          src={URL.createObjectURL(newImageFile)}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    )}
                   </div>
+                  {/* price */}
                   <div className="flex flex-col">
                     <label>Price</label>
                     <input
@@ -205,18 +250,16 @@ export default function Admin({ user }) {
                   <th className="w-1/4 font-medium py-2">Product</th>
                   <th className=" font-medium py-2">Description</th>
                   <th className="w-20 font-medium py-2">Price</th>
+                  <th className="w-20"></th>
                 </tr>
               </thead>
               <tbody>
                 {products.map((product, index) => (
                   <tr
                     key={index}
-                    className={classNames(
-                      "border-solid border-gray-300 cursor-pointer",
-                      {
-                        "border-b": index !== products.length - 1,
-                      }
-                    )}
+                    className={classNames("border-solid border-gray-300", {
+                      "border-b": index !== products.length - 1,
+                    })}
                   >
                     <td className="py-2">
                       <div className="w-12 h-12 border rounded mx-auto">
@@ -232,9 +275,78 @@ export default function Admin({ user }) {
                     </td>
                     <td className="py-2">{product?.title}</td>
                     <td className="py-2">
-                      {product?.description?.slice(0, 50)}...
+                      {product?.description?.slice(0, 70)}
+                      {product?.description?.length > 70 && "..."}
                     </td>
                     <td className="py-2">${product?.price?.toFixed(2)}</td>
+                    <td className="py-2">
+                      <div className="flex items-center justify-center">
+                        <Popup
+                          position="bottom center"
+                          nested
+                          trigger={
+                            <div className="p-1 rounded cursor-pointer hover:bg-neutral-100">
+                              <BsThreeDots />
+                            </div>
+                          }
+                        >
+                          {(closePopup) => (
+                            <div className="bg-white rounded-md shadow border border-slate-200 border-solid">
+                              <Popup
+                                modal
+                                onClose={closePopup}
+                                trigger={
+                                  <div className="group p-3 cursor-pointer hover:bg-red-500 rounded-md">
+                                    <p className="text-red-500 group-hover:text-white">
+                                      Remove Product
+                                    </p>
+                                  </div>
+                                }
+                                contentStyle={{
+                                  backgroundColor: "white",
+                                  width: "50%",
+                                  borderRadius: "10px",
+                                }}
+                                overlayStyle={{
+                                  backgroundColor: "rgba(0,0,0,0.5)",
+                                }}
+                              >
+                                {(closeModal) => (
+                                  <div className="flex flex-col space-y-10 p-5">
+                                    <div>
+                                      <p className="text-xl">
+                                        Are you sure you want to delete this
+                                        product?
+                                      </p>
+                                    </div>
+                                    <div className="flex space-x-5 self-end">
+                                      <button
+                                        onClick={() =>
+                                          handleDelete(
+                                            product._id,
+                                            closeModal,
+                                            closePopup
+                                          )
+                                        }
+                                        className="px-5 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg border-none"
+                                      >
+                                        Delete
+                                      </button>
+                                      <button
+                                        onClick={closeModal}
+                                        className="px-5 py-2 bg-neutral-300 hover:bg-neutral-400 rounded-lg "
+                                      >
+                                        Cancel
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
+                              </Popup>
+                            </div>
+                          )}
+                        </Popup>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>

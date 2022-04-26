@@ -4,7 +4,6 @@ import { MdOutlineArrowBackIos, MdOutlineFileUpload } from "react-icons/md";
 
 import classNames from "classnames";
 import { urlFor } from "../../lib/sanity";
-import imageBanner from "../../webuild/schemas/imageBanner";
 
 export default function ImageSelector({ data, setData, close }) {
   const [images, setImages] = useState([]);

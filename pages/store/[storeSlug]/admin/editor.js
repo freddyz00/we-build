@@ -6,6 +6,7 @@ import { getSession } from "next-auth/react";
 
 import PulseLoader from "react-spinners/PulseLoader";
 import ControlPanel from "../../../../components/ControlPanel";
+import { MdExitToApp } from "react-icons/md";
 
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { sectionsState } from "../../../../atoms/sectionsAtom";
@@ -63,7 +64,13 @@ export default function Editor() {
     <div className="flex flex-col h-screen">
       {/* top header */}
       <div className="flex justify-between items-center px-5 h-12 border-b border-solid border-slate-200 shadow-sm z-10">
-        <div>
+        <div className="flex items-center">
+          <div
+            onClick={() => router.back()}
+            className="p-1 rounded cursor-pointer hover:bg-neutral-200 mr-3"
+          >
+            <MdExitToApp className="text-2xl -scale-100" />
+          </div>
           <p className="text-lg font-medium">WeBuild</p>
         </div>
         <div className="flex justify-end items-center space-x-5 ">

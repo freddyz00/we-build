@@ -82,5 +82,5 @@ export default async function handler(req, res) {
 
     return res.status(201).json({ slug: storeResult.slug });
   }
-  return res.status(403).json({});
+  return res.status(405).json({});
 }
