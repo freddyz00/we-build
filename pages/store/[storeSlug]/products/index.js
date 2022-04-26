@@ -49,7 +49,7 @@ export default function Products() {
         <title>{headTitle && `Products - ${headTitle} - By `}WeBuild</title>
       </Head>
       {header && <Header id={header._key} data={header} />}
-      {products.length > 0 && (
+      {products.length > 0 ? (
         <div className="container mx-auto my-12 flex-1 lg:max-w-6xl">
           <h1 className="text-3xl mb-10">All Products</h1>
           <div className="grid grid-cols-4 gap-x-5 gap-y-10">
@@ -82,6 +82,8 @@ export default function Products() {
             ))}
           </div>
         </div>
+      ) : (
+        <div className="flex-1"></div>
       )}
       {footer && <Footer id={footer._key} data={footer} />}
     </div>

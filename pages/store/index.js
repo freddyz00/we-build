@@ -28,7 +28,7 @@ export async function getServerSideProps(context) {
   if (data[0].store) {
     return {
       redirect: {
-        destination: `/store/${data[0].store.slug}/admin/editor`,
+        destination: `/store/${data[0].store.slug}/admin`,
         permanent: false,
       },
     };

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 import { getSession, signOut } from "next-auth/react";
 
-import { urlFor } from "../../../../lib/sanity";
+import { sanityClient, urlFor } from "../../../../lib/sanity";
 
 import Popup from "reactjs-popup";
 import { BiLogOut } from "react-icons/bi";
@@ -44,7 +44,6 @@ export default function Admin({ user }) {
       method: "POST",
       body: formData,
     });
-    console.log(res);
     const data = await res.json();
     setProducts([...products, data.result]);
   };
@@ -85,7 +84,7 @@ export default function Admin({ user }) {
             trigger={
               <div className="flex justify-self-end">
                 <Image
-                  src={user.image}
+                  src={user?.image}
                   width="35"
                   height="35"
                   className="rounded-full cursor-pointer"
@@ -364,11 +363,28 @@ export default function Admin({ user }) {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+  const { storeSlug } = context.query;
 
   if (!session) {
     return {
       redirect: {
         destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  // check to see if logged in user is the owner of the store
+  const query = `*[_type == "store" && slug=="${storeSlug}"][0]{
+    "ownerEmail": owner -> email
+  }`;
+  const data = await sanityClient.fetch(query);
+
+  // redirect if user is not the owner of the store
+  if (data.ownerEmail !== session.user.email) {
+    return {
+      redirect: {
+        destination: `/store/${storeSlug}`,
         permanent: false,
       },
     };

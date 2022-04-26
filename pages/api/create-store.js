@@ -19,6 +19,7 @@ export default async function handler(req, res) {
 
     // check if user already has a store
     const userQuery = `*[_type == "user" && email == "${session.user.email}"]{
+      _id,
       store ->
     }`;
     const userData = await sanityClient.fetch(userQuery);

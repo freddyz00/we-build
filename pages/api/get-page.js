@@ -7,6 +7,5 @@ export default async function handler(req, res) {
     name
   }`;
   const data = await sanityClient.fetch(query);
-  console.log(data);
   res.status(200).json(data);
 }

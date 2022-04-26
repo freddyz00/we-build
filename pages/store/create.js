@@ -30,7 +30,7 @@ export default function CreateStore() {
 
     if (result.status === 201) {
       const data = await result.json();
-      router.push(`/store/${data.slug}/admin/editor`);
+      router.push(`/store/${data.slug}/admin`);
     }
   };
 
