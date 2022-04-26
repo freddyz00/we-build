@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
@@ -72,6 +73,9 @@ export default function Admin({ user }) {
 
   return (
     <div className="flex flex-col h-screen bg-neutral-100">
+      <Head>
+        <title>Admin - WeBuild</title>
+      </Head>
       <header className="flex justify-between items-center bg-white px-5 h-16 border-b border-solid border-slate-200 shadow-sm z-10">
         <div>
           <img src="/we-build-logo.png" className="h-16" />

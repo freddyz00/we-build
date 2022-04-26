@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Head from "next/head";
 import classNames from "classnames";
 import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -62,6 +63,9 @@ export default function Editor() {
 
   return (
     <div className="flex flex-col h-screen">
+      <Head>
+        <title>Editor - WeBuild</title>
+      </Head>
       {/* top header */}
       <header className="flex justify-between items-center px-5 h-16 border-b border-solid border-slate-200 shadow-sm z-10">
         <div className="flex items-center">

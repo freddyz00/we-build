@@ -1,8 +1,12 @@
 import Link from "next/link";
+import Head from "next/head";
 
 export default function Home() {
   return (
     <div className="flex flex-col h-screen">
+      <Head>
+        <title>Create Your E-commerce Store - WeBuild</title>
+      </Head>
       <header className="flex justify-between items-center bg-white px-5 h-16 border-b border-solid border-slate-200 shadow-sm z-10">
         <div>
           <img src="/we-build-logo.png" className="h-16" />

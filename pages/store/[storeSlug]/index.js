@@ -1,5 +1,6 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { sectionsState } from "../../../atoms/sectionsAtom";
 import { storeSlugState } from "../../../atoms/storeSlugAtom";
@@ -8,6 +9,7 @@ import * as SectionComponents from "../../../components/sections";
 export default function Preview() {
   const router = useRouter();
   const { storeSlug } = router.query;
+  const [headTitle, setHeadTitle] = useState();
   const [sections, setSections] = useRecoilState(sectionsState);
   const setStoreSlug = useSetRecoilState(storeSlugState);
 
@@ -20,9 +22,10 @@ export default function Preview() {
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-page?slug=${storeSlug}`
       );
       if (!res.ok) return;
-      const { page } = await res.json();
+      const { page, name } = await res.json();
       setSections(page.sections);
       setStoreSlug(storeSlug);
+      setHeadTitle(name);
     })();
   }, [router.isReady]);
 
@@ -43,14 +46,14 @@ export default function Preview() {
 
   return (
     <div className="bg-white min-h-screen">
+      <Head>
+        <title>{headTitle && `${headTitle} - By `}WeBuild</title>
+      </Head>
       {sections.map((section, index) => {
         const SectionComponent = SectionComponents[section._type];
         return (
           <div key={index}>
             <SectionComponent id={section._key} data={section} />
-            {/* {section._type !== "header" && section._type !== "footer" && (
-          <SectionSpacing />
-        )} */}
           </div>
         );
       })}

@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
@@ -6,6 +5,7 @@ import Header from "../../../../components/sections/Header";
 import Footer from "../../../../components/sections/Footer";
 import { urlFor } from "../../../../lib/sanity";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function Products() {
   const [header, setHeader] = useState();
@@ -14,6 +14,7 @@ export default function Products() {
   const router = useRouter();
   const { storeSlug } = router.query;
 
+  const [headTitle, setHeadTitle] = useState();
   const [products, setProducts] = useState([]);
 
   // get store header and footer
@@ -24,9 +25,10 @@ export default function Products() {
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-page?slug=${storeSlug}`
       );
       if (!res.ok) return;
-      const { sections } = (await res.json()).page;
-      setHeader(sections[0]);
-      setFooter(sections[sections.length - 1]);
+      const { page, name } = await res.json();
+      setHeader(page.sections[0]);
+      setFooter(page.sections[page.sections.length - 1]);
+      setHeadTitle(name);
     })();
   }, [router.isReady]);
 
@@ -43,6 +45,9 @@ export default function Products() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Head>
+        <title>{headTitle && `Products - ${headTitle} - By `}WeBuild</title>
+      </Head>
       {header && <Header id={header._key} data={header} />}
       {products.length > 0 && (
         <div className="container mx-auto my-12 flex-1 lg:max-w-6xl">

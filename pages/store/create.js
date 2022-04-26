@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
+import Head from "next/head";
 
 import classNames from "classnames";
 import PulseLoader from "react-spinners/PulseLoader";
@@ -35,6 +36,9 @@ export default function CreateStore() {
 
   return (
     <div className="h-screen grid place-items-center">
+      <Head>
+        <title>Create A New Store - WeBuild</title>
+      </Head>
       <div className="flex flex-col space-y-10 w-1/2 max-w-xl p-10 border border-solid border-gray-300 rounded-md shadow">
         <div>
           <h1 className="text-3xl font-medium mb-3">Create a store</h1>

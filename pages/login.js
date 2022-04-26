@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
-import { signIn, signOut, getSession } from "next-auth/react";
+import React from "react";
+import { signIn, getSession } from "next-auth/react";
+import Head from "next/head";
 
 export default function Home() {
   const signInWithGoogle = () => {
@@ -7,6 +8,9 @@ export default function Home() {
   };
   return (
     <div className="grid place-items-center h-screen">
+      <Head>
+        <title>Login - WeBuild</title>
+      </Head>
       <div className="flex flex-col mb-20">
         <img src="/we-build-logo.png" alt="" className="h-[300px]" />
         <button
