@@ -3,11 +3,10 @@ import multer from "multer";
 import { createReadStream, unlink } from "fs";
 import { sanityClient } from "../../lib/sanity";
 import { slugify } from "../../lib/utils";
-import { nanoid } from "nanoid";
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "./public/uploads",
+    destination: "./public",
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 });

@@ -6,7 +6,7 @@ import { sanityClient } from "../../lib/sanity";
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "./public/uploads",
+    destination: "./public",
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 });

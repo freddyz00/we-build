@@ -30,7 +30,7 @@ export default function Preview() {
   }, [router.isReady, sections.length, setSections, setStoreSlug, storeSlug]);
 
   const handleUpdateSections = (event) => {
-    if (event.origin !== "http://localhost:3000") return;
+    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
     if (event.data.section === "sections") {
       return setSections(event.data.payload);
     }
