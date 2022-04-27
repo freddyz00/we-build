@@ -204,6 +204,7 @@ export default function HeaderEditor({ id, iframeRef }) {
             background-image: url(${header.image
               ? urlFor(header.image).width(300).url()
               : null});
+            background-position: center;
           }
         `}</style>
       </div>

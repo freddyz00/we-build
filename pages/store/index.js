@@ -25,10 +25,10 @@ export async function getServerSideProps(context) {
   const data = await sanityClient.fetch(query);
 
   // redirect to store editor if user has a store
-  if (data[0].store) {
+  if (data[0]?.store) {
     return {
       redirect: {
-        destination: `/store/${data[0].store.slug}/admin`,
+        destination: `/store/${data[0]?.store?.slug}/admin`,
         permanent: false,
       },
     };

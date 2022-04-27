@@ -18,8 +18,9 @@ export default function ImageBanner({ id, data }) {
   const router = useRouter();
 
   const handleUpdateImageBanner = (event) => {
-    if (event.origin !== "http://localhost:3000") return;
+    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
     if (event.data.section === "imageBanner" && event.data.id === id) {
+      console.log("123");
       return setImageBanner(event.data.payload);
     }
   };

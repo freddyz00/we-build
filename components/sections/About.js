@@ -7,7 +7,7 @@ export default function About({ id, data }) {
   });
 
   const handleUpdateAbout = (event) => {
-    if (event.origin !== "http://localhost:3000") return;
+    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
     if (event.data.section === "about" && event.data.id === id) {
       return setAbout(event.data.payload);
     }

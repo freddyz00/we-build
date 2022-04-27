@@ -15,7 +15,9 @@ export default function ImageSelector({ data, setData, close }) {
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-user`
       );
       const data = await res.json();
-      setImages(data.pageImages);
+      if (data.pageImages) {
+        setImages(data.pageImages);
+      }
     })();
   }, []);
 
@@ -78,7 +80,7 @@ export default function ImageSelector({ data, setData, close }) {
           accept="image/*"
           className="hidden"
         />
-        {images.map((image) => (
+        {images?.map((image) => (
           <div
             key={image._key}
             onClick={() => handleImageSelect(image)}

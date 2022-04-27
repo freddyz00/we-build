@@ -16,7 +16,7 @@ export default function ImageWithText({ id, data }) {
   const router = useRouter();
 
   const handleUpdateImageWithText = (event) => {
-    if (event.origin !== "http://localhost:3000") return;
+    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
     if (event.data.section === "imageWithText" && event.data.id === id) {
       return setImageWithText(event.data.payload);
     }

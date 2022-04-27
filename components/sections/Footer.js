@@ -10,7 +10,7 @@ export default function Footer({ id, data }) {
   }, [data]);
 
   const handleUpdateFooter = (event) => {
-    if (event.origin !== "http://localhost:3000") return;
+    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
     if (event.data.section === "footer" && event.data.id === id) {
       return setFooter(event.data.payload);
     }

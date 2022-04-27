@@ -135,6 +135,7 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
             background-image: url(${imageWithText.image
               ? urlFor(imageWithText.image).width(300).url()
               : null});
+            background-position: center;
           }
         `}</style>
       </div>

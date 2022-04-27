@@ -155,6 +155,7 @@ export default function ImageBannerEditor({ id, iframeRef }) {
             background-image: url(${imageBanner.image
               ? urlFor(imageBanner.image).width(300).url()
               : null});
+            background-position: center;
           }
         `}</style>
       </div>

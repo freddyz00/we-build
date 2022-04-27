@@ -19,7 +19,7 @@ export default function Header({ id, data }) {
   }, [data]);
 
   const handleUpdateHeader = (event) => {
-    if (event.origin !== "http://localhost:3000") return;
+    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
     if (event.data.section === "header" && event.data.id === id) {
       return setHeader(event.data.payload);
     }
