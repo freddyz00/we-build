@@ -35,7 +35,7 @@ export default function ImageBannerEditor({ id, iframeRef }) {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
       { id, section: "imageBanner", payload: imageBanner },
-      "http://localhost:3000"
+      process.env.NEXT_PUBLIC_BASE_URL
     );
   }, [imageBanner]);
 

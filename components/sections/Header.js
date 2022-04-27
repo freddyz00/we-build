@@ -19,7 +19,6 @@ export default function Header({ id, data }) {
   }, [data]);
 
   const handleUpdateHeader = (event) => {
-    console.log("update", event);
     if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
     if (event.data.section === "header" && event.data.id === id) {
       return setHeader(event.data.payload);

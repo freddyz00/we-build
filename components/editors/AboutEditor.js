@@ -23,7 +23,7 @@ export default function AboutEditor({ id, iframeRef }) {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
       { id, section: "about", payload: about },
-      "http://localhost:3000"
+      process.env.NEXT_PUBLIC_BASE_URL
     );
   }, [about]);
 

@@ -57,7 +57,7 @@ export default function Editor() {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
       { section: "sections", payload: sections },
-      "http://localhost:3000"
+      process.env.NEXT_PUBLIC_BASE_URL
     );
   }, [sections]);
 

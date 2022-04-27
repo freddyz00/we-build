@@ -43,7 +43,7 @@ export default function Footer({ id, iframeRef }) {
     if (!iframeRef.current) return;
     iframeRef.current.contentWindow.postMessage(
       { id, section: "footer", payload: footer },
-      "http://localhost:3000"
+      process.env.NEXT_PUBLIC_BASE_URL
     );
   }, [footer]);
 
