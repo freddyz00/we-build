@@ -47,6 +47,7 @@ export default function ImageBannerEditor({ id, iframeRef }) {
           return {
             ...section,
             image: imageBanner.image,
+            textColor: imageBanner.textColor,
             heading: imageBanner.heading,
             subheading: imageBanner.subheading,
             buttonLabel: imageBanner.buttonLabel,
