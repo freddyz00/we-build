@@ -21,10 +21,9 @@ export default function CreateStore() {
       body: JSON.stringify({ storeName }),
     });
 
-    setLoading(false);
-
     if (result.status === 409) {
       const data = await result.json();
+      setLoading(false);
       return setError(data.message);
     }
 
