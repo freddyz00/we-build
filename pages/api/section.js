@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { sanityClient } from "../../lib/sanity";
-import { defaultData } from "../../lib/defaultdata";
+import { defaultData } from "../../lib/defaultData";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
