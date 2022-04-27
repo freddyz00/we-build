@@ -50,7 +50,7 @@ export default function Editor() {
       setPageId(page._id);
       setStoreSlug(storeSlug);
     })();
-  }, [router.isReady]);
+  }, [router.isReady, setPageId, setSections, setStoreSlug, storeSlug]);
 
   // post message whenever sections changes
   useEffect(() => {

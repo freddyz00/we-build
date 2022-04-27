@@ -30,7 +30,7 @@ export default function Products() {
       setFooter(page.sections[page.sections.length - 1]);
       setHeadTitle(name);
     })();
-  }, [router.isReady]);
+  }, [router.isReady, storeSlug]);
 
   // get all products
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function Products() {
       const data = await res.json();
       setProducts(data);
     })();
-  }, [router.isReady]);
+  }, [router.isReady, storeSlug]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -56,9 +56,10 @@ export default function Products() {
             {/* products */}
             {products.map((product) => (
               <Link
+                key={product._id}
                 href={`/store/${storeSlug}/products/${product.slug.current}`}
               >
-                <div key={product._id} className="group cursor-pointer">
+                <div className="group cursor-pointer">
                   {/* image */}
                   <div className="aspect-square mb-3 overflow-hidden">
                     <img

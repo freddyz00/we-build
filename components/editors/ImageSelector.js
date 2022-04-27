@@ -7,7 +7,6 @@ import { urlFor } from "../../lib/sanity";
 
 export default function ImageSelector({ data, setData, close }) {
   const [images, setImages] = useState([]);
-
   const imageUploadRef = useRef(null);
 
   useEffect(() => {
@@ -81,6 +80,7 @@ export default function ImageSelector({ data, setData, close }) {
         />
         {images.map((image) => (
           <div
+            key={image._key}
             onClick={() => handleImageSelect(image)}
             className={classNames(
               "bg-neutral-200 aspect-square hover:opacity-70 cursor-pointer transition",

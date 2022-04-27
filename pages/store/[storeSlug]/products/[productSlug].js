@@ -43,7 +43,7 @@ export default function Product() {
       setFooter(page.sections[page.sections.length - 1]);
       setHeadTitle(name);
     })();
-  }, [router.isReady]);
+  }, [router.isReady, storeSlug]);
 
   // get product details
   useEffect(() => {
@@ -56,7 +56,7 @@ export default function Product() {
       const data = await res.json();
       setProductDetails(data);
     })();
-  }, [router.isReady]);
+  }, [router.isReady, productSlug, storeSlug]);
 
   return (
     <div className="flex flex-col min-h-screen">

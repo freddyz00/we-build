@@ -27,7 +27,7 @@ export default function Preview() {
       setStoreSlug(storeSlug);
       setHeadTitle(name);
     })();
-  }, [router.isReady]);
+  }, [router.isReady, sections.length, setSections, setStoreSlug, storeSlug]);
 
   const handleUpdateSections = (event) => {
     if (event.origin !== "http://localhost:3000") return;

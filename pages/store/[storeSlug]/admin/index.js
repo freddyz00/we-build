@@ -68,7 +68,7 @@ export default function Admin({ user }) {
       const data = await res.json();
       setProducts(data);
     })();
-  }, [router.isReady]);
+  }, [router.isReady, storeSlug]);
 
   return (
     <div className="flex flex-col h-screen bg-neutral-100">
