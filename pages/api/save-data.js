@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     const data = JSON.parse(await req.body);
     const { pageId, sections } = data;
 
-    sanityClient
+    await sanityClient
       .patch(pageId)
       .set({ sections })
       .commit()
