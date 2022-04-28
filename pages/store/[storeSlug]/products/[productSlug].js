@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Header from "../../../../components/sections/Header";
 import Footer from "../../../../components/sections/Footer";
 
+import { Image } from "cloudinary-react";
 import { urlFor } from "../../../../lib/sanity";
 import Head from "next/head";
 
@@ -58,6 +59,10 @@ export default function Product() {
     })();
   }, [router.isReady, productSlug, storeSlug]);
 
+  useEffect(() => {
+    console.log(productDetails);
+  }, [productDetails]);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Head>
@@ -73,14 +78,12 @@ export default function Product() {
           <div className="flex space-x-20">
             {/* image */}
             <div className="w-1/2">
-              <img
-                src={
-                  productDetails[0].image
-                    ? urlFor(productDetails[0].image).width(700).url()
-                    : null
-                }
+              <Image
+                cloudName="de9qmr17c"
+                publicId={productDetails[0].imageId}
                 className="w-full h-full object-contain object-top"
-                alt="Image of product"
+                width="1000"
+                crop="scale"
               />
             </div>
             {/* product details */}

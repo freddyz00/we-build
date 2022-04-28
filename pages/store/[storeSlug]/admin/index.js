@@ -1,17 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
+import { Image as CloudinaryImage } from "cloudinary-react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import { getSession, signOut } from "next-auth/react";
 
-import { sanityClient, urlFor } from "../../../../lib/sanity";
+import { sanityClient } from "../../../../lib/sanity";
 
 import Popup from "reactjs-popup";
 import { BiLogOut } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
+import { PulseLoader } from "react-spinners";
 import classNames from "classnames";
 
 export default function Admin({ user }) {
@@ -24,28 +26,37 @@ export default function Admin({ user }) {
   const [newProductTitle, setNewProductTitle] = useState("");
   const [newProductDescription, setNewProductDescription] = useState("");
   const [newProductPrice, setNewProductPrice] = useState();
-  const [newImageFile, setNewImageFile] = useState();
+  const [newFileString, setNewFileString] = useState("");
 
-  const handleSubmit = async (event) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleFileInput = (event) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onloadend = () => {
+      setNewFileString(reader.result);
+    };
+  };
+
+  const handleAddProduct = async (event) => {
     event.preventDefault();
-    setOpen(false);
+    setLoading(true);
 
-    const formData = new FormData();
-    formData.append("title", newProductTitle);
-    formData.append("description", newProductDescription);
-    formData.append("price", newProductPrice);
-    formData.append("storeSlug", storeSlug);
-
-    if (newImageFile) {
-      formData.append("image", newImageFile);
-    }
-
-    const res = await fetch(`/api/add-product`, {
+    const res = await fetch(`/api/add-product-2`, {
       method: "POST",
-      body: formData,
+      body: JSON.stringify({
+        title: newProductTitle,
+        description: newProductDescription,
+        fileString: newFileString,
+        price: newProductPrice,
+        storeSlug,
+      }),
     });
+
     const data = await res.json();
+    setLoading(false);
     setProducts([...products, data.result]);
+    setOpen(false);
   };
 
   const handleDelete = async (productId, closeModal) => {
@@ -152,7 +163,7 @@ export default function Admin({ user }) {
               setOpen(false);
               setNewProductTitle("");
               setNewProductDescription("");
-              setNewImageFile("");
+              setNewFileString("");
               setNewProductPrice("");
             }}
             modal
@@ -173,7 +184,7 @@ export default function Admin({ user }) {
                 </div>
                 <form
                   className="flex flex-col space-y-3"
-                  onSubmit={handleSubmit}
+                  onSubmit={handleAddProduct}
                 >
                   {/* title */}
                   <div className="flex flex-col">
@@ -208,15 +219,13 @@ export default function Admin({ user }) {
                       <input
                         type="file"
                         accept="image/*"
-                        onInput={(event) => {
-                          setNewImageFile(event.target.files[0]);
-                        }}
+                        onInput={handleFileInput}
                       />
                     </div>
-                    {newImageFile && (
+                    {newFileString && (
                       <div className="w-20 h-20">
                         <img
-                          src={URL.createObjectURL(newImageFile)}
+                          src={newFileString}
                           className="w-full h-full object-contain"
                         />
                       </div>
@@ -236,8 +245,19 @@ export default function Admin({ user }) {
                       className="border border-solid border-slate-300 px-3 py-1.5 rounded"
                     />
                   </div>
-                  <button className="bg-primary-blue hover:bg-darker-blue px-5 py-2 rounded-lg text-white self-end transition">
-                    Add
+                  <button
+                    disabled={loading}
+                    className={classNames(
+                      "text-white rounded-lg px-5 py-2 self-end",
+                      {
+                        "bg-gray-300 ": loading,
+                        "bg-primary-blue hover:bg-darker-blue transition":
+                          !loading,
+                      }
+                    )}
+                  >
+                    {!loading && "Add"}
+                    <PulseLoader loading={loading} color="white" size={6} />
                   </button>
                 </form>
               </div>
@@ -266,13 +286,12 @@ export default function Admin({ user }) {
                   >
                     <td className="py-2">
                       <div className="w-12 h-12 border rounded mx-auto">
-                        <img
-                          src={
-                            product.image
-                              ? urlFor(product?.image).width(100).url()
-                              : null
-                          }
-                          className="w-full h-full object-contain"
+                        <CloudinaryImage
+                          cloudName="de9qmr17c"
+                          publicId={product.imageId}
+                          className="w-full h-full object-cover object-center"
+                          width="100"
+                          crop="scale"
                         />
                       </div>
                     </td>

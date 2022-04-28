@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import Header from "../../../../components/sections/Header";
 import Footer from "../../../../components/sections/Footer";
 import { urlFor } from "../../../../lib/sanity";
+import { Image } from "cloudinary-react";
 import Link from "next/link";
 import Head from "next/head";
+import classNames from "classnames";
 
 export default function Products() {
   const [header, setHeader] = useState();
@@ -61,16 +63,23 @@ export default function Products() {
               >
                 <div className="group cursor-pointer">
                   {/* image */}
-                  <div className="aspect-square mb-3 overflow-hidden">
-                    <img
-                      src={
-                        product.image
-                          ? urlFor(product.image).width(300).url()
-                          : null
+                  <div
+                    className={classNames(
+                      "aspect-square mb-3 overflow-hidden",
+                      {
+                        "bg-neutral-200": !product.imageId,
                       }
-                      alt=""
-                      className="group-hover:scale-105 w-full h-full object-cover transition"
-                    />
+                    )}
+                  >
+                    {product.imageId && (
+                      <Image
+                        cloudName="de9qmr17c"
+                        publicId={product.imageId}
+                        className="w-full h-full object-contain object-center group-hover:scale-105 transition"
+                        width="500"
+                        crop="scale"
+                      />
+                    )}
                   </div>
 
                   {/* product details */}
