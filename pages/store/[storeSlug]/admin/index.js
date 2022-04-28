@@ -42,7 +42,7 @@ export default function Admin({ user }) {
     event.preventDefault();
     setLoading(true);
 
-    const res = await fetch(`/api/add-product-2`, {
+    const res = await fetch(`/api/add-product`, {
       method: "POST",
       body: JSON.stringify({
         title: newProductTitle,

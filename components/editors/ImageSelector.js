@@ -32,7 +32,7 @@ export default function ImageSelector({ data, setData, close }) {
     const reader = new FileReader();
     const file = reader.readAsDataURL(event.target.files[0]);
     reader.onloadend = async () => {
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload-image-2`, {
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload-image`, {
         method: "POST",
         body: JSON.stringify({ fileString: reader.result }),
       });

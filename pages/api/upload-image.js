@@ -1,62 +1,30 @@
-import nextConnect from "next-connect";
-import multer from "multer";
 import { getSession } from "next-auth/react";
-import { createReadStream, unlink } from "fs";
+import { cloudinary } from "../../lib/cloudinary";
 import { sanityClient } from "../../lib/sanity";
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: "./public",
-    filename: (req, file, cb) => cb(null, file.originalname),
-  }),
-});
+export default async function handler(req, res) {
+  if (req.method === "POST") {
+    // upload image to cloudinary
+    const { fileString } = JSON.parse(req.body);
+    const uploadResponse = await cloudinary.uploader.upload(fileString, {
+      upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
+    });
 
-const apiRoute = nextConnect({
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
-  },
-});
+    // get user id
+    const { user } = await getSession({ req });
+    const { _id: userId } = await sanityClient.fetch(
+      `*[_type == "user" && email == "${user.email}"][0]{_id}`
+    );
 
-const uploadMiddleware = upload.single("file");
+    // update user in sanity
+    await sanityClient
+      .patch(userId)
+      .setIfMissing({ pageImages: [] })
+      .append("pageImages", [uploadResponse.public_id])
+      .commit({ autoGenerateArrayKeys: true });
 
-apiRoute.use(uploadMiddleware);
+    return res.status(200).json({});
+  }
 
-apiRoute.post(async (req, res) => {
-  const file = req.file;
-  const { user } = await getSession({ req });
-  const { _id: userId } = await sanityClient.fetch(
-    `*[_type == "user" && email == "${user.email}"][0]{_id}`
-  );
-
-  sanityClient.assets
-    .upload("image", createReadStream(file.path), {
-      filename: file.originalname,
-    })
-    .then((imageAsset) => {
-      unlink(file.path, (error) => console.log(error));
-      return sanityClient
-        .patch(userId)
-        .setIfMissing({ pageImages: [] })
-        .insert("after", "pageImages[-1]", [
-          {
-            _type: "image",
-            asset: { _type: "reference", _ref: imageAsset._id },
-          },
-        ])
-        .commit({
-          autoGenerateArrayKeys: true,
-        });
-    })
-    .then(() => {
-      res.status(200).json({});
-    })
-    .catch((error) => console.log(error));
-});
-
-export default apiRoute;
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+  res.status(405).json({});
+}
