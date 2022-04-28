@@ -45,8 +45,6 @@ export default function Header({ id, data }) {
               cloudName="de9qmr17c"
               publicId={header.imageId}
               className="h-12 object-contain object-center"
-              width="300"
-              crop="scale"
             />
           )}
         </div>
@@ -60,7 +58,7 @@ export default function Header({ id, data }) {
                 href={
                   link === "Shop" && storeSlug
                     ? `/store/${storeSlug}/products`
-                    : "#"
+                    : `/store/${storeSlug}`
                 }
               >
                 {link}

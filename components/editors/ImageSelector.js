@@ -98,7 +98,7 @@ export default function ImageSelector({ data, setData, close }) {
               cloudName="de9qmr17c"
               publicId={imagePublicId}
               className="w-full h-full object-cover object-center"
-              width="300"
+              width="200"
               crop="scale"
             />
           </div>
