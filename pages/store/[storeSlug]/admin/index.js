@@ -59,15 +59,16 @@ export default function Admin({ user }) {
     setOpen(false);
   };
 
-  const handleDelete = async (productId, closeModal) => {
-    closeModal();
-
+  const handleDelete = async (productId, imageId, closeModal) => {
+    setLoading(true);
     const res = await fetch(`/api/delete-product`, {
       method: "DELETE",
-      body: JSON.stringify({ productId }),
+      body: JSON.stringify({ productId, imageId }),
     });
 
+    setLoading(false);
     setProducts(products.filter((product) => product._id !== productId));
+    closeModal();
   };
 
   // get all products
@@ -343,16 +344,29 @@ export default function Admin({ user }) {
                                     </div>
                                     <div className="flex space-x-5 self-end">
                                       <button
+                                        disabled={loading}
                                         onClick={() =>
                                           handleDelete(
                                             product._id,
-                                            closeModal,
-                                            closePopup
+                                            product.imageId,
+                                            closeModal
                                           )
                                         }
-                                        className="px-5 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg border-none transition"
+                                        className={classNames(
+                                          "text-white rounded-lg px-5 py-2 self-end",
+                                          {
+                                            "bg-gray-300 ": loading,
+                                            "bg-red-500 hover:bg-red-600 transition":
+                                              !loading,
+                                          }
+                                        )}
                                       >
-                                        Delete
+                                        {!loading && "Delete"}
+                                        <PulseLoader
+                                          loading={loading}
+                                          color="white"
+                                          size={6}
+                                        />
                                       </button>
                                       <button
                                         onClick={closeModal}

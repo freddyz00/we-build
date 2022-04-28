@@ -1,15 +1,13 @@
 import { sanityClient } from "../../lib/sanity";
+import { cloudinary } from "../../lib/cloudinary";
 
 export default async function handler(req, res) {
   if (req.method === "DELETE") {
-    const { productId } = JSON.parse(req.body);
+    const { productId, imageId } = JSON.parse(req.body);
 
-    const query = `*[_type == "product" && _id == "${productId}"][0]`;
-    const product = await sanityClient.fetch(query);
+    await sanityClient.delete(productId);
+    await cloudinary.api.delete_resources([imageId]);
 
-    sanityClient.delete(product._id).then(() => {
-      sanityClient.delete(product.image.asset._ref);
-    });
     return res.status(200).json({});
   }
   return res.status(405).json({});
