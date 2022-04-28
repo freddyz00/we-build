@@ -3,6 +3,8 @@ import { useRecoilState } from "recoil";
 import { sectionsState } from "../../atoms/sectionsAtom";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 
+import classNames from "classnames";
+import { Image, Transformation } from "cloudinary-react";
 import { urlFor } from "../../lib/sanity";
 import ImageSelector from "./ImageSelector";
 import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
@@ -18,7 +20,7 @@ export default function HeaderEditor({ id, iframeRef }) {
 
   const [header, setHeader] = useState({
     storeName: sectionData.storeName,
-    image: sectionData.image,
+    imageId: sectionData.imageId,
     links: sectionData.links,
   });
 
@@ -61,7 +63,7 @@ export default function HeaderEditor({ id, iframeRef }) {
         if (section._key === id) {
           return {
             ...section,
-            image: header.image,
+            imageId: header.imageId,
             links: header.links,
           };
         }
@@ -94,9 +96,23 @@ export default function HeaderEditor({ id, iframeRef }) {
               onClick={() => {
                 setShowImageSelector(true);
               }}
-              className="image-preview grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition object-cover"
+              className={classNames(
+                "relative grid place-items-center border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition object-cover",
+                {
+                  "bg-neutral-200": !header.imageId,
+                }
+              )}
             >
-              <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid transition">
+              {header.imageId && (
+                <Image
+                  cloudName="de9qmr17c"
+                  publicId={header.imageId}
+                  className="absolute w-full h-full object-cover object-center"
+                  width="300"
+                  crop="scale"
+                />
+              )}
+              <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid transition z-10">
                 Select Image
               </button>
             </div>

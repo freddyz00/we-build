@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import { sectionsState } from "../../atoms/sectionsAtom";
 import { editingSectionState } from "../../atoms/editingSectionAtom";
 import { urlFor } from "../../lib/sanity";
+import { Image } from "cloudinary-react";
 
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import RemoveSection from "../RemoveSection";
@@ -17,7 +18,7 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
   const sectionData = sections.filter((section) => section._key === id)[0];
 
   const [imageWithText, setImageWithText] = useState({
-    image: sectionData.image,
+    imageId: sectionData.imageId,
     heading: sectionData.heading,
     subheading: sectionData.subheading,
     buttonLabel: sectionData.buttonLabel,
@@ -39,7 +40,7 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
         if (section._key === id) {
           return {
             ...section,
-            image: imageWithText.image,
+            imageId: imageWithText.imageId,
             heading: imageWithText.heading,
             subheading: imageWithText.subheading,
             buttonLabel: imageWithText.buttonLabel,
@@ -71,9 +72,16 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
             onClick={() => {
               setShowImageSelector(true);
             }}
-            className="image-preview grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition "
+            className="relative grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition "
           >
-            <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid transition">
+            {imageWithText.imageId && (
+              <Image
+                cloudName="de9qmr17c"
+                publicId={imageWithText.imageId}
+                className="absolute w-full h-full object-cover object-center"
+              />
+            )}
+            <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid transition z-10">
               Select Image
             </button>
           </div>
@@ -130,14 +138,6 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
             close={() => setShowImageSelector(false)}
           />
         )}
-        <style jsx>{`
-          .image-preview {
-            background-image: url(${imageWithText.image
-              ? urlFor(imageWithText.image).width(300).url()
-              : null});
-            background-position: center;
-          }
-        `}</style>
       </div>
       {/* remove section */}
       <div className="px-4 py-1 border-t border-solid">

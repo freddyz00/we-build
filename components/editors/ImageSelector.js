@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
+import { Image } from "cloudinary-react";
+
 import { MdOutlineArrowBackIos, MdOutlineFileUpload } from "react-icons/md";
 
 import classNames from "classnames";
-import { urlFor } from "../../lib/sanity";
 
 export default function ImageSelector({ data, setData, close }) {
-  const [images, setImages] = useState([]);
+  const [imagePublicIds, setImagePublicIds] = useState([]);
   const imageUploadRef = useRef(null);
 
   useEffect(() => {
@@ -16,7 +17,7 @@ export default function ImageSelector({ data, setData, close }) {
       );
       const data = await res.json();
       if (data.pageImages) {
-        setImages(data.pageImages);
+        setImagePublicIds(data.pageImages);
       }
     })();
   }, []);
@@ -28,26 +29,27 @@ export default function ImageSelector({ data, setData, close }) {
   };
 
   const handleImageUpload = async (event) => {
-    const formData = new FormData();
-    const imageFile = event.target.files[0];
+    const reader = new FileReader();
+    const file = reader.readAsDataURL(event.target.files[0]);
+    reader.onloadend = async () => {
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload-image-2`, {
+        method: "POST",
+        body: JSON.stringify({ fileString: reader.result }),
+      });
 
-    formData.append("file", imageFile);
-
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload-image`, {
-      method: "POST",
-      body: formData,
-    });
-
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-user`);
-    const data = await res.json();
-    setImages(data.pageImages);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-user`
+      );
+      const data = await res.json();
+      setImagePublicIds(data.pageImages);
+    };
   };
 
-  const handleImageSelect = (image) => {
-    if (data.image?.asset._ref === image.asset._ref) {
-      return setData({ ...data, image: null });
+  const handleImageSelect = (imagePublicId) => {
+    if (data.imageId === imagePublicId) {
+      return setData({ ...data, imageId: null });
     }
-    return setData({ ...data, image });
+    return setData({ ...data, imageId: imagePublicId });
   };
 
   return (
@@ -80,22 +82,24 @@ export default function ImageSelector({ data, setData, close }) {
           accept="image/*"
           className="hidden"
         />
-        {images?.map((image) => (
+        {imagePublicIds?.map((imagePublicId, index) => (
           <div
-            key={image._key}
-            onClick={() => handleImageSelect(image)}
+            key={index}
+            onClick={() => handleImageSelect(imagePublicId)}
             className={classNames(
               "bg-neutral-200 aspect-square hover:opacity-70 cursor-pointer transition",
               {
                 "border-4 border-solid border-primary-blue":
-                  data.image?.asset._ref === image.asset._ref,
+                  data.imageId === imagePublicId,
               }
             )}
           >
-            <img
-              src={urlFor(image).width(300).url()}
-              alt=""
-              className="w-full h-full object-cover"
+            <Image
+              cloudName="de9qmr17c"
+              publicId={imagePublicId}
+              className="w-full h-full object-cover object-center"
+              width="300"
+              crop="scale"
             />
           </div>
         ))}

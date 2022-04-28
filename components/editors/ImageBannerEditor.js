@@ -9,6 +9,8 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import { urlFor } from "../../lib/sanity";
 import ImageSelector from "./ImageSelector";
 import Select from "react-select";
+import { Image } from "cloudinary-react";
+import classNames from "classnames";
 
 const options = [
   { value: "dark", label: "Dark" },
@@ -23,7 +25,7 @@ export default function ImageBannerEditor({ id, iframeRef }) {
   const sectionData = sections.filter((section) => section._key === id)[0];
 
   const [imageBanner, setImageBanner] = useState({
-    image: sectionData.image,
+    imageId: sectionData.imageId,
     textColor: sectionData.textColor,
     heading: sectionData.heading,
     subheading: sectionData.subheading,
@@ -46,7 +48,7 @@ export default function ImageBannerEditor({ id, iframeRef }) {
         if (section._key === id) {
           return {
             ...section,
-            image: imageBanner.image,
+            imageId: imageBanner.imageId,
             textColor: imageBanner.textColor,
             heading: imageBanner.heading,
             subheading: imageBanner.subheading,
@@ -79,15 +81,29 @@ export default function ImageBannerEditor({ id, iframeRef }) {
             onClick={() => {
               setShowImageSelector(true);
             }}
-            className="image-preview grid place-items-center bg-neutral-200 border-2 border-solid hover:border-primary-blue  h-32 cursor-pointer transition object-cover"
+            className={classNames(
+              "relative grid place-items-center border-2 border-solid hover:border-primary-blue h-32 cursor-pointer transition object-cover",
+              {
+                "bg-neutral-200": !imageBanner.imageId,
+              }
+            )}
           >
-            <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid transition">
+            {imageBanner.imageId && (
+              <Image
+                cloudName="de9qmr17c"
+                publicId={imageBanner.imageId}
+                className="absolute w-full h-full object-cover object-center"
+                width="300"
+                crop="scale"
+              />
+            )}
+            <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid transition z-10">
               Select Image
             </button>
           </div>
         </div>
 
-        {/* color picker for image text */}
+        {/* text color */}
         <div className="px-4 pt-3">
           <p>Text Color</p>
           <Select
@@ -151,14 +167,6 @@ export default function ImageBannerEditor({ id, iframeRef }) {
             close={() => setShowImageSelector(false)}
           />
         )}
-        <style jsx>{`
-          .image-preview {
-            background-image: url(${imageBanner.image
-              ? urlFor(imageBanner.image).width(300).url()
-              : null});
-            background-position: center;
-          }
-        `}</style>
       </div>
 
       {/* remove section */}

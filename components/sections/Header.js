@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { RiShoppingBag3Line } from "react-icons/ri";
 import { useRecoilValue } from "recoil";
 import { storeSlugState } from "../../atoms/storeSlugAtom";
-import { urlFor } from "../../lib/sanity";
+import { Image, Transformation } from "cloudinary-react";
 
 export default function Header({ id, data }) {
   const [header, setHeader] = useState({});
@@ -13,7 +13,7 @@ export default function Header({ id, data }) {
   useEffect(() => {
     setHeader({
       storeName: data.storeName,
-      image: data.image,
+      imageId: data.imageId,
       links: data.links,
     });
   }, [data]);
@@ -37,14 +37,16 @@ export default function Header({ id, data }) {
     <nav className="h-14 border-b border-slate-200">
       <div className="container mx-auto select-none flex justify-between items-center h-full lg:max-w-6xl">
         <div>
-          {!header.image && (
+          {!header.imageId && (
             <p className="text-xl font-medium">{header.storeName}</p>
           )}
-          {header.image && (
-            <img
-              src={urlFor(header.image).width(100).url()}
-              alt=""
-              className="h-12 object-contain"
+          {header.imageId && (
+            <Image
+              cloudName="de9qmr17c"
+              publicId={header.imageId}
+              className="h-12 object-contain object-center"
+              width="300"
+              crop="scale"
             />
           )}
         </div>

@@ -3,10 +3,11 @@ import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { storeSlugState } from "../../atoms/storeSlugAtom";
 import { urlFor } from "../../lib/sanity";
+import { Image } from "cloudinary-react";
 
 export default function ImageWithText({ id, data }) {
   const [imageWithText, setImageWithText] = useState({
-    image: data.image,
+    imageId: data.imageId,
     heading: data.heading,
     subheading: data.subheading,
     buttonLabel: data.buttonLabel,
@@ -32,12 +33,16 @@ export default function ImageWithText({ id, data }) {
 
   return (
     <div className="container mx-auto my-36 lg:max-w-6xl grid grid-cols-2 gap-x-20">
-      <div className="h-[500px] bg-neutral-200">
-        <img
-          src={imageWithText.image ? urlFor(imageWithText.image).url() : null}
-          alt=""
-          className="w-full h-full object-cover"
-        />
+      <div className="relative h-[500px] bg-neutral-200">
+        {imageWithText.imageId && (
+          <Image
+            cloudName="de9qmr17c"
+            publicId={imageWithText.imageId}
+            className="absolute w-full h-full object-cover object-center"
+            width="1000"
+            crop="scale"
+          />
+        )}
       </div>
 
       <div className="flex flex-col space-y-5 justify-center">
