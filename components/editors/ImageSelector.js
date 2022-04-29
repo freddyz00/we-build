@@ -110,6 +110,7 @@ export default function ImageSelector({ data, setData, close }) {
               className="w-full h-full object-cover object-center"
               width="200"
               crop="scale"
+              alt="Uploaded images"
             />
           </div>
         ))}

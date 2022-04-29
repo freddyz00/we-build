@@ -39,7 +39,7 @@ export default function ImageBannerEditor({ id, iframeRef }) {
       { id, section: "imageBanner", payload: imageBanner },
       process.env.NEXT_PUBLIC_BASE_URL
     );
-  }, [imageBanner]);
+  }, [imageBanner, id, iframeRef]);
 
   // update sections when image banner changes
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function ImageBannerEditor({ id, iframeRef }) {
         return section;
       })
     );
-  }, [imageBanner]);
+  }, [imageBanner, id, setSections]);
 
   return (
     <div className="absolute w-full flex flex-col justify-between h-full">
@@ -95,6 +95,7 @@ export default function ImageBannerEditor({ id, iframeRef }) {
                 className="absolute w-full h-full object-cover object-center"
                 width="300"
                 crop="scale"
+                alt="Image preview"
               />
             )}
             <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid transition z-10">

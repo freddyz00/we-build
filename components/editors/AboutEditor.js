@@ -25,7 +25,7 @@ export default function AboutEditor({ id, iframeRef }) {
       { id, section: "about", payload: about },
       process.env.NEXT_PUBLIC_BASE_URL
     );
-  }, [about]);
+  }, [about, id, iframeRef]);
 
   // update sections when about changes
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function AboutEditor({ id, iframeRef }) {
         return section;
       })
     );
-  }, [about]);
+  }, [about, id, setSections]);
 
   return (
     <div className="absolute w-full flex flex-col justify-between h-full">

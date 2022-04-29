@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRecoilValue } from "recoil";
 import { storeSlugState } from "../../atoms/storeSlugAtom";
 import { urlFor } from "../../lib/sanity";
@@ -16,12 +16,15 @@ export default function ImageWithText({ id, data }) {
   const storeSlug = useRecoilValue(storeSlugState);
   const router = useRouter();
 
-  const handleUpdateImageWithText = (event) => {
-    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
-    if (event.data.section === "imageWithText" && event.data.id === id) {
-      return setImageWithText(event.data.payload);
-    }
-  };
+  const handleUpdateImageWithText = useCallback(
+    (event) => {
+      if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
+      if (event.data.section === "imageWithText" && event.data.id === id) {
+        return setImageWithText(event.data.payload);
+      }
+    },
+    [id]
+  );
 
   // listen to events from parent for updates to state
   useEffect(() => {
@@ -29,7 +32,7 @@ export default function ImageWithText({ id, data }) {
     return () => {
       window.removeEventListener("message", handleUpdateImageWithText);
     };
-  }, []);
+  }, [handleUpdateImageWithText]);
 
   return (
     <div className="container mx-auto my-36 lg:max-w-6xl grid grid-cols-2 gap-x-20">
@@ -41,6 +44,7 @@ export default function ImageWithText({ id, data }) {
             className="absolute w-full h-full object-cover object-center"
             width="1000"
             crop="scale"
+            alt="Image With Text"
           />
         )}
       </div>

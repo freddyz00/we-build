@@ -31,7 +31,7 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
       { id, section: "imageWithText", payload: imageWithText },
       process.env.NEXT_PUBLIC_BASE_URL
     );
-  }, [imageWithText]);
+  }, [imageWithText, id, iframeRef]);
 
   // update sections when image with text changes
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
         return section;
       })
     );
-  }, [imageWithText]);
+  }, [imageWithText, id, setSections]);
 
   return (
     <div className="absolute w-full flex flex-col justify-between h-full">
@@ -79,6 +79,7 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
                 cloudName="de9qmr17c"
                 publicId={imageWithText.imageId}
                 className="absolute w-full h-full object-cover object-center"
+                alt="Image Preview"
               />
             )}
             <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid transition z-10">

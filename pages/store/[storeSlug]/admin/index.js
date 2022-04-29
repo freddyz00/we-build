@@ -89,7 +89,7 @@ export default function Admin({ user }) {
       </Head>
       <header className="flex justify-between items-center bg-white px-5 h-16 border-b border-solid border-slate-200 shadow-sm z-10">
         <div>
-          <img src="/we-build-logo.png" className="h-16" />
+          <img src="/we-build-logo.png" alt="WeBuild Logo" className="h-16" />
         </div>
         <div className="flex items-center">
           <Popup
@@ -97,6 +97,7 @@ export default function Admin({ user }) {
               <div className="flex justify-self-end">
                 <Image
                   src={user?.image}
+                  alt="User Avatar"
                   width="35"
                   height="35"
                   className="rounded-full cursor-pointer"
@@ -110,6 +111,7 @@ export default function Admin({ user }) {
               <div className="flex items-start border-b border-solid border-gray-300 pb-2">
                 <Image
                   src={user.image}
+                  alt="User Avatar"
                   width="40"
                   height="40"
                   className="rounded-full cursor-pointer"
@@ -227,6 +229,7 @@ export default function Admin({ user }) {
                       <div className="w-20 h-20">
                         <img
                           src={newFileString}
+                          alt="Uploaded Image Preview"
                           className="w-full h-full object-contain"
                         />
                       </div>

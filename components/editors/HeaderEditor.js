@@ -54,7 +54,7 @@ export default function HeaderEditor({ id, iframeRef }) {
       { id, section: "header", payload: header },
       process.env.NEXT_PUBLIC_BASE_URL
     );
-  }, [header]);
+  }, [header, id, iframeRef]);
 
   // update sections when header changes
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function HeaderEditor({ id, iframeRef }) {
         return section;
       })
     );
-  }, [header]);
+  }, [header, id, setSections]);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -110,6 +110,7 @@ export default function HeaderEditor({ id, iframeRef }) {
                   className="absolute w-full h-full object-cover object-center"
                   width="300"
                   crop="scale"
+                  alt="Image preview"
                 />
               )}
               <button className="bg-white px-3 py-2 rounded hover:bg-neutral-200 transition border-2 border-neutral-400 border-solid transition z-10">

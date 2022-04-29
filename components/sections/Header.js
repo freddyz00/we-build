@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { RiShoppingBag3Line } from "react-icons/ri";
 import { useRecoilValue } from "recoil";
@@ -18,12 +18,15 @@ export default function Header({ id, data }) {
     });
   }, [data]);
 
-  const handleUpdateHeader = (event) => {
-    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
-    if (event.data.section === "header" && event.data.id === id) {
-      return setHeader(event.data.payload);
-    }
-  };
+  const handleUpdateHeader = useCallback(
+    (event) => {
+      if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
+      if (event.data.section === "header" && event.data.id === id) {
+        return setHeader(event.data.payload);
+      }
+    },
+    [id]
+  );
 
   // listen to events from parent for updates to state
   useEffect(() => {
@@ -31,7 +34,7 @@ export default function Header({ id, data }) {
     return () => {
       window.removeEventListener("message", handleUpdateHeader);
     };
-  }, []);
+  }, [handleUpdateHeader]);
 
   return (
     <nav className="h-14 border-b border-slate-200">
@@ -45,6 +48,7 @@ export default function Header({ id, data }) {
               cloudName="de9qmr17c"
               publicId={header.imageId}
               className="h-12 object-contain object-center"
+              alt="Logo"
             />
           )}
         </div>

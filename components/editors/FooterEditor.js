@@ -45,7 +45,7 @@ export default function Footer({ id, iframeRef }) {
       { id, section: "footer", payload: footer },
       process.env.NEXT_PUBLIC_BASE_URL
     );
-  }, [footer]);
+  }, [footer, id, iframeRef]);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRecoilValue } from "recoil";
 import { storeSlugState } from "../../atoms/storeSlugAtom";
 import { Image } from "cloudinary-react";
@@ -18,12 +18,15 @@ export default function ImageBanner({ id, data }) {
 
   const router = useRouter();
 
-  const handleUpdateImageBanner = (event) => {
-    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
-    if (event.data.section === "imageBanner" && event.data.id === id) {
-      return setImageBanner(event.data.payload);
-    }
-  };
+  const handleUpdateImageBanner = useCallback(
+    (event) => {
+      if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
+      if (event.data.section === "imageBanner" && event.data.id === id) {
+        return setImageBanner(event.data.payload);
+      }
+    },
+    [id]
+  );
 
   // listen to events from parent for updates to state
   useEffect(() => {
@@ -31,7 +34,7 @@ export default function ImageBanner({ id, data }) {
     return () => {
       window.removeEventListener("message", handleUpdateImageBanner);
     };
-  }, []);
+  }, [handleUpdateImageBanner]);
 
   return (
     <div
@@ -47,6 +50,7 @@ export default function ImageBanner({ id, data }) {
           cloudName="de9qmr17c"
           publicId={imageBanner.imageId}
           className="absolute w-full h-full object-cover object-center opacity-80"
+          alt="Image Banner"
         />
       )}
 

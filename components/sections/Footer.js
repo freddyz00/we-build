@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function Footer({ id, data }) {
   const [footer, setFooter] = useState({});
@@ -9,12 +9,15 @@ export default function Footer({ id, data }) {
     });
   }, [data]);
 
-  const handleUpdateFooter = (event) => {
-    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
-    if (event.data.section === "footer" && event.data.id === id) {
-      return setFooter(event.data.payload);
-    }
-  };
+  const handleUpdateFooter = useCallback(
+    (event) => {
+      if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
+      if (event.data.section === "footer" && event.data.id === id) {
+        return setFooter(event.data.payload);
+      }
+    },
+    [id]
+  );
 
   // listen to events from parent for updates to state
   useEffect(() => {
@@ -22,7 +25,7 @@ export default function Footer({ id, data }) {
     return () => {
       window.removeEventListener("message", handleUpdateFooter);
     };
-  }, []);
+  }, [handleUpdateFooter]);
 
   return (
     <div className="border-t border-solid border-slate-200 py-10">

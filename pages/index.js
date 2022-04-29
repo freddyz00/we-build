@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
       </Head>
       <header className="flex justify-between items-center bg-white px-5 h-16 border-b border-solid border-slate-200 shadow-sm z-10">
         <div>
-          <img src="/we-build-logo.png" className="h-16" />
+          <img src="/we-build-logo.png" alt="WeBuild Logo" className="h-16" />
         </div>
         <div className="flex space-x-5 items-center">
           <Link href="/login">
@@ -25,9 +26,10 @@ export default function Home() {
       <section className="flex flex-1 justify-center items-center relative">
         <img
           src="/banner.jpg"
-          alt=""
+          alt="Home Image Banner"
           className="absolute opacity-10 w-full h-full object-cover"
         />
+
         <div className="flex flex-col max-w-4xl z-10">
           <h1 className="font-medium text-center text-7xl leading-snug mb-10">
             Create your e-commerce store in minutes

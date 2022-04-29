@@ -58,6 +58,7 @@ export default function Products() {
             {/* products */}
             {products.map((product) => (
               <Link
+                passHref={true}
                 key={product._id}
                 href={`/store/${storeSlug}/products/${product.slug.current}`}
               >
@@ -78,6 +79,7 @@ export default function Products() {
                         className="w-full h-full object-contain object-center group-hover:scale-105 transition"
                         width="500"
                         crop="scale"
+                        alt="Product Image"
                       />
                     )}
                   </div>

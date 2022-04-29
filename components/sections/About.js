@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function About({ id, data }) {
   const [about, setAbout] = useState({
@@ -6,12 +6,15 @@ export default function About({ id, data }) {
     subheading: data.subheading,
   });
 
-  const handleUpdateAbout = (event) => {
-    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
-    if (event.data.section === "about" && event.data.id === id) {
-      return setAbout(event.data.payload);
-    }
-  };
+  const handleUpdateAbout = useCallback(
+    (event) => {
+      if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
+      if (event.data.section === "about" && event.data.id === id) {
+        return setAbout(event.data.payload);
+      }
+    },
+    [id]
+  );
 
   // listen to events from parent for updates to state
   useEffect(() => {
@@ -19,7 +22,7 @@ export default function About({ id, data }) {
     return () => {
       window.removeEventListener("message", handleUpdateAbout);
     };
-  }, []);
+  }, [handleUpdateAbout]);
 
   return (
     <div className="my-36">

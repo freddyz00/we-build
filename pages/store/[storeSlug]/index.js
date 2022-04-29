@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { sectionsState } from "../../../atoms/sectionsAtom";
 import { storeSlugState } from "../../../atoms/storeSlugAtom";
@@ -29,12 +29,15 @@ export default function Preview() {
     })();
   }, [router.isReady, sections.length, setSections, setStoreSlug, storeSlug]);
 
-  const handleUpdateSections = (event) => {
-    if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
-    if (event.data.section === "sections") {
-      return setSections(event.data.payload);
-    }
-  };
+  const handleUpdateSections = useCallback(
+    (event) => {
+      if (event.origin !== process.env.NEXT_PUBLIC_BASE_URL) return;
+      if (event.data.section === "sections") {
+        return setSections(event.data.payload);
+      }
+    },
+    [setSections]
+  );
 
   // listen to events from parent for updates to state
   useEffect(() => {
@@ -42,7 +45,7 @@ export default function Preview() {
     return () => {
       window.removeEventListener("message", handleUpdateSections);
     };
-  }, [sections]);
+  }, [handleUpdateSections]);
 
   return (
     <div className="bg-white min-h-screen">

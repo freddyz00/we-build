@@ -84,6 +84,7 @@ export default function Product() {
                 className="w-full h-full object-contain object-top"
                 width="1000"
                 crop="scale"
+                alt="Product Image"
               />
             </div>
             {/* product details */}
