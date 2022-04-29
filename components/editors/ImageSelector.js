@@ -9,6 +9,7 @@ import classNames from "classnames";
 export default function ImageSelector({ data, setData, close }) {
   const [imagePublicIds, setImagePublicIds] = useState([]);
   const imageUploadRef = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -16,6 +17,7 @@ export default function ImageSelector({ data, setData, close }) {
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-user`
       );
       const data = await res.json();
+      setLoading(false);
       if (data.pageImages) {
         setImagePublicIds(data.pageImages);
       }
@@ -29,8 +31,11 @@ export default function ImageSelector({ data, setData, close }) {
   };
 
   const handleImageUpload = async (event) => {
+    setLoading(true);
+
     const reader = new FileReader();
     const file = reader.readAsDataURL(event.target.files[0]);
+
     reader.onloadend = async () => {
       await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload-image`, {
         method: "POST",
@@ -41,9 +46,14 @@ export default function ImageSelector({ data, setData, close }) {
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-user`
       );
       const data = await res.json();
+      setLoading(false);
       setImagePublicIds(data.pageImages);
     };
   };
+
+  useEffect(() => {
+    console.log(loading);
+  }, [loading]);
 
   const handleImageSelect = (imagePublicId) => {
     if (data.imageId === imagePublicId) {
@@ -103,6 +113,7 @@ export default function ImageSelector({ data, setData, close }) {
             />
           </div>
         ))}
+        {loading && <div className="bg-neutral-300 animate-pulse"></div>}
       </div>
     </div>
   );
