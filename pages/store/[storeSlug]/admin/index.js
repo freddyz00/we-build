@@ -226,11 +226,12 @@ export default function Admin({ user }) {
                       />
                     </div>
                     {newFileString && (
-                      <div className="w-20 h-20">
-                        <img
+                      <div className="relative w-20 h-20">
+                        <Image
                           src={newFileString}
                           alt="Uploaded Image Preview"
-                          className="w-full h-full object-contain"
+                          layout="fill"
+                          objectFit="contain"
                         />
                       </div>
                     )}

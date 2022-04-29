@@ -12,7 +12,11 @@ export default function Home() {
         <title>Login - WeBuild</title>
       </Head>
       <div className="flex flex-col mb-20">
-        <img src="/we-build-logo.png" alt="" className="h-[300px]" />
+        <img
+          src="/we-build-logo.png"
+          alt="WeBuild Logo"
+          className="h-[300px]"
+        />
         <button
           onClick={signInWithGoogle}
           className="text-white text-2xl self-center bg-primary-blue hover:bg-darker-blue rounded-xl px-10 py-4 transition"
