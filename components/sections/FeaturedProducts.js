@@ -30,10 +30,23 @@ export default function FeaturedProducts({ id, data }) {
     };
   }, [handleUpdateFeaturedProducts]);
 
+  useEffect(() => {
+    console.log(featuredProducts.featuredProducts);
+  }, [featuredProducts]);
+
   return (
     <div className="container mx-auto my-36 lg:max-w-6xl">
       <h2 className="text-3xl mb-10">Featured Products</h2>
       <div className="grid grid-cols-3 gap-x-5">
+        {featuredProducts.featuredProducts.every(
+          (product) => product === null || product === undefined
+        ) && (
+          <>
+            <div className="aspect-square bg-neutral-200"></div>
+            <div className="aspect-square bg-neutral-200"></div>
+            <div className="aspect-square bg-neutral-200"></div>
+          </>
+        )}
         {featuredProducts.featuredProducts.map((product, index) => {
           if (!product) return null;
           return (

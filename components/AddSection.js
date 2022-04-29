@@ -3,9 +3,8 @@ import SectionCard from "./SectionCard";
 import { defaultData } from "../lib/defaultData";
 import { nanoid } from "nanoid";
 
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { sectionsState } from "../atoms/sectionsAtom";
-import { pageIdState } from "../atoms/pageIdAtom";
 
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -29,8 +28,8 @@ const icons = {
 };
 
 export default function AddSection() {
-  const [sections, setSections] = useRecoilState(sectionsState);
-  const pageId = useRecoilValue(pageIdState);
+  const setSections = useSetRecoilState(sectionsState);
+
   const addNewSection = (closePopup, type) => {
     setSections((sections) => [
       ...sections.slice(0, sections.length - 1),
@@ -74,6 +73,11 @@ export default function AddSection() {
             title={"About"}
             Icon={icons["about"]}
             onPress={() => addNewSection(close, "about")}
+          />
+          <SectionCard
+            title={"Featured Products"}
+            Icon={icons["featuredProducts"]}
+            onPress={() => addNewSection(close, "featuredProducts")}
           />
         </ul>
       )}
