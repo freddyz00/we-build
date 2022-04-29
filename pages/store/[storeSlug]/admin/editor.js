@@ -75,9 +75,9 @@ export default function Editor() {
           >
             <MdExitToApp className="text-2xl -scale-100" />
           </div>
-          <p className="text-lg font-medium">
+          <div className="text-lg font-medium">
             <img src="/we-build-logo.png" className="h-16" alt="Logo" />
-          </p>
+          </div>
         </div>
         <div className="flex justify-end items-center space-x-5 ">
           <Link href={`/store/${storeSlug}`}>

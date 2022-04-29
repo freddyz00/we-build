@@ -8,6 +8,7 @@ const defaultSections = [
   "header",
   "imageBanner",
   "about",
+  "featuredProducts",
   "imageWithText",
   "footer",
 ];

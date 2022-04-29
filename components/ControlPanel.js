@@ -34,7 +34,12 @@ export default function ControlPanel({ iframeRef }) {
           <AboutEditor id={currentEditingSection.id} iframeRef={iframeRef} />
         );
       case "featuredProductsEditor":
-        return <FeaturedProductsEditor />;
+        return (
+          <FeaturedProductsEditor
+            id={currentEditingSection.id}
+            iframeRef={iframeRef}
+          />
+        );
       case "imageWithTextEditor":
         return (
           <ImageWithTextEditor

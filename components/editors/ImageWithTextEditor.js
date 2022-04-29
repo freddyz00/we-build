@@ -53,7 +53,7 @@ export default function ImageWithTextEditor({ id, iframeRef }) {
 
   return (
     <div className="absolute w-full flex flex-col justify-between h-full">
-      <div className="overflow-y-auto pb-2">
+      <div className="overflow-y-auto flex-1 pb-2">
         {/* title */}
         <div className="flex items-center space-x-2 border-b border-solid p-3">
           <div

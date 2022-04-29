@@ -51,10 +51,6 @@ export default function ImageSelector({ data, setData, close }) {
     };
   };
 
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
-
   const handleImageSelect = (imagePublicId) => {
     if (data.imageId === imagePublicId) {
       return setData({ ...data, imageId: null });

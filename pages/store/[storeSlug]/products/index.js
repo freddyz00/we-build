@@ -76,7 +76,7 @@ export default function Products() {
                       <Image
                         cloudName="de9qmr17c"
                         publicId={product.imageId}
-                        className="w-full h-full object-contain object-center group-hover:scale-105 transition"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition"
                         width="500"
                         crop="scale"
                         alt="Product Image"
@@ -85,7 +85,7 @@ export default function Products() {
                   </div>
 
                   {/* product details */}
-                  <div>
+                  <div className="flex flex-col">
                     <p className="text-lg">{product.title}</p>
                     <p className="text-xl text-gray-500 font-medium">{`$${product.price}`}</p>
                   </div>

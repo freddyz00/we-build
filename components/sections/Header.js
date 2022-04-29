@@ -4,19 +4,15 @@ import { useState, useEffect, useCallback } from "react";
 import { RiShoppingBag3Line } from "react-icons/ri";
 import { useRecoilValue } from "recoil";
 import { storeSlugState } from "../../atoms/storeSlugAtom";
-import { Image, Transformation } from "cloudinary-react";
+import { Image } from "cloudinary-react";
 
 export default function Header({ id, data }) {
-  const [header, setHeader] = useState({});
+  const [header, setHeader] = useState({
+    storeName: data.storeName,
+    imageId: data.imageId,
+    links: data.links,
+  });
   const storeSlug = useRecoilValue(storeSlugState);
-
-  useEffect(() => {
-    setHeader({
-      storeName: data.storeName,
-      imageId: data.imageId,
-      links: data.links,
-    });
-  }, [data]);
 
   const handleUpdateHeader = useCallback(
     (event) => {
